@@ -1,4 +1,4 @@
-# Title
+# Trying to use cross-entropy loss with MNIST_SAMPLE dataset from fastai
 
 
 
@@ -463,4 +463,4 @@ for i in range(10):
     Accuracy:  0.9016
 
 
-## Could not get the traditional cross-entropy loss using the negative log-likelihood function to work well with the MNIST_SAMPLE dataset of '3's and '7's. Using softmax alone, on the other hand works well.
+### Conclusion: could not get the traditional cross-entropy loss using the negative log-likelihood function to work well with the MNIST_SAMPLE dataset of '3's and '7's. Using softmax alone, on the other hand works well.
