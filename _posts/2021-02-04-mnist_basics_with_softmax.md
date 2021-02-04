@@ -1,4 +1,4 @@
-# Trying to use cross-entropy loss with MNIST_SAMPLE dataset from fastai
+# Using cross-entropy loss with MNIST_SAMPLE dataset from fastai
 
 
 
