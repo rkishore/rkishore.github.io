@@ -1,4 +1,4 @@
-# Cross-entropy loss and the MNIST_SAMPLE dataset
+# Cross-entropy loss and the MNIST_SAMPLE dataset 
 
 
 
