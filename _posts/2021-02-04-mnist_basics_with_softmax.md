@@ -1,6 +1,12 @@
-# Trying to use cross-entropy loss with MNIST_SAMPLE dataset from fastai
+# Cross-entropy loss and the MNIST_SAMPLE dataset
 
 
+
+**Objective:** In this notebook, I want to move towards classifying the full MNIST dataset by first using cross entropy loss or softmax as a loss function for the MNIST_SAMPLE dataset that has data only for two digits (3s and 7s), as opposed to the full ten digits in the MNIST dataset.
+
+In Chapter 4 of the textbook, we are taught how to get the data ready and to use the mnist_loss function that basically uses the `sigmoid` function on one column of activations from the final layer. Then, in Chapter 5, we are given examples of how to use the `softmax` function to achieve what the `sigmoid` function does, but on more than one column of activations. Moreover, the cross entropy loss is introduced that basically does a `log_softmax` on the final layer of activations followed by selecting the loss corresponding to the column that corresponds to the target of interest (using `nll_loss`).
+
+With the MNIST_FULL dataset, my thinking is that it would be better to have ten columns of activations from the final layer as opposed to one really long column of activations. And beyond this, we can use the cross entropy loss to aid classification among ten categories. Here, I want to understand the details of this planned approach and validate it with two digits before moving to classify data from ten digits.
 
 ```python
 from fastai.vision.all import *
@@ -119,7 +125,7 @@ valid_y = tensor( [1]*len(valid_three_imgs) + [0]*len(valid_seven_imgs) ).unsque
 
 
 
-#### Prepare the dataset and dataloaders
+### Prepare the dataset and dataloaders
 
 ```python
 dset = list(zip(train_x, train_y))
@@ -157,6 +163,8 @@ def cross_entropy_loss(preds, tgts):
 ```
 
 ```python
+# We define and use the softmax function as our loss as using the cross entropy function results in weird behavior
+# We need to get to the bottom of this weird behavior
 def softmax_loss(preds, tgts):
     preds = torch.softmax(preds, dim=1)
     idx = range(preds[:,0].shape[0])
@@ -238,7 +246,7 @@ for i in range(10):
     print(validate_epoch(linear1, params), end=' ')
 ```
 
-    0.6541 0.8476 0.9062 0.9316 0.9447 0.9539 0.9588 0.9616 0.9638 0.966 
+    0.7205 0.8401 0.8998 0.9242 0.9381 0.9464 0.9534 0.9573 0.9608 0.9628 
 
 ### Now let's use cross_entropy_loss and two columns of activations
 
@@ -249,14 +257,14 @@ lr = 1.0
 params = [weights, bias]
 print(weights.shape, bias.shape)
 for i in range(10):
-    train_epoch(linear1, lr, params, calc_grad_softmax_loss)
+    train_epoch(linear1, lr, params, calc_grad_ce_loss)
     print(validate_epoch(linear1, params, False), end=' ')
 ```
 
     torch.Size([784, 2]) torch.Size([2])
-    0.8408 0.9014 0.9273 0.9442 0.953 0.9581 0.963 0.9664 0.9684 0.9699 
+    0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 
 
-### Debug the batch accuracy not changing
+### Debug why the batch accuracy is not changing when we use cross entropy loss
 
 ```python
 x,y = dl.one_batch()
@@ -302,7 +310,7 @@ preds[0]
 
 
 
-    tensor([4.4004, 3.5669], grad_fn=<SelectBackward>)
+    tensor([-1.7301,  4.6855], grad_fn=<SelectBackward>)
 
 
 
@@ -310,13 +318,10 @@ preds[0]
 loss = cross_entropy_loss(preds, y); loss
 ```
 
-    torch.Size([256, 2]) tensor([0.6971, 0.3029], grad_fn=<SelectBackward>)
 
 
 
-
-
-    tensor(0.4793, grad_fn=<MeanBackward0>)
+    tensor(1.0518, grad_fn=<NllLossBackward>)
 
 
 
@@ -327,20 +332,10 @@ loss.backward()
 ```python
 params = w,b
 for p in params:
-    print(p.grad, p.grad.mean())
+    #print(p.grad, p.grad.mean())
     p.data -= p.grad*lr
     p.grad.zero_()
 ```
-
-    tensor([[0., 0.],
-            [0., 0.],
-            [0., 0.],
-            ...,
-            [0., 0.],
-            [0., 0.],
-            [0., 0.]]) tensor(7.6026e-11)
-    tensor([-0.0449,  0.0449]) tensor(1.8626e-09)
-
 
 ```python
 batch_accuracy(preds, y, False)
@@ -349,7 +344,7 @@ batch_accuracy(preds, y, False)
 
 
 
-    tensor(0.5234)
+    tensor(0.2188)
 
 
 
@@ -441,26 +436,42 @@ for i in range(10):
 ```
 
     torch.Size([784, 2]) torch.Size([2])
-    Mean loss:  tensor(0.5159)
-    Accuracy:  0.5184
-    Mean loss:  tensor(0.4597)
-    Accuracy:  0.564
-    Mean loss:  tensor(0.4149)
-    Accuracy:  0.6142
-    Mean loss:  tensor(0.3543)
-    Accuracy:  0.6817
-    Mean loss:  tensor(0.2811)
-    Accuracy:  0.7528
-    Mean loss:  tensor(0.2122)
-    Accuracy:  0.812
-    Mean loss:  tensor(0.1665)
-    Accuracy:  0.8474
-    Mean loss:  tensor(0.1383)
-    Accuracy:  0.8743
-    Mean loss:  tensor(0.1195)
-    Accuracy:  0.8896
-    Mean loss:  tensor(0.1066)
-    Accuracy:  0.9016
+    Mean loss:  tensor(0.6547)
+    Accuracy:  0.425
+    Mean loss:  tensor(0.5197)
+    Accuracy:  0.5398
+    Mean loss:  tensor(0.4005)
+    Accuracy:  0.6602
+    Mean loss:  tensor(0.2695)
+    Accuracy:  0.7681
+    Mean loss:  tensor(0.1824)
+    Accuracy:  0.8331
+    Mean loss:  tensor(0.1432)
+    Accuracy:  0.8711
+    Mean loss:  tensor(0.1168)
+    Accuracy:  0.8934
+    Mean loss:  tensor(0.1001)
+    Accuracy:  0.9078
+    Mean loss:  tensor(0.0886)
+    Accuracy:  0.9191
+    Mean loss:  tensor(0.0804)
+    Accuracy:  0.9267
 
 
-### Conclusion: could not get the traditional cross-entropy loss using the negative log-likelihood function to work well with the MNIST_SAMPLE dataset of '3's and '7's. Using softmax alone, on the other hand works well.
+```python
+weights = init_params((28*28,2))
+bias = init_params(2)
+lr = 1.0
+params = [weights, bias]
+print(weights.shape, bias.shape)
+for i in range(10):
+    train_epoch(linear1, lr, params, calc_grad_softmax_loss)
+    print(validate_epoch(linear1, params, False), end=' ')
+```
+
+    torch.Size([784, 2]) torch.Size([2])
+    0.6858 0.8494 0.913 0.9315 0.9449 0.9523 0.9563 0.9603 0.9619 0.9642 
+
+### Conclusion
+
+I could not get the traditional cross-entropy loss using the negative log-likelihood function to work well with the MNIST_SAMPLE dataset of '3's and '7's. Using softmax alone, on the other hand works well.
