@@ -117,8 +117,8 @@ train_y = tensor( [1]*len(three_imgs) + [0]*len(seven_imgs) ).unsqueeze(1); trai
 
 
 ```python
-valid_three_imgs = (path/'train'/'3').ls().sorted()
-valid_seven_imgs = (path/'train'/'7').ls().sorted()
+valid_three_imgs = (path/'valid'/'3').ls().sorted()
+valid_seven_imgs = (path/'valid'/'7').ls().sorted()
 
 valid_three_tensors_list = [tensor(Image.open(img)) for img in valid_three_imgs]
 valid_seven_tensors_list = [tensor(Image.open(img)) for img in valid_seven_imgs]
@@ -131,7 +131,7 @@ valid_stacked_threes.shape, valid_stacked_sevens.shape
 
 
 
-    (torch.Size([6131, 28, 28]), torch.Size([6265, 28, 28]))
+    (torch.Size([1010, 28, 28]), torch.Size([1028, 28, 28]))
 
 
 
@@ -142,7 +142,7 @@ valid_x = torch.cat([valid_stacked_threes, valid_stacked_sevens]).view(-1, 28*28
 
 
 
-    torch.Size([12396, 784])
+    torch.Size([2038, 784])
 
 
 
@@ -153,7 +153,7 @@ valid_y = tensor( [1]*len(valid_three_imgs) + [0]*len(valid_seven_imgs) ).unsque
 
 
 
-    torch.Size([12396, 1])
+    torch.Size([2038, 1])
 
 
 
@@ -276,7 +276,7 @@ for i in range(10):
     print(validate_epoch(linear1, params), end=' ')
 ```
 
-    0.7205 0.8401 0.8998 0.9242 0.9381 0.9464 0.9534 0.9573 0.9608 0.9628 
+    0.7304 0.8506 0.9009 0.9292 0.9389 0.9443 0.9526 0.9546 0.9589 0.9614 
 
 ### Now let's use cross_entropy_loss and two columns of activations
 
@@ -292,7 +292,7 @@ for i in range(10):
 ```
 
     torch.Size([784, 2]) torch.Size([2])
-    0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 0.5112 
+    0.5068 0.5068 0.5068 0.5068 0.5068 0.5068 0.5068 0.5068 0.5068 0.5068 
 
 #### We see that the `batch_accuracy` function is not increasing at all. We need to debug what is going on here.
 
@@ -342,7 +342,7 @@ preds[0]
 
 
 
-    tensor([-1.7301,  4.6855], grad_fn=<SelectBackward>)
+    tensor([-10.4003,   5.0197], grad_fn=<SelectBackward>)
 
 
 
@@ -353,7 +353,7 @@ loss = cross_entropy_loss(preds, y); loss
 
 
 
-    tensor(1.0518, grad_fn=<NllLossBackward>)
+    tensor(0.2297, grad_fn=<NllLossBackward>)
 
 
 
@@ -376,7 +376,7 @@ batch_accuracy(preds, y, False)
 
 
 
-    tensor(0.2188)
+    tensor(0.0547)
 
 
 
@@ -468,26 +468,26 @@ for i in range(10):
 ```
 
     torch.Size([784, 2]) torch.Size([2])
-    Mean loss:  tensor(0.6547)
-    Accuracy:  0.425
-    Mean loss:  tensor(0.5197)
-    Accuracy:  0.5398
-    Mean loss:  tensor(0.4005)
-    Accuracy:  0.6602
-    Mean loss:  tensor(0.2695)
-    Accuracy:  0.7681
-    Mean loss:  tensor(0.1824)
-    Accuracy:  0.8331
-    Mean loss:  tensor(0.1432)
-    Accuracy:  0.8711
-    Mean loss:  tensor(0.1168)
-    Accuracy:  0.8934
-    Mean loss:  tensor(0.1001)
-    Accuracy:  0.9078
-    Mean loss:  tensor(0.0886)
-    Accuracy:  0.9191
-    Mean loss:  tensor(0.0804)
-    Accuracy:  0.9267
+    Mean loss:  tensor(0.3924)
+    Accuracy:  0.6654
+    Mean loss:  tensor(0.2471)
+    Accuracy:  0.7858
+    Mean loss:  tensor(0.1639)
+    Accuracy:  0.8501
+    Mean loss:  tensor(0.1191)
+    Accuracy:  0.8878
+    Mean loss:  tensor(0.0962)
+    Accuracy:  0.9088
+    Mean loss:  tensor(0.0831)
+    Accuracy:  0.924
+    Mean loss:  tensor(0.0746)
+    Accuracy:  0.9303
+    Mean loss:  tensor(0.0685)
+    Accuracy:  0.9357
+    Mean loss:  tensor(0.0638)
+    Accuracy:  0.9416
+    Mean loss:  tensor(0.0600)
+    Accuracy:  0.9435
 
 
 **Observation:** when we use softmax as a loss function, the behavior is as expected, i.e. the loss goes down and the `batch_accuracy` goes up. But with `cross_entropy_loss`, the `batch_accuracy` stays constant. Why? Needs to be investigated further. For now, we plan to use `softmax_loss` till we figure out why going forward with MNIST_FULL.
@@ -504,7 +504,7 @@ for i in range(10):
 ```
 
     torch.Size([784, 2]) torch.Size([2])
-    0.6858 0.8494 0.913 0.9315 0.9449 0.9523 0.9563 0.9603 0.9619 0.9642 
+    0.6045 0.8349 0.9023 0.9228 0.9389 0.9501 0.956 0.9589 0.9633 0.9643 
 
 ### Conclusion
 
@@ -603,13 +603,20 @@ validate_epoch_new(linear2, False)
 
 
 
-    0.6437
+    0.4748
 
 
 
 ```python
 train_epoch(linear2, calc_grad_softmax_loss)
 ```
+
+
+
+
+    tensor(0.5197)
+
+
 
 ```python
 def train_model(model, epochs, mnist=True):
@@ -631,7 +638,7 @@ opt = BasicOptim(linear2.parameters(), lr)
 train_model(linear2, 10, True)
 ```
 
-    0.4888 0.8616 0.8242 0.9001 0.9282 0.944 0.9525 0.9581 0.9636 0.9676 
+    0.4932 0.8359 0.8418 0.9131 0.9331 0.9468 0.956 0.9629 0.9658 0.9668 
 
 ```python
 # softmax_loss
@@ -642,7 +649,7 @@ opt = BasicOptim(linear3.parameters(), lr)
 train_model(linear3, 10, False)
 ```
 
-    0.5217 0.8304 0.9157 0.9427 0.9552 0.9628 0.9674 0.9707 0.9723 0.9737 
+    0.5215 0.8394 0.9248 0.9468 0.9604 0.9638 0.9648 0.9678 0.9687 0.9697 
 
 A simple replacement we can make for our BasicOptim optimizer class is to replace it with the built-in SGD optimizer function
 
@@ -654,7 +661,7 @@ opt = SGD(linear2.parameters(), lr)
 train_model(linear2, 10, True)
 ```
 
-    0.4888 0.7525 0.8579 0.9094 0.9333 0.9467 0.9546 0.9595 0.9648 0.9688 
+    0.4932 0.7856 0.8555 0.9165 0.936 0.9502 0.958 0.9638 0.9658 0.9692 
 
 ```python
 # softmax_loss
@@ -664,7 +671,7 @@ opt = SGD(linear3.parameters(), lr)
 train_model(linear3, 10, False)
 ```
 
-    0.5363 0.8386 0.9193 0.9441 0.955 0.9636 0.9671 0.9698 0.9718 0.9733 
+    0.5225 0.8496 0.9253 0.9443 0.9614 0.9653 0.9658 0.9678 0.9692 0.9702 
 
 Instead of `train_model`, we can now transition over to using the built-in `Learner.fit` class method. Before we do this, lets redefine batch_accuracy for mnist and softmax separately as there is a need to follow the template here for this method
 
@@ -710,72 +717,72 @@ learn_mnist.fit(10, lr=1.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.637177</td>
-      <td>0.504163</td>
-      <td>0.494595</td>
+      <td>0.636797</td>
+      <td>0.503552</td>
+      <td>0.495584</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.506652</td>
-      <td>0.218602</td>
-      <td>0.804453</td>
+      <td>0.544573</td>
+      <td>0.172633</td>
+      <td>0.862610</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.187165</td>
-      <td>0.177797</td>
-      <td>0.836641</td>
+      <td>0.199040</td>
+      <td>0.192590</td>
+      <td>0.823847</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.082407</td>
-      <td>0.109837</td>
-      <td>0.902065</td>
+      <td>0.086776</td>
+      <td>0.109772</td>
+      <td>0.909225</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.043772</td>
-      <td>0.081640</td>
-      <td>0.928929</td>
+      <td>0.045428</td>
+      <td>0.079276</td>
+      <td>0.931796</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.028667</td>
-      <td>0.065939</td>
-      <td>0.944256</td>
+      <td>0.029346</td>
+      <td>0.063142</td>
+      <td>0.945535</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.022442</td>
-      <td>0.055925</td>
-      <td>0.952323</td>
+      <td>0.022771</td>
+      <td>0.053189</td>
+      <td>0.955348</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.019662</td>
-      <td>0.048953</td>
-      <td>0.958454</td>
+      <td>0.019872</td>
+      <td>0.046614</td>
+      <td>0.962218</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.018244</td>
-      <td>0.043798</td>
-      <td>0.963779</td>
+      <td>0.018415</td>
+      <td>0.042011</td>
+      <td>0.965653</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.017387</td>
-      <td>0.039850</td>
-      <td>0.967570</td>
+      <td>0.017544</td>
+      <td>0.038621</td>
+      <td>0.966634</td>
       <td>00:00</td>
     </tr>
   </tbody>
@@ -800,72 +807,72 @@ learn_softmax.fit(10, lr=0.1)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.164560</td>
-      <td>0.393483</td>
-      <td>0.524685</td>
+      <td>0.149008</td>
+      <td>0.390904</td>
+      <td>0.531894</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.089713</td>
-      <td>0.191804</td>
-      <td>0.841884</td>
+      <td>0.084927</td>
+      <td>0.182335</td>
+      <td>0.858685</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.060771</td>
-      <td>0.111265</td>
-      <td>0.918361</td>
+      <td>0.058875</td>
+      <td>0.104818</td>
+      <td>0.928361</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.047979</td>
-      <td>0.080447</td>
-      <td>0.942965</td>
+      <td>0.047090</td>
+      <td>0.075925</td>
+      <td>0.947988</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.041427</td>
-      <td>0.064905</td>
-      <td>0.954743</td>
+      <td>0.040928</td>
+      <td>0.061695</td>
+      <td>0.960746</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.037578</td>
-      <td>0.055631</td>
-      <td>0.962085</td>
+      <td>0.037252</td>
+      <td>0.053434</td>
+      <td>0.964671</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.035008</td>
-      <td>0.049473</td>
-      <td>0.966602</td>
+      <td>0.034773</td>
+      <td>0.048098</td>
+      <td>0.965653</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.033112</td>
-      <td>0.045073</td>
-      <td>0.970152</td>
+      <td>0.032933</td>
+      <td>0.044379</td>
+      <td>0.968597</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.031616</td>
-      <td>0.041761</td>
-      <td>0.971442</td>
+      <td>0.031475</td>
+      <td>0.041637</td>
+      <td>0.968106</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.030383</td>
-      <td>0.039169</td>
-      <td>0.973459</td>
+      <td>0.030271</td>
+      <td>0.039525</td>
+      <td>0.970069</td>
       <td>00:00</td>
     </tr>
   </tbody>
@@ -916,142 +923,142 @@ learn_mnist.fit(20, 0.1)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.298082</td>
-      <td>0.406346</td>
-      <td>0.506050</td>
+      <td>0.341516</td>
+      <td>0.407349</td>
+      <td>0.505888</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.140334</td>
-      <td>0.229533</td>
-      <td>0.802194</td>
+      <td>0.155696</td>
+      <td>0.241218</td>
+      <td>0.788027</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.078882</td>
-      <td>0.120482</td>
-      <td>0.906986</td>
+      <td>0.084747</td>
+      <td>0.118387</td>
+      <td>0.912169</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.052542</td>
-      <td>0.082606</td>
-      <td>0.937964</td>
+      <td>0.054734</td>
+      <td>0.078711</td>
+      <td>0.941119</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.040197</td>
-      <td>0.064589</td>
-      <td>0.950307</td>
+      <td>0.040963</td>
+      <td>0.060977</td>
+      <td>0.955348</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.033815</td>
-      <td>0.054133</td>
-      <td>0.959180</td>
+      <td>0.034023</td>
+      <td>0.051141</td>
+      <td>0.964671</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.030114</td>
-      <td>0.047274</td>
-      <td>0.964343</td>
+      <td>0.030093</td>
+      <td>0.045006</td>
+      <td>0.965653</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.027690</td>
-      <td>0.042405</td>
-      <td>0.967328</td>
+      <td>0.027574</td>
+      <td>0.040844</td>
+      <td>0.966634</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.025933</td>
-      <td>0.038752</td>
-      <td>0.969990</td>
+      <td>0.025778</td>
+      <td>0.037838</td>
+      <td>0.969087</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.024566</td>
-      <td>0.035897</td>
-      <td>0.972088</td>
+      <td>0.024397</td>
+      <td>0.035555</td>
+      <td>0.969578</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.023452</td>
-      <td>0.033599</td>
-      <td>0.973540</td>
+      <td>0.023281</td>
+      <td>0.033749</td>
+      <td>0.972522</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.022520</td>
-      <td>0.031709</td>
-      <td>0.974992</td>
+      <td>0.022352</td>
+      <td>0.032276</td>
+      <td>0.974975</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.021722</td>
-      <td>0.030128</td>
-      <td>0.976283</td>
+      <td>0.021561</td>
+      <td>0.031041</td>
+      <td>0.976448</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.021032</td>
-      <td>0.028784</td>
-      <td>0.977251</td>
+      <td>0.020878</td>
+      <td>0.029985</td>
+      <td>0.976938</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.020426</td>
-      <td>0.027628</td>
-      <td>0.977977</td>
+      <td>0.020279</td>
+      <td>0.029068</td>
+      <td>0.977920</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.019889</td>
-      <td>0.026624</td>
-      <td>0.978541</td>
+      <td>0.019749</td>
+      <td>0.028262</td>
+      <td>0.978410</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.019410</td>
-      <td>0.025743</td>
-      <td>0.978945</td>
+      <td>0.019274</td>
+      <td>0.027546</td>
+      <td>0.978901</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.018977</td>
-      <td>0.024963</td>
-      <td>0.979348</td>
+      <td>0.018847</td>
+      <td>0.026905</td>
+      <td>0.978410</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.018585</td>
-      <td>0.024268</td>
-      <td>0.979671</td>
+      <td>0.018458</td>
+      <td>0.026327</td>
+      <td>0.978410</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.018227</td>
-      <td>0.023644</td>
-      <td>0.980155</td>
+      <td>0.018102</td>
+      <td>0.025802</td>
+      <td>0.978901</td>
       <td>00:00</td>
     </tr>
   </tbody>
@@ -1076,142 +1083,142 @@ learn_softmax.fit(20, 0.1)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.248439</td>
-      <td>0.425511</td>
-      <td>0.505566</td>
+      <td>0.263570</td>
+      <td>0.433600</td>
+      <td>0.504416</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.115231</td>
-      <td>0.213843</td>
-      <td>0.813892</td>
+      <td>0.121355</td>
+      <td>0.228203</td>
+      <td>0.795388</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.063572</td>
-      <td>0.113364</td>
-      <td>0.907632</td>
+      <td>0.066274</td>
+      <td>0.115423</td>
+      <td>0.908243</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.042388</td>
-      <td>0.079075</td>
-      <td>0.936189</td>
+      <td>0.043652</td>
+      <td>0.078083</td>
+      <td>0.938175</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.032682</td>
-      <td>0.062401</td>
-      <td>0.950065</td>
+      <td>0.033336</td>
+      <td>0.060691</td>
+      <td>0.953386</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.027737</td>
-      <td>0.052443</td>
-      <td>0.957567</td>
+      <td>0.028139</td>
+      <td>0.050785</td>
+      <td>0.962218</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.024883</td>
-      <td>0.045787</td>
-      <td>0.963053</td>
+      <td>0.025181</td>
+      <td>0.044498</td>
+      <td>0.966143</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.023011</td>
-      <td>0.040991</td>
-      <td>0.966925</td>
+      <td>0.023261</td>
+      <td>0.040209</td>
+      <td>0.967615</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.021647</td>
-      <td>0.037365</td>
-      <td>0.969426</td>
+      <td>0.021868</td>
+      <td>0.037109</td>
+      <td>0.968597</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.020583</td>
-      <td>0.034523</td>
-      <td>0.971846</td>
+      <td>0.020781</td>
+      <td>0.034763</td>
+      <td>0.969578</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.019718</td>
-      <td>0.032235</td>
-      <td>0.973701</td>
+      <td>0.019895</td>
+      <td>0.032910</td>
+      <td>0.971541</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.018994</td>
-      <td>0.030358</td>
-      <td>0.975073</td>
+      <td>0.019153</td>
+      <td>0.031399</td>
+      <td>0.973013</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.018376</td>
-      <td>0.028790</td>
-      <td>0.976444</td>
+      <td>0.018520</td>
+      <td>0.030128</td>
+      <td>0.973994</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.017839</td>
-      <td>0.027465</td>
-      <td>0.977251</td>
+      <td>0.017971</td>
+      <td>0.029036</td>
+      <td>0.974485</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.017366</td>
-      <td>0.026328</td>
-      <td>0.977735</td>
+      <td>0.017489</td>
+      <td>0.028086</td>
+      <td>0.975466</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.016946</td>
-      <td>0.025345</td>
-      <td>0.978219</td>
+      <td>0.017062</td>
+      <td>0.027249</td>
+      <td>0.976448</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.016569</td>
-      <td>0.024486</td>
-      <td>0.978783</td>
+      <td>0.016677</td>
+      <td>0.026508</td>
+      <td>0.977429</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.016228</td>
-      <td>0.023730</td>
-      <td>0.979590</td>
+      <td>0.016329</td>
+      <td>0.025847</td>
+      <td>0.977920</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.015918</td>
-      <td>0.023057</td>
-      <td>0.980236</td>
+      <td>0.016011</td>
+      <td>0.025255</td>
+      <td>0.977429</td>
       <td>00:00</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.015633</td>
-      <td>0.022458</td>
-      <td>0.980800</td>
+      <td>0.015718</td>
+      <td>0.024724</td>
+      <td>0.977429</td>
       <td>00:00</td>
     </tr>
   </tbody>
