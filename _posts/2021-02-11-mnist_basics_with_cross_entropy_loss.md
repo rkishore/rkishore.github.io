@@ -4,11 +4,11 @@
 
 **Objective:** As in the last notebook, I want to move towards classifying the full MNIST dataset of ten digits by first working with loss functions that can work with N activations from the final layer for the smaller MNIST_SAMPLE dataset. The MNIST_SAMPLE dataset has data only for two digits (3s and 7s). The loss functions I explored previously were the `mnist_loss`, `softmax_loss`, and `cross_entropy_loss`. However, at that time, I had been unable to successfully use `cross_entropy_loss` for this dataset and assumed that we could use `softmax_loss` instead as it seemed to work well.
 
-Turns out that I was defining the `batch_accuracy` function incorrectly then. I learnt this the hard way when I tried "scaling up" from two to ten categories. The `softmax_loss` function was just not able to push the accuracy up. After some head-scratching and googling, I realized the book did not teach us precisely how to calculate the `batch_accuracy` for the case where the last layer has N activations corresponding to N categories. Fortunately, it is not that hard and I found a good reference [here](https://jonathan-sands.com/deep%20learning/fastai/pytorch/vision/classifier/2020/11/15/MNIST.html#Training-a-neural-network)
+Turns out that I was defining the `batch_accuracy` function incorrectly then. I learnt this the hard way when I tried scaling up from two to ten categories. The `softmax_loss` function was just not able to push the accuracy up. After some head-scratching and googling, I realized the book did not teach us precisely how to calculate the `batch_accuracy` for the case where the last layer has N activations corresponding to N categories. Fortunately, it is not that hard and I found a good reference [here](https://jonathan-sands.com/deep%20learning/fastai/pytorch/vision/classifier/2020/11/15/MNIST.html#Training-a-neural-network). The key looks to be to use the [`torch.max`](https://pytorch.org/docs/stable/generated/torch.max.html) function to select the column index with the maximum activation value and compare that to `y` (the dependent variable).
 
 As before, the reference for everything in this blog post is the [fastai 2020 course](https://course.fast.ai), especially the [amazing textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527).
 
-In this notebook, I learn how to use the `cross_entropy_loss` for the MNIST_SAMPLE dataset with two categories. Scaling up to ten categories from this point is straight-forward and the topic of my next notebook. 
+In this notebook, I learn how to use the `cross_entropy_loss` for the MNIST_SAMPLE dataset with two categories. Scaling up to ten categories from this point should be straight-forward from here and is the topic of my next notebook. 
 
 ### Get the basic imports out of the way
 
@@ -96,6 +96,8 @@ train_x = torch.cat([stacked_threes, stacked_sevens]); train_x.shape
 
 
 
+So, in the training data, there are a total of 12396 images of 28x28 pixels for the 3s and 7s. Lets "flatten" the 28x28 matrix into one long row of 784 pixel values.
+
 ```python
 train_x = train_x.view(-1, 28*28); train_x.shape
 ```
@@ -107,6 +109,8 @@ train_x = train_x.view(-1, 28*28); train_x.shape
 
 
 
+So, now, we have 12396 rows of 784 pixel values per image as part of the training dataset. Let us create the labels for each of these images so that a label of 1 corresponds to 3s and a label of 0 corresponds to a 7. This is the same as with the `mnist_loss` function in the textbook.
+
 ```python
 train_y = tensor( [1]*len(three_imgs) + [0]*len(seven_imgs) ).unsqueeze(1); train_y.shape
 ```
@@ -117,6 +121,8 @@ train_y = tensor( [1]*len(three_imgs) + [0]*len(seven_imgs) ).unsqueeze(1); trai
     torch.Size([12396, 1])
 
 
+
+Now, we perform the same set of actions for the validation dataset. 
 
 ```python
 valid_three_imgs = (path/'valid'/'3').ls().sorted()
@@ -136,6 +142,8 @@ valid_stacked_threes.shape, valid_stacked_sevens.shape
     (torch.Size([1010, 28, 28]), torch.Size([1028, 28, 28]))
 
 
+
+Let's flatten the validation dataset (28x28 images) into rows of 784 pixels. And let's create labels the same way we did for the training data, i.e. 1 to represent 3s and 0 to represent 7s.
 
 ```python
 valid_x = torch.cat([valid_stacked_threes, valid_stacked_sevens]).view(-1, 28*28); valid_x.shape
@@ -224,63 +232,9 @@ def train_epoch(model, lr, params, calc_grad_func):
         step_weights(params,lr)
 ```
 
-```python
-def batch_accuracy(xb,yb, mnist=True):
-    if mnist:
-        preds = xb.sigmoid()
-        correct = (preds>0.5) == yb
-    else:
-        _,preds = torch.max(xb, 1)
-        yb_squeezed = torch.squeeze(yb)
-        #print(xb.shape, yb.shape, preds.shape, yb_squeezed.shape)
-        correct = (preds == yb_squeezed)
-    return correct.float().mean()
-```
+### How do we define the batch_accuracy function? Let us look at a small batch and work it out
 
-```python
-def validate_epoch(model, params, mnist=True):
-    accs = [batch_accuracy(model(xb, params[0], params[1]), yb, mnist) for xb,yb in valid_dl]
-    if mnist:
-        return round(torch.stack(accs).mean().item(), 4)
-    else:
-        accs_tensor = tensor(accs)
-        #print(len(accs), accs[0], accs_tensor[0], accs_tensor.mean())
-        accuracy = round(accs_tensor.mean().item(), 4)
-        #print("Accuracy: ", accuracy)
-        return accuracy
-```
-
-### Now, lets use mnist_loss and one column of activations
-
-```python
-weights = init_params((28*28,1))
-bias = init_params(1)
-lr = 1.0
-params = [weights, bias]
-for i in range(10):
-    train_epoch(linear1, lr, params, calc_grad_mnist_loss)
-    print(validate_epoch(linear1, params), end=' ')
-```
-
-    0.7304 0.8506 0.9009 0.9292 0.9389 0.9443 0.9526 0.9546 0.9589 0.9614 
-
-### Now let's use cross_entropy_loss and two columns of activations
-
-```python
-weights = init_params((28*28,2))
-bias = init_params(2)
-lr = 1e-3 # Note the low learning rate here
-params = [weights, bias]
-print(weights.shape, bias.shape)
-for i in range(10):
-    train_epoch(linear1, lr, params, calc_grad_ce_loss)
-    print(validate_epoch(linear1, params, False), end=' ')
-```
-
-    torch.Size([784, 2]) torch.Size([2])
-    0.7228 0.7372 0.7526 0.7689 0.7812 0.7877 0.7995 0.8064 0.8114 0.8163 
-
-### Looking at a single batch
+Let us work with 4 of the input images in the first batch. We want to walk through the process of looking at the images (x), the labels (y), the weights and biases in the linear model function/classifier we use, and the predictions returned by the model. 
 
 ```python
 x,y = dl.one_batch()
@@ -309,64 +263,212 @@ w = init_params((28*28,2)); b = init_params(2); w.shape, b.shape
 
 
 ```python
-preds = linear1(x, w, b); preds[:,0].shape[0]
+x[:4].shape, w[:4].shape
 ```
 
 
 
 
-    256
+    (torch.Size([4, 784]), torch.Size([4, 2]))
 
 
 
 ```python
-preds[0]
+acts = linear1(x[:4], w, b); acts[:,0].shape[0]
 ```
 
 
 
 
-    tensor([-10.4003,   5.0197], grad_fn=<SelectBackward>)
+    4
 
 
 
 ```python
-loss = cross_entropy_loss(preds, y); loss
+acts
 ```
 
 
 
 
-    tensor(0.2297, grad_fn=<NllLossBackward>)
+    tensor([[-10.7714,  -4.5953],
+            [-13.9319,   0.0812],
+            [ -2.5972,  -5.2215],
+            [-17.7803,  10.3004]], grad_fn=<AddBackward0>)
+
+
+
+### Interpreting the activations from the linear model
+
+The predictions above are the activations from the "final" layer in our model here. Note that there are two columns  of activations. So, what meaning can we assign to these two columns and to the two values in each row? 
+
+Well, each column corresponds to the activation score for each category. And **in each row, we should pick the index corresponding to the maximum value as the category that is predicted**. This matches what the textbook says about how to interpret multi-column activations.
+
+So, for example, in the `acts` tensor above,
+- in row 0, the maximum value is -4.5953 and this corresponds to index 1. This means the predicted value is 1
+- in row 1, the maximum value is 0.0812 and this corresponds to index 1. This means the predicted value is 1
+- and so on
+
+The final prediction here should be [1,1,0,1]. This prediction can then be compared against the `y` to calculate the batch_accuracy. 
+
+```python
+y[:4]
+```
+
+
+
+
+    tensor([[1],
+            [1],
+            [1],
+            [1]])
+
+
+
+In PyTorch, the `torch.max` function can return a tuple with the maximum value in each row as well as the index location of this maximum value. 
+
+```python
+max_acts,preds = torch.max(acts, 1); max_acts, preds
+```
+
+
+
+
+    (tensor([-4.5953,  0.0812, -2.5972, 10.3004], grad_fn=<MaxBackward0>),
+     tensor([1, 1, 0, 1]))
+
+
+
+The accuracy is then simply the mean of the `preds` tensor above compared to `y`.
+
+```python
+correct = (preds == torch.squeeze(y[:4])); correct
+```
+
+
+
+
+    tensor([ True,  True, False,  True])
 
 
 
 ```python
-loss.backward()
+correct.float(), correct.float().mean()
+```
+
+
+
+
+    (tensor([1., 1., 0., 1.]), tensor(0.7500))
+
+
+
+This is how we calculate the batch_accuracy when there are N columns of activations from the final layer corresponding to the N categories. The basic idea is that, in each row, the model, when trained well, should try and push up the value corresponding the correct class up higher and the remaining values lower. The index corresponding to the maximum value will then match the correct category.
+
+```python
+def batch_accuracy(xb,yb, mnist=True, print_debug=False):
+    if mnist:
+        preds = xb.sigmoid()
+        correct = (preds>0.5) == yb
+    else:
+        acts,preds = torch.max(xb, 1)
+        yb_squeezed = torch.squeeze(yb)
+        if print_debug:
+            print(xb, acts, preds, yb_squeezed)
+        #print(xb.shape, yb.shape, preds.shape, yb_squeezed.shape)
+        correct = (preds == yb_squeezed)
+    return correct.float().mean()
 ```
 
 ```python
-params = w,b
-for p in params:
-    #print(p.grad, p.grad.mean())
-    p.data -= p.grad*lr
-    p.grad.zero_()
+batch_accuracy(acts, y[:4], False, True)
 ```
+
+    tensor([[-10.7714,  -4.5953],
+            [-13.9319,   0.0812],
+            [ -2.5972,  -5.2215],
+            [-17.7803,  10.3004]], grad_fn=<AddBackward0>) tensor([-4.5953,  0.0812, -2.5972, 10.3004], grad_fn=<MaxBackward0>) tensor([1, 1, 0, 1]) tensor([1, 1, 1, 1])
+
+
+
+
+
+    tensor(0.7500)
+
+
 
 ```python
-batch_accuracy(preds, y, False)
+accs = [tensor(0.75), tensor(0.25), tensor(0.35), tensor(0.85)]; accs
 ```
 
 
 
 
-    tensor(0.9453)
+    [tensor(0.7500), tensor(0.2500), tensor(0.3500), tensor(0.8500)]
 
 
+
+```python
+torch.stack(accs)
+```
+
+
+
+
+    tensor([0.7500, 0.2500, 0.3500, 0.8500])
+
+
+
+```python
+tensor(accs)
+```
+
+
+
+
+    tensor([0.7500, 0.2500, 0.3500, 0.8500])
+
+
+
+```python
+def validate_epoch(model, params, mnist=True, print_debug=False):
+    accs = [batch_accuracy(model(xb, params[0], params[1]), yb, mnist, print_debug) for xb,yb in valid_dl]
+    return round(torch.stack(accs).mean().item(), 4)
+```
+
+### Now, lets use mnist_loss and one column of activations
+
+```python
+weights = init_params((28*28,1))
+bias = init_params(1)
+lr = 1.0
+params = [weights, bias]
+for i in range(10):
+    train_epoch(linear1, lr, params, calc_grad_mnist_loss)
+    print(validate_epoch(linear1, params), end=' ')
+```
+
+    0.5791 0.7846 0.8843 0.9131 0.9292 0.9414 0.9487 0.9531 0.956 0.958 
+
+### Now let's use cross_entropy_loss and two columns of activations
+
+```python
+weights = init_params((28*28,2))
+bias = init_params(2)
+lr = 1.0 
+params = [weights, bias]
+print(weights.shape, bias.shape)
+for i in range(10):
+    train_epoch(linear1, lr, params, calc_grad_ce_loss)
+    print(validate_epoch(linear1, params, False), end=' ')
+```
+
+    torch.Size([784, 2]) torch.Size([2])
+    0.5083 0.9048 0.9438 0.9512 0.9555 0.956 0.9585 0.9614 0.9619 0.9624 
 
 ### Conclusion
 
-I am able to use the traditional `cross_entropy_loss` using the negative log-likelihood function to work as expected with the MNIST_SAMPLE dataset of '3's and '7's and two columns of activations from the final layer. In the previous notebook, I could not do so due to my inability to define the `batch_accuracy` function correctly.
+I am able to use the traditional `cross_entropy_loss` using the negative log-likelihood function to work as expected with the MNIST_SAMPLE dataset of '3's and '7's and two columns of activations from the final layer. In the previous notebook, I could not do so due to my inability to define the `batch_accuracy` function correctly. The key looks to be to use the [`torch.max`](https://pytorch.org/docs/stable/generated/torch.max.html) function to select the column index with the maximum activation value and compare that to `y` (the dependent variable).
 
 ### Now, let's replace our code with PyTorch/fastai built-in functions and see if we get the same result
 
