@@ -300,7 +300,7 @@ acts
 
 ### Interpreting the activations from the linear model
 
-The predictions above are the activations from the "final" layer in our model here. Note that there are two columns  of activations. So, what meaning can we assign to these two columns and to the two values in each row? 
+`acts` is the activations from the "final" layer in our model here. Note that there are two columns  of activations. So, what meaning can we assign to these two columns and to the two values in each row? 
 
 Well, each column corresponds to the activation score for each category. And **in each row, we should pick the index corresponding to the maximum value as the category that is predicted**. This matches what the textbook says about how to interpret multi-column activations.
 
@@ -363,7 +363,7 @@ correct.float(), correct.float().mean()
 
 
 
-This is how we calculate the batch_accuracy when there are N columns of activations from the final layer corresponding to the N categories. The basic idea is that, in each row, the model, when trained well, should try and push up the value corresponding the correct class up higher and the remaining values lower. The index corresponding to the maximum value will then match the correct category.
+This is how we calculate the batch_accuracy when there are N columns of activations from the final layer corresponding to the N categories. The basic idea is that, in each row, the model, when trained well, should try and push up the value corresponding to the correct class up higher and the remaining values lower (when using the `cross_entropy` loss function). The index corresponding to the maximum value will then match the correct category.
 
 ```python
 def batch_accuracy(xb,yb, mnist=True, print_debug=False):
@@ -429,6 +429,8 @@ tensor(accs)
     tensor([0.7500, 0.2500, 0.3500, 0.8500])
 
 
+
+We can use the same `validate_epoch` function as we used earlier with `mnist_loss`. The notebook cells below just walk through what `torch.stack` does with the list of batch_accuracy values comp
 
 ```python
 def validate_epoch(model, params, mnist=True, print_debug=False):
