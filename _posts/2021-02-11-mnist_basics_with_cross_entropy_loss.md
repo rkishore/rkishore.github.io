@@ -397,6 +397,8 @@ batch_accuracy(acts, y[:4], False, True)
 
 
 
+We can use the same `validate_epoch` function as we used earlier with `mnist_loss`. The notebook cells below just walk through what `torch.stack` does with the list of batch_accuracy values computed per epoch for each mini-batch in the validation dataset.
+
 ```python
 accs = [tensor(0.75), tensor(0.25), tensor(0.35), tensor(0.85)]; accs
 ```
@@ -429,8 +431,6 @@ tensor(accs)
     tensor([0.7500, 0.2500, 0.3500, 0.8500])
 
 
-
-We can use the same `validate_epoch` function as we used earlier with `mnist_loss`. The notebook cells below just walk through what `torch.stack` does with the list of batch_accuracy values comp
 
 ```python
 def validate_epoch(model, params, mnist=True, print_debug=False):
