@@ -801,8 +801,19 @@ dls.show_batch(nrows=1, ncols=5)
 ### Using the cnn_learner with the resnet18 network, cross-entropy loss, and the built-in accuracy function
 
 ```python
-learn = cnn_learner(dls, resnet18, pretrained=False, loss_func=F.cross_entropy, metrics=accuracy)
+learn = cnn_learner(dls, resnet18, pretrained=False, metrics=accuracy)
 ```
+
+```python
+learn.loss_func
+```
+
+
+
+
+    FlattenedLoss of CrossEntropyLoss()
+
+
 
 Let's use the built-in [learning rate finder](https://arxiv.org/abs/1506.01186) to find a good learning rate to use while training.
 
@@ -815,19 +826,19 @@ lr_min, lr_steep = learn.lr_find()
 
 
 
-![png](/images/04_mnist_full_with_cross_entropy_loss_files/output_83_1.png)
+![png](/images/04_mnist_full_with_cross_entropy_loss_files/output_84_1.png)
 
 
 ```python
 print(f"Minimum/10: {lr_min:.2e}, steepest point: {lr_steep:.2e}")
 ```
 
-    Minimum/10: 5.75e-03, steepest point: 2.09e-03
+    Minimum/10: 1.45e-02, steepest point: 2.09e-03
 
 
 We can see in the plot above that the loss does not start decreasing till around 1e-4. Nothing really happens from 1e-7 to 1e-4. Beyond 1e-4, it decreases till around 1e-1, beyond which it starts increasing. We don't want a learning rate greater than 1e-1.
 
-The number `lr_min` tells us the order-of-magnitude lower learning rate corresponding to the learning rate where the minimum loss was achieved. The number `lr_steep` tells us the last learning rate where the loss was clearly decreasing. The textbook asks us to pick one of these values or a learning rate around these values as a rule-of-thumb to pick a good learning rate. We pick lr=3e-3.
+The number `lr_min` is the learning rate that is an order-of-magnitude lower than the learning rate where the minimum loss was achieved. The number `lr_steep` is the last learning rate where the loss was clearly decreasing. The textbook asks us to pick one of these values or a learning rate around these values as a rule-of-thumb to pick a good learning rate. We pick lr=3e-3.
 
 ```python
 learn.fine_tune(5, base_lr=3e-3)
@@ -847,10 +858,10 @@ learn.fine_tune(5, base_lr=3e-3)
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.419033</td>
-      <td>0.938879</td>
-      <td>0.683900</td>
-      <td>01:16</td>
+      <td>1.388402</td>
+      <td>0.986175</td>
+      <td>0.662500</td>
+      <td>01:17</td>
     </tr>
   </tbody>
 </table>
@@ -870,44 +881,44 @@ learn.fine_tune(5, base_lr=3e-3)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.522387</td>
-      <td>0.301600</td>
-      <td>0.904700</td>
+      <td>0.527460</td>
+      <td>0.295732</td>
+      <td>0.902100</td>
       <td>01:25</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.312611</td>
-      <td>0.182286</td>
-      <td>0.943000</td>
+      <td>0.352126</td>
+      <td>0.209375</td>
+      <td>0.933000</td>
       <td>01:26</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.226973</td>
-      <td>0.145478</td>
-      <td>0.951900</td>
-      <td>01:25</td>
+      <td>0.219266</td>
+      <td>0.118308</td>
+      <td>0.960500</td>
+      <td>01:26</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.171017</td>
-      <td>0.097725</td>
-      <td>0.969800</td>
+      <td>0.168536</td>
+      <td>0.099059</td>
+      <td>0.967900</td>
       <td>01:25</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.154143</td>
-      <td>0.082914</td>
-      <td>0.973600</td>
-      <td>01:24</td>
+      <td>0.163802</td>
+      <td>0.084118</td>
+      <td>0.972600</td>
+      <td>01:28</td>
     </tr>
   </tbody>
 </table>
 
 
-Wow! Just like that, we are at 97.3% accuracy. Let's save this model for future use/training/refining. Note that the world record for MNIST right now is 99.75% accuracy (https://www.kaggle.com/c/digit-recognizer/discussion/61480). We can try to achieve higher accuracy by training for longer and also using discriminative learning rates. More on that later.
+Wow! Just like that, we are at 97.26% accuracy. Let's save this model for future use/training/refining. Note that the world record for MNIST right now is 99.75% accuracy (https://www.kaggle.com/c/digit-recognizer/discussion/61480). We can try to achieve higher accuracy by training for longer and also using discriminative learning rates. More on that later.
 
 ```python
 learn.save("mnist-full-resnet18-best")
@@ -920,6 +931,185 @@ learn.save("mnist-full-resnet18-best")
 
 
 
+### Model Interpretation
+
+Let's now explore fastai's built-in functions to interpret how our model does. Note that the textbook says that loss functions are very hard to interpret as they designed for computers to differentiate and optimize, and not something that people can understand. This is what metrics (such as accuracy are for). In this case, our accuracy is looking pretty good already but where are we making mistakes? 
+
+We can use a `confusion matrix` to see where our model is doing well and where its doing badly. We can also use the `plot_top_losses` function and the `most_confused` function to interpret our model results.
+
 ```python
-### Ok, back to improving the model
+#width 600
+interp = ClassificationInterpretation.from_learner(learn)
+interp.plot_confusion_matrix(figsize=(12,12), dpi=60)
+```
+
+
+
+
+
+
+![png](/images/04_mnist_full_with_cross_entropy_loss_files/output_92_1.png)
+
+
+```python
+interp.most_confused()
+```
+
+
+
+
+    [('2', '5', 20),
+     ('5', '2', 13),
+     ('4', '9', 11),
+     ('5', '3', 11),
+     ('2', '6', 10),
+     ('6', '2', 10),
+     ('6', '5', 9),
+     ('7', '2', 9),
+     ('0', '6', 8),
+     ('9', '7', 8),
+     ('3', '5', 7),
+     ('3', '8', 7),
+     ('6', '4', 7),
+     ('8', '3', 7),
+     ('7', '9', 6),
+     ('8', '5', 6),
+     ('8', '9', 6),
+     ('9', '3', 6),
+     ('9', '4', 6),
+     ('2', '3', 5),
+     ('9', '8', 5),
+     ('0', '7', 4),
+     ('2', '7', 4),
+     ('5', '7', 4),
+     ('6', '0', 4),
+     ('9', '5', 4),
+     ('0', '9', 3),
+     ('1', '2', 3),
+     ('2', '1', 3),
+     ('2', '8', 3),
+     ('3', '2', 3),
+     ('6', '8', 3),
+     ('7', '3', 3),
+     ('7', '4', 3),
+     ('7', '5', 3),
+     ('8', '2', 3),
+     ('0', '2', 2),
+     ('0', '4', 2),
+     ('0', '5', 2),
+     ('1', '3', 2),
+     ('2', '0', 2),
+     ('3', '7', 2),
+     ('4', '7', 2),
+     ('4', '8', 2),
+     ('5', '6', 2),
+     ('5', '9', 2),
+     ('6', '3', 2),
+     ('7', '1', 2),
+     ('7', '8', 2),
+     ('8', '4', 2),
+     ('9', '2', 2),
+     ('0', '3', 1),
+     ('0', '8', 1),
+     ('1', '4', 1),
+     ('1', '7', 1),
+     ('2', '4', 1),
+     ('3', '6', 1),
+     ('4', '2', 1),
+     ('4', '6', 1),
+     ('5', '1', 1),
+     ('5', '4', 1),
+     ('5', '8', 1),
+     ('6', '1', 1),
+     ('8', '0', 1),
+     ('8', '6', 1),
+     ('8', '7', 1),
+     ('9', '0', 1),
+     ('9', '1', 1)]
+
+
+
+```python
+interp.plot_top_losses(9, figsize=(7,7))
+```
+
+
+![png](/images/04_mnist_full_with_cross_entropy_loss_files/output_94_0.png)
+
+
+### Ok, back to improving the model to get higher accuracy
+
+```python
+lr_min, lr_steep = learn.lr_find()
+print(f"Minimum/10: {lr_min:.2e}, steepest point: {lr_steep:.2e}")
+```
+
+
+
+
+
+    Minimum/10: 1.20e-06, steepest point: 1.10e-06
+
+
+
+![png](/images/04_mnist_full_with_cross_entropy_loss_files/output_96_2.png)
+
+
+```python
+learn.fit_one_cycle(5, lr_max=slice(1e-6,1e-4))
+```
+
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.152826</td>
+      <td>0.079877</td>
+      <td>0.973900</td>
+      <td>01:26</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.152671</td>
+      <td>0.081461</td>
+      <td>0.973200</td>
+      <td>01:25</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.135455</td>
+      <td>0.082590</td>
+      <td>0.973800</td>
+      <td>01:25</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.138111</td>
+      <td>0.072592</td>
+      <td>0.976900</td>
+      <td>01:26</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.134190</td>
+      <td>0.072886</td>
+      <td>0.977200</td>
+      <td>01:26</td>
+    </tr>
+  </tbody>
+</table>
+
+
+```python
+learn.save("mnist-full-resnet18-best")
 ```
