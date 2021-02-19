@@ -1,10 +1,8 @@
 # About
 
-I am network engineer who was more interested in writing applications and who fell into deep learning by chance due to a project at work.
+I am a programmer by training and profession. I like writing software and building software systems. After spending many years building fairly decent algorithms and software that were predominantly heuristics-based (both in graduate school and later at work), I fell into deep learning in a project at work. It made me realize how "general" this technique is and its wide applicability across domains.
 
-I did not know anything about AI and deep learning sometime back when I was asked to dive in for a project at work. I used YOLO for object detection and did not understand much but it worked great and was a good fit for what we wanted to do. I kept getting questions about it and got tired of saying "I don't know" so I started with cs231n video lectures from Stanford. Did not get far as I just could not grasp the concepts well enough. 
+I started learning with [cs231n video lectures from Stanford](http://cs231n.stanford.edu). Did not get far as I could not spend as much time and kept getting stuck in the basics and in building intuition. Tried other sources like http://neuralnetworksanddeeplearning.com, which were quite good. However, nothing could bridge the gap well between theory, toy problems and practice. Then I came across the [fast.ai](https://www.fast.ai) and it blew my mind! Jeremy Howard is a fantastic teacher and the [library](https://course.fast.ai) is super useful! I also purchased the [textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527), which has been an incredible resource. 
 
-Tried other sources like http://neuralnetworksanddeeplearning.com, which was quite good but it did not connect well with what I wanted to do in practice beyond the toy examples provided.
-
-Then I came across [fast.ai](https://www.fast.ai) 2019 course and it blew my mind but I could not continue beyond lecture 2 due to time constraints. Finally as I was in fastai 2019 lecture 3 in Sep. 2020, I saw that fastaiv2 and fastai 2020 course with book was out. I got the book, started the course and thank you so much @Jeremy, @sgugger and @Rachel. Best teaching of a complex subject I have seen (and I spent 8+ years in grad school).   
+I started this blog due to a recommendation in the book that blogging helps us learn better by sharing what we learnt. Hope readers find it as useful as I do for my education.
 
