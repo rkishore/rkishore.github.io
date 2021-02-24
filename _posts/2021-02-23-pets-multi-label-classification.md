@@ -4,10 +4,9 @@
 
 **Objective:** In this notebook, I want to compare the single-label and multi-label classification approaches for the [PETS dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/). This dataset has 37 categories of cats and dogs and the idea is that we want to classify an input image into 0 or 1 or more than 1 of these 37 categories. 
 
-With single-label classification, an input image will by design be classified into exactly ONE of these 37 categories (even if the input image does not contain a cat or a dog from the 37 categories). With multi-label classification, it should theoretically be possible to tell whether the input image has 0 or 1 or more than 1 of these 37 categories. In particular, we want to see if multi-label classification approaches can reliably tell us in if an input image belongs to NONE of the classes seen during training. Along the way, I also want to compare and contrast the results from single- and multi-label classification as well as the loss functions used. 
+With single-label classification, an input image will by design be classified into exactly ONE of these 37 categories (even if the input image does not contain a cat or a dog from the 37 categories). With multi-label classification, it should theoretically be possible to tell whether the input image has 0 or 1 or more than 1 of these 37 categories. In particular, we want to see if multi-label classification approaches can reliably tell us in if an input image belongs to NONE of the classes seen during training. Along the way, I also want to compare and contrast the results from single- and multi-label classification as well as the functions used to calculate the loss and accuracy. 
 
-As before, the reference for everything in this blog post is the [fastai 2020 course](https://course.fast.ai), especially the [amazing textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527). In addition, for this notebook, I am basically repeating the results from the following notebooks (with some minor changes and additions): https://forums.fast.ai/t/how-to-use-bcewithlogitslossflat-in-lesson1-pets-ipynb/59146
-https://github.com/muellerzr/Practical-Deep-Learning-for-Coders-2.0/blob/master/Computer%20Vision/03_Unknown_Labels.ipynb (Thanks to @muellerzr).
+As before, the reference for everything in this blog post is the [fastai 2020 course](https://course.fast.ai), especially the [amazing textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527). In addition, for this notebook, for multi-label classification, I am repeating the results from the following notebooks (albeit with minor changes to align it closer to the textbook material): [1](https://forums.fast.ai/t/how-to-use-bcewithlogitslossflat-in-lesson1-pets-ipynb/59146) and [2](https://github.com/muellerzr/Practical-Deep-Learning-for-Coders-2.0/blob/master/Computer%20Vision/03_Unknown_Labels.ipynb) (Thanks to @muellerzr).
 
 ### Intuition and code for key differences between single- and multi-label classification
 
@@ -60,9 +59,9 @@ For multi-label classification, the target labels are encoded using *One-Hot Enc
     
     y = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... 0] # len(y) = 37
     
-Basically, with a one-hot encoded target, there will be a 0 for each class or label that is not present and a 1 for each class of label that is present in the input image. This is to support the case where there are input images with more than ONE label or the case where there are input images with no labels. Here, for the PETS dataset, we will have only 1 label per image but we want to see if the multi-class model when trained as such can detect images with no known/previously-seen PET labels. This is a good way to represent data for classification with more than 1 label or with no labels as we need tensors where everything has the same dimensions (we cannot have y for different images with different lengths).
+Basically, with a one-hot encoded target, there will be a 0 for each class or label that is not present and a 1 for each class of label that is present in the input image. This is to support the case where there are input images with more than ONE label or the case where there are input images with no labels. Here, for the [PETS dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/), we will have only 1 label per image but we want to see if the multi-class model when trained as such can detect images with no known/previously-seen PET labels. This is a good way to represent data for classification with more than 1 label or with no labels as PyTorch (and the GPU underneath) needs/works better with tensors where everything has the same dimensions (we cannot have y for different images with different lengths).
 
-The *One-Hot Encoding* does not change the dimensions of the activations from the final layer when compared to a single-label classification model. Even here, for each input image, the activations from the final layer will be a vector of length N (for N classes). However, the interpretation of these N activations from the final layer are different when it comes to calculating the loss and the accuracy. 
+Note that *One-Hot Encoding* does not change the dimensions of the activations from the final layer when compared to a single-label classification model. Even with multi-label classification, for each input image, the activations from the final layer will be a vector of length N (for N classes). However, the interpretation of these N activations from the final layer are different when it comes to calculating the loss and the accuracy. 
 
 For loss calculations, we use the binary cross-entropy loss function as defined below:
 
@@ -82,7 +81,7 @@ For loss calculations, we use the binary cross-entropy loss function as defined 
         reaches 0 when x reaches 1. So, if sigmoid(acts) is closer to 1 where it should be 1,  
         -log(sigmoid(acts)) will be closer to 0, i.e. the loss will be low. If -log(sigmoid(acts)) 
         in this case is not closer to 1, then -log(sigmoid(acts)) will correspondingly be closer 
-        to Infinity (i.e. loss will be high.
+        to Infinity, i.e. loss will be high.
         - Similarly, for the case when the activations should be 0, if sigmoid(acts) is closer 
         to 0, 1-sigmoid_acts will be closer to 1. In this case, then -log(sigmoid(acts)) will be 
         closer to 0, i.e. low loss. And the high loss case will play out in reverse as explained for the 
@@ -103,7 +102,7 @@ by picking a threshold and everything above the threshold is a 1 and everything 
         if sigmoid: acts = acts.sigmoid()
         return ((acts>thresh)==tgts.bool()).float().mean()
 
-For multi-label classification, both the loss function and the accuracy calculations are different from those used for single-label classification.
+With that information digested, let us now get into the code to train single- and multi-label classification models for the [PETS dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/) and run some inferences to see how they behave.
 
 ### Get the basic imports out of the way
 
@@ -147,6 +146,8 @@ path.ls()
     (#7394) [Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/english_setter_58.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/newfoundland_77.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/american_bulldog_168.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/Bengal_76.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/Abyssinian_196.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/Bengal_123.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/leonberger_179.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/yorkshire_terrier_116.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/pug_33.jpg'),Path('/home/igolgi/.fastai/data/oxford-iiit-pet/images/scottish_terrier_155.jpg')...]
 
 
+
+In this dataset, the labels are provided as part of the filename of the input images. We need regex to extract the label that corresponds to each image.
 
 ```python
 fname = (path/'images').ls()[0]
@@ -241,6 +242,16 @@ pat_multi = re.findall(r'/([^/]+)_\d+.jpg$', str(fname)); pat_multi
 doc(Pipeline)
 ```
 
+### Using fastai's DataBlock API to get the data ready for training
+
+We can use fastai's DataBlock API to do the following:
+- read in the images and convert them to tensors
+- split up the data into training and validation data to be used during training. Here, we do a random split of 80% training and 20% validation from the dataset provided (~200 images per category for 37 categories of dogs and cats)
+- extract the label automatically from each input filename and populate the corresponding dependent variable/labely tensor
+- perform data augmentation during training that will maximize our accuracy based on heuristic approaches that work reliably in practice. In particular, we perform the following augmentations:
+  - each image is resized to 460x460 pixels as part of a fastai-recommended strategy called [Presizing](https://medium.com/unpackai/preseizing-techniques-for-image-classification-using-fastai-660a493cfc96) that increases the input image size before additional transforms are carried out so as to minimize warping and other artifacts that can arise out of transforms carried out during augmentation. In addition, we take a random crop of this resized input image as our training data. This is what `RandomResizedCrop` does as part of `item_tfms`.
+  - each batch of images is resized to 224x224 pixels and we normalize the images so that they have a mean of 0 and std. dev. of 1 to match what was used for the pre-trained Imagenet model. Note that the resizing to 224x224 pixels is to make sure all images passing through the GPU are the same size. The normalization will result in higher training accuracy and more stability during training while keeping the same image stats that were used on the pre-trained model that is the starting point there. In addition, the fastai library will perform a standard set of transforms (rotate, flip, perspective warping, brightness changes and contrast changes) as part of `aug_transforms` that have been found to work well in practice. Note that `aug_transforms` and `normalize` are called on an entire batch of images on the GPU and hence are very fast.
+
 ```python
 pat = r'(.+)_\d+.jpg$'
 label_func = using_attr(RegexLabeller(pat), 'name')
@@ -274,7 +285,7 @@ dls_single.show_batch(max_n=9, figsize=(7,8))
 ```
 
 
-![png](/images/06_pets_multi_files/output_25_0.png)
+![png](/images/06_pets_multi_files/output_27_0.png)
 
 
 ```python
@@ -282,14 +293,18 @@ dls_multi.show_batch(max_n=9, figsize=(7,8))
 ```
 
 
-![png](/images/06_pets_multi_files/output_26_0.png)
+![png](/images/06_pets_multi_files/output_28_0.png)
 
 
 ### Train and evaluate the single-label classification model first
 
+We will instantiate an object of the cnn_learner class that uses a resnet34 backbone. Under the hood, fastai will infer from the dataloader (and how its setup inside) that we need to use `nn.CrossEntropyLoss` for single-label classification here.
+
 ```python
 learn_single = cnn_learner(dls_single, resnet34, pretrained=True, metrics=accuracy)
 ```
+
+What learning rate should we use?
 
 ```python
 learn_single.lr_find()
@@ -307,8 +322,15 @@ learn_single.lr_find()
 
 
 
-![png](/images/06_pets_multi_files/output_29_2.png)
+![png](/images/06_pets_multi_files/output_32_2.png)
 
+
+We will stick to the default learning rate of 2e-3 as it should work just fine here. Note that we are not (yet) aiming to create the best model for single-label classification so here, we are just trying to get A decent model first and build intuition.
+
+Also note that the `fine_tune` function will do the following:
+- it first freezes all layers other than the last layer that was added for this dataset and train for 1 epoch
+- it will then unfreeze all the layers and then train for additional epochs
+- it uses [`fit_one_cycle`](https://arxiv.org/pdf/1803.09820.pdf) underneath that uses cyclical learning rates to better handle the crests and troughs of the loss rate function curve
 
 ```python
 learn_single.fine_tune(4, base_lr=2e-3)
@@ -397,7 +419,7 @@ learn_single.recorder.plot_loss()
 ```
 
 
-![png](/images/06_pets_multi_files/output_32_0.png)
+![png](/images/06_pets_multi_files/output_36_0.png)
 
 
 ```python
@@ -409,10 +431,10 @@ learn_single.show_results()
 
 
 
-![png](/images/06_pets_multi_files/output_33_1.png)
+![png](/images/06_pets_multi_files/output_37_1.png)
 
 
-### Let's see how the model predicts on test images (from the Internet)
+### Let's see how the single-label classification model does on test images (from the Internet)
 
 ```python
 img = PILImage.create('persian_cat.jpg')
@@ -427,7 +449,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_35_1.png)
+![png](/images/06_pets_multi_files/output_39_1.png)
 
 
 ```python
@@ -464,7 +486,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_38_1.png)
+![png](/images/06_pets_multi_files/output_42_1.png)
 
 
 ```python
@@ -490,7 +512,11 @@ Calls it an "american_pit_bull_terrier". Not right.
 
 ### Let's train the multi-label classifier now
 
-Key thing to note here. The accuracy function used will use a high threshold of 0.95 so that only results the model is very confident about will be selected. For the loss function, we use the binary_cross_entropy loss function as specified in the [textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527). Note that the flattened version of `nn.BCEWithLogitsLoss` can also be used to get the same results as shown in this [reference notebook](https://github.com/muellerzr/Practical-Deep-Learning-for-Coders-2.0/blob/master/Computer%20Vision/03_Unknown_Labels.ipynb).
+Key things to note here:
+
+- The accuracy function used will use a high threshold of 0.95 so that only results the model is very confident about will be selected when reporting the accuracy during training. For the loss function, we use the binary_cross_entropy loss function as specified in the [textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527). Note that the flattened version of `nn.BCEWithLogitsLoss` can also be used to get the same results as shown in this [reference notebook](https://github.com/muellerzr/Practical-Deep-Learning-for-Coders-2.0/blob/master/Computer%20Vision/03_Unknown_Labels.ipynb).
+- the same resnet34 backbone is used and fastai will automatically infer the loss function to use based on how the dataloader is setup
+- `partial` is a cool python trick to fix/specify a particular argument value for an existing function
 
 ```python
 learn_multi = cnn_learner(dls_multi, resnet34, pretrained=True, metrics=[partial(accuracy_multi, thresh=0.95)])
@@ -512,7 +538,7 @@ learn_multi.lr_find()
 
 
 
-![png](/images/06_pets_multi_files/output_44_2.png)
+![png](/images/06_pets_multi_files/output_48_2.png)
 
 
 ```python
@@ -602,7 +628,7 @@ learn_multi.recorder.plot_loss()
 ```
 
 
-![png](/images/06_pets_multi_files/output_47_0.png)
+![png](/images/06_pets_multi_files/output_51_0.png)
 
 
 Wow! That looks great and also the accuracy is better than that for the single-label classification model. Do not know why yet.
@@ -616,8 +642,10 @@ learn_multi.show_results()
 
 
 
-![png](/images/06_pets_multi_files/output_49_1.png)
+![png](/images/06_pets_multi_files/output_53_1.png)
 
+
+### Let's see how the multi-label classification model does on test images (from the Internet)
 
 ```python
 img = PILImage.create("persian_cat.jpg"); 
@@ -632,7 +660,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_50_1.png)
+![png](/images/06_pets_multi_files/output_55_1.png)
 
 
 ```python
@@ -670,7 +698,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_53_1.png)
+![png](/images/06_pets_multi_files/output_58_1.png)
 
 
 ```python
@@ -705,7 +733,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_55_1.png)
+![png](/images/06_pets_multi_files/output_60_1.png)
 
 
 ```python
@@ -727,14 +755,14 @@ learn_multi.predict(img)
 
 
 
-Superb! No prediction for "false" images crossed even the threshold of 0.5. If you look at the activations, all values are low! This is what we want. We did not do anything special other than use a multi-label classifier with the right loss function. 
+Superb! No prediction for "false" images crossed a threshold of even 0.5. If you look at the activations, all values are low! This is what we want. We did not do anything special other than use a multi-label classifier with the right loss function. 
 
 ### Can we get similar results at "none of the above" detection with a smaller number of categories?
 
-We are not getting similar great results with the bears dataset we compiled from the Internet. Perhaps the difference comes from the differences in the datasets? There are two basic differences:
+We are not getting similar great results with my bears dataset compiled from the Internet. Perhaps the difference comes from the differences in the datasets? There are two basic differences:
 
 - lower number of categories: the bears dataset has three categories of bears ("grizzly", "black", and "teddy") compared to 37 categories of pets here. 
-- lower image count per category: the pets dataset has ~200 images/class while the bears dataset after the last curation has ~100+ images for grizzly and black bears and ~50+ images for teddy bears.
+- lower image count per category: the pets dataset has ~200 images/class while my bears dataset after the last curation has ~100+ images for grizzly and black bears and ~50+ images for teddy bears.
 
 I want to explore these differences one at a time, starting with lower number of categories. I filter the dataset here so that we use data only from three categories to match the bears dataset.
 
@@ -814,6 +842,10 @@ def get_three_class_images(path, recurse=True, folders = None):
     return three_class_info
 ```
 
+#### Lets redefine the dataloader using the DataBlock API. 
+
+The only change from earlier is that we use my `get_three_class_images` function defined above instead of the standard `get_image_files` function.
+
 ```python
 three_class_pets_multi = DataBlock(blocks = (ImageBlock, MultiCategoryBlock),
                                    get_items = get_three_class_images,
@@ -843,8 +875,10 @@ three_class_dls_multi.show_batch(max_n=9, figsize=(7,8))
 ```
 
 
-![png](/images/06_pets_multi_files/output_72_0.png)
+![png](/images/06_pets_multi_files/output_78_0.png)
 
+
+#### Let's train the multi-label classifier using the same resnet34 backbone on data from just the 3 classes of Pets
 
 ```python
 three_class_learn_multi = cnn_learner(three_class_dls_multi, resnet34, pretrained=True, metrics=[partial(accuracy_multi, thresh=0.95)])
@@ -866,7 +900,7 @@ three_class_learn_multi.lr_find()
 
 
 
-![png](/images/06_pets_multi_files/output_74_2.png)
+![png](/images/06_pets_multi_files/output_81_2.png)
 
 
 ```python
@@ -975,7 +1009,7 @@ three_class_learn_multi.recorder.plot_loss()
 ```
 
 
-![png](/images/06_pets_multi_files/output_80_0.png)
+![png](/images/06_pets_multi_files/output_87_0.png)
 
 
 ```python
@@ -987,8 +1021,10 @@ three_class_learn_multi.show_results()
 
 
 
-![png](/images/06_pets_multi_files/output_81_1.png)
+![png](/images/06_pets_multi_files/output_88_1.png)
 
+
+#### Let's see how this 3-class multi-label classification model does on test images (from the Internet)
 
 ```python
 img = PILImage.create("persian_cat.jpg"); 
@@ -1003,7 +1039,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_82_1.png)
+![png](/images/06_pets_multi_files/output_90_1.png)
 
 
 ```python
@@ -1023,47 +1059,7 @@ three_class_learn_multi.predict(img)
 
 
 
-Prediction is Bengal with a confidence of 92.68%. Not bad that it managed to match it to the Cat in the 3 categories. If we want to filter this, our threshold of 0.95 will filter it out if needed. Here, anything above a threshold of 0.5 will be reported.
-
-```python
-xs = torch.linspace(0.5, 0.99, 50); xs
-```
-
-
-
-
-    tensor([0.5000, 0.5100, 0.5200, 0.5300, 0.5400, 0.5500, 0.5600, 0.5700, 0.5800, 0.5900, 0.6000, 0.6100, 0.6200, 0.6300, 0.6400, 0.6500, 0.6600, 0.6700, 0.6800, 0.6900, 0.7000, 0.7100, 0.7200, 0.7300,
-            0.7400, 0.7500, 0.7600, 0.7700, 0.7800, 0.7900, 0.8000, 0.8100, 0.8200, 0.8300, 0.8400, 0.8500, 0.8600, 0.8700, 0.8800, 0.8900, 0.9000, 0.9100, 0.9200, 0.9300, 0.9400, 0.9500, 0.9600, 0.9700,
-            0.9800, 0.9900])
-
-
-
-```python
-preds, targs = three_class_learn_multi.get_preds()
-```
-
-
-
-
-
-```python
-accs = [accuracy_multi(preds, targs, thresh=i, sigmoid=False) for i in xs]
-```
-
-```python
-plt.plot(xs,accs)
-```
-
-
-
-
-    [<matplotlib.lines.Line2D at 0x7f8bf897be20>]
-
-
-
-
-![png](/images/06_pets_multi_files/output_88_1.png)
-
+Prediction is Bengal with a confidence of 92.68%. Not bad that it managed to match it to the Cat in the 3 categories. If we want to filter this, our threshold of 0.95 will filter it out if needed. The `learn.predict` function will report anything above a threshold of 0.5.
 
 ```python
 img = PILImage.create("donkey.jpg"); 
@@ -1078,7 +1074,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_89_1.png)
+![png](/images/06_pets_multi_files/output_93_1.png)
 
 
 ```python
@@ -1098,7 +1094,7 @@ three_class_learn_multi.predict(img)
 
 
 
-Calls it a Bengal but with a low confidence of 71%. We can filter this out using a high acceptance threshold. But do note the difference in results from the case where we used 37 categories. There, this donkey image was fully rejected with much lower confidence values.
+This model calls it a Bengal but with a low confidence of 71%. We can filter this out using a high threshold. But do note the difference in results from the case where we used 37 categories of data to train the multi-class model. With that model, this donkey image was fully rejected with much lower confidence/activation values. Something to think about.
 
 ```python
 img = PILImage.create("beer-pic.jpg"); 
@@ -1113,7 +1109,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_92_1.png)
+![png](/images/06_pets_multi_files/output_96_1.png)
 
 
 ```python
@@ -1133,6 +1129,8 @@ three_class_learn_multi.predict(img)
 
 OK, good to see an empty prediction as none of the confidences are higher than 0.5. This image will be classified as "none-of-the-above" without setting a very high threshold.
 
+One more test with a grizzly bear image and we see this image is also rejected or classified as "none-of-the-above". 
+
 ```python
 img = PILImage.create('Grizzly-on-log.jpg')
 img.show()
@@ -1146,7 +1144,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_95_1.png)
+![png](/images/06_pets_multi_files/output_100_1.png)
 
 
 ```python
@@ -1164,10 +1162,8 @@ three_class_learn_multi.predict(img)
 
 
 
-One more test with a grizzly bear image and we see this image is also rejected or classified as "none-of-the-above". 
+#### Conclusions:
 
-##### We see that other than the persian_cat, which comes close to a Bengal with 93% confidence, everything outside our target dataset is well below the accuracy threshold of 0.95 if we wish to choose one.
-
-Here we have 200 images from 3 classes. Perhaps we need to increase the number of valid images in our bears dataset for the 3 categories in order to filter out the false positives and provide more confidence to the model? 
-
-Also, it looks like it is a good idea to have more categories to provide higher confidence towards "none-of-the-above" classes. What happens if we have 1000s of categories though? 
+- Multi-label classifiers can reject input images that don't belong to any of the trained categories/classes
+- It looks like we do need to have "enough" training data for multi-label classifiers to work well. Specifically, "enough" training data can mean that we need both training data for many categories (>3?) and ~200 training images per category. The exact limits need to be investigated further. 
+- Relating to the poorer results on my bears dataset, the PETS dataset has 200 images per class. Perhaps we need to increase the number of valid images in our bears dataset for the 3 categories in order to filter out the false positives and provide more confidence to the model? 
