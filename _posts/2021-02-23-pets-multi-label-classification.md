@@ -2,14 +2,19 @@
 
 
 
-**Objective:** In this notebook, I want to compare the single-label and multi-label classification approaches for the PETS dataset. Specifically, the high-level goal is to see if multi-label classification approaches can reliably tell us in if an input image belongs to NONE of the classes seen during training. Along the way, I also want to compare and contrast the results from single- and multi-label classification as well as the loss functions used. 
+**Objective:** In this notebook, I want to compare the single-label and multi-label classification approaches for the [PETS dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/). This dataset has 37 categories of cats and dogs and the idea is that we want to classify an input image into 0 or 1 or more than 1 of these 37 categories. 
 
-Note that the big change between the two classification models is that:
-- single-label classification uses cross-entropy loss (negative log-likelihood of softmax)
-- multi-label classification uses binary cross-entropy loss (with a sigmoid function on the activations from the final layer and *One-Hot Encoding* of the targets/training labels)
+With single-label classification, an input image will by design be classified into exactly ONE of these 37 categories (even if the input image does not contain a cat or a dog from the 37 categories). With multi-label classification, it should theoretically be possible to tell whether the input image has 0 or 1 or more than 1 of these 37 categories. In particular, we want to see if multi-label classification approaches can reliably tell us in if an input image belongs to NONE of the classes seen during training. Along the way, I also want to compare and contrast the results from single- and multi-label classification as well as the loss functions used. 
 
 As before, the reference for everything in this blog post is the [fastai 2020 course](https://course.fast.ai), especially the [amazing textbook](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527). In addition, for this notebook, I am basically repeating the results from the following notebooks (with some minor changes and additions): https://forums.fast.ai/t/how-to-use-bcewithlogitslossflat-in-lesson1-pets-ipynb/59146
 https://github.com/muellerzr/Practical-Deep-Learning-for-Coders-2.0/blob/master/Computer%20Vision/03_Unknown_Labels.ipynb (Thanks to @muellerzr).
+
+### Intuition and code for key differences between single- and multi-label classification
+
+Note that the big changes between the two classification models is that they use different loss functions and accuracy functions.
+
+- single-label classification uses cross-entropy loss (negative log-likelihood of softmax) as the loss function. And an accuracy function that will pick ONE index (out of N indices) corresponding to the max. activation from the final layer as the prediction
+- multi-label classification uses binary cross-entropy loss (with a sigmoid of activations from the final layer and *One-Hot Encoding* of the targets/training labels) as the loss function. And an accuracy function that will use a threshold to determine which activations out of N activations are 1. The indices corresponding to the activations that are 1 are the predictions. Note that none of the N activations can be higher than the threshold (input image is "none-of-the-above", or more than 1 of the activations can be higher than the threshold (input image has more than 1 category of object inside) or exactly 1 of the activations can be higher than the threshold (input image has 1 category of object inside).
 
 For single-label classification, the loss function used is the cross-entropy loss. It is defined as follows:
 
@@ -269,7 +274,7 @@ dls_single.show_batch(max_n=9, figsize=(7,8))
 ```
 
 
-![png](/images/06_pets_multi_files/output_24_0.png)
+![png](/images/06_pets_multi_files/output_25_0.png)
 
 
 ```python
@@ -277,7 +282,7 @@ dls_multi.show_batch(max_n=9, figsize=(7,8))
 ```
 
 
-![png](/images/06_pets_multi_files/output_25_0.png)
+![png](/images/06_pets_multi_files/output_26_0.png)
 
 
 ### Train and evaluate the single-label classification model first
@@ -302,7 +307,7 @@ learn_single.lr_find()
 
 
 
-![png](/images/06_pets_multi_files/output_28_2.png)
+![png](/images/06_pets_multi_files/output_29_2.png)
 
 
 ```python
@@ -392,7 +397,7 @@ learn_single.recorder.plot_loss()
 ```
 
 
-![png](/images/06_pets_multi_files/output_31_0.png)
+![png](/images/06_pets_multi_files/output_32_0.png)
 
 
 ```python
@@ -404,7 +409,7 @@ learn_single.show_results()
 
 
 
-![png](/images/06_pets_multi_files/output_32_1.png)
+![png](/images/06_pets_multi_files/output_33_1.png)
 
 
 ### Let's see how the model predicts on test images (from the Internet)
@@ -422,7 +427,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_34_1.png)
+![png](/images/06_pets_multi_files/output_35_1.png)
 
 
 ```python
@@ -459,7 +464,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_37_1.png)
+![png](/images/06_pets_multi_files/output_38_1.png)
 
 
 ```python
@@ -507,7 +512,7 @@ learn_multi.lr_find()
 
 
 
-![png](/images/06_pets_multi_files/output_43_2.png)
+![png](/images/06_pets_multi_files/output_44_2.png)
 
 
 ```python
@@ -597,7 +602,7 @@ learn_multi.recorder.plot_loss()
 ```
 
 
-![png](/images/06_pets_multi_files/output_46_0.png)
+![png](/images/06_pets_multi_files/output_47_0.png)
 
 
 Wow! That looks great and also the accuracy is better than that for the single-label classification model. Do not know why yet.
@@ -611,7 +616,7 @@ learn_multi.show_results()
 
 
 
-![png](/images/06_pets_multi_files/output_48_1.png)
+![png](/images/06_pets_multi_files/output_49_1.png)
 
 
 ```python
@@ -627,7 +632,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_49_1.png)
+![png](/images/06_pets_multi_files/output_50_1.png)
 
 
 ```python
@@ -665,7 +670,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_52_1.png)
+![png](/images/06_pets_multi_files/output_53_1.png)
 
 
 ```python
@@ -700,7 +705,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_54_1.png)
+![png](/images/06_pets_multi_files/output_55_1.png)
 
 
 ```python
@@ -838,7 +843,7 @@ three_class_dls_multi.show_batch(max_n=9, figsize=(7,8))
 ```
 
 
-![png](/images/06_pets_multi_files/output_71_0.png)
+![png](/images/06_pets_multi_files/output_72_0.png)
 
 
 ```python
@@ -861,7 +866,7 @@ three_class_learn_multi.lr_find()
 
 
 
-![png](/images/06_pets_multi_files/output_73_2.png)
+![png](/images/06_pets_multi_files/output_74_2.png)
 
 
 ```python
@@ -970,7 +975,7 @@ three_class_learn_multi.recorder.plot_loss()
 ```
 
 
-![png](/images/06_pets_multi_files/output_79_0.png)
+![png](/images/06_pets_multi_files/output_80_0.png)
 
 
 ```python
@@ -982,7 +987,7 @@ three_class_learn_multi.show_results()
 
 
 
-![png](/images/06_pets_multi_files/output_80_1.png)
+![png](/images/06_pets_multi_files/output_81_1.png)
 
 
 ```python
@@ -998,7 +1003,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_81_1.png)
+![png](/images/06_pets_multi_files/output_82_1.png)
 
 
 ```python
@@ -1057,7 +1062,7 @@ plt.plot(xs,accs)
 
 
 
-![png](/images/06_pets_multi_files/output_87_1.png)
+![png](/images/06_pets_multi_files/output_88_1.png)
 
 
 ```python
@@ -1073,7 +1078,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_88_1.png)
+![png](/images/06_pets_multi_files/output_89_1.png)
 
 
 ```python
@@ -1108,7 +1113,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_91_1.png)
+![png](/images/06_pets_multi_files/output_92_1.png)
 
 
 ```python
@@ -1141,7 +1146,7 @@ img.show()
 
 
 
-![png](/images/06_pets_multi_files/output_94_1.png)
+![png](/images/06_pets_multi_files/output_95_1.png)
 
 
 ```python
