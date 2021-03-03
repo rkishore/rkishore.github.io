@@ -2,6 +2,12 @@
 
 
 
+**Objective:** In this notebook, I note down my key takeaways from the paper ["Universum Prescription: Regularization Using Unlabeled Data"](https://arxiv.org/abs/1511.03719). This paper is of interest as I want to see if we can train classifiers that can reliably return "none-of-the-above" as a category for images that contain objects that are not part of the training set. In this paper, while the stated goal is different, i.e. they use these unlabeled images in the "none-of-the-above" class as a beneficial regularization technique to reduce overfitting, we still want to understand how exactly they did this and what we can learn from it towards my goal.
+
+Previously, to achieve this goal of returning "none-of-the-above" as a category for images that don't contain the trained classes of interest, I had explored [using multi-label classification, and more specifically, the binary cross-entropy loss](https://rkishore.github.io/2021/02/23/pets-multi-label-classification.html) as recommended by Jeremy Howard in fastai coursework [fastai 2020 course, Lesson 6](https://course.fast.ai), the [textbook, Chapter 6](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527), [Lesson 10, part 2 2019 (watch till 52:44)](https://www.youtube.com/watch?t=2678&v=HR0lt1hlR6U&feature=youtu.be) and fastai forums[1](https://forums.fast.ai/t/lesson-9-discussion-wiki-2019/41969/513?u=rkishore),[2](https://forums.fast.ai/t/lesson-9-discussion-wiki-2019/41969/511?u=rkishore).
+
+Broadly, this is all part of interest at work in incrementally training and improving classifiers in the field when we "miss" new objects and then incrementally add them to our model over time in an automated manner.
+
 ## Summary:
 
 1. The authors augment their training data with large numbers of unlabeled images to see if it will help improve classification accuracy.
