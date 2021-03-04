@@ -18,7 +18,7 @@ I learnt about this paper as part of the [fastai 2020 course](https://course.fas
 
     1. During training, cyclically vary the learning rate between bounds `base_lr` and `max_lr` where `base_lr` < `max_lr` (see plot from [1](https://arxiv.org/pdf/1506.01186.pdf)).
     
-    <img src="Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/cyclical-lr.png" alt="Cyclical LR" width="400"/>
+    <img src="/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/cyclical-lr.png" alt="Cyclical LR" width="400"/>
     
     2. To determine the `base_lr` and `max_lr` bounds (called the **LR range test** in the paper),
         1. Start at a very low learning rate and increase it linearly for several epochs between low and high LR values as you train
@@ -26,7 +26,7 @@ I learnt about this paper as part of the [fastai 2020 course](https://course.fas
         3. Note the LR where the accuracy starts to increase (for the `base_lr`) and where the accuracy starts to become ragged or starts decreasing (for the `max_lr`). These two LR values are good choices for `base_lr` and `max_lr` respectively. Alternately, use the rule of thumb that the optimum LR is usually within a factor of two of the largest one that converges. So `base_lr` can be set to `1/3` or `1/4` of `max_lr`.
         4. See plot from paper below that shows how the base_lr and max_lr are selected for CIFAR10 
         
-        <img src="Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/lr-range-test-cifar10.png" alt="Cyclical LR" width="400"/>
+        <img src="/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/lr-range-test-cifar10.png" alt="Cyclical LR" width="400"/>
         
     3. The key motivation behind this cyclical lr policy is the observation that increasing the learning rate might have a short term negative effect and yet achieve a longer term beneficial effect. This leads to the idea of letting the learning rate vary within a range of values rather than adopting a stepwise fixed or exponentially decreasing value. 
     
@@ -144,12 +144,12 @@ Key result plots from the paper are shown next along with my notes. Lots of good
 
 CLR Result             |  CLR Result 
 :-------------------------:|:-------------------------:
-![CLR-Figure1](Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-cifar10-fig1.png) | ![CLR-Figure5](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-cifar10-fig5.png)
-![CLR-Table1](Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-table1.png) | ![CLR-Table4](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-table4.png)
+![CLR-Figure1](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-cifar10-fig1.png) | ![CLR-Figure5](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-cifar10-fig5.png)
+![CLR-Table1](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-table1.png) | ![CLR-Table4](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-table4.png)
 
 LR Range CIFAR10      |  LR Range Imagenet+Alexnet    | LR Range Imagenet+Googlenet
 :-------------------------:|:-------------------------:|:-------------------------:
-![LR-range-test-CIFAR10](Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/lr-range-test-cifar10.png) | ![LR-range-Imagenet-Alexnet](Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-alexnet-lr-range-test-fig7.png) | ![LR-range-Imagenet-Googlenet](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-googlenet-fig11.png)
+![LR-range-test-CIFAR10](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/lr-range-test-cifar10.png) | ![LR-range-Imagenet-Alexnet](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-alexnet-lr-range-test-fig7.png) | ![LR-range-Imagenet-Googlenet](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-googlenet-fig11.png)
 
 ![Imagenet-Alexnet accuracy](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-alexnet-fig9-10.png)
 ![Imagenet-Googlenet accuracy](/images/Paper_summary_cyclical_learning_rates_for_neural_nets_2017_files/clr-googlenet-fig12-13.png)
