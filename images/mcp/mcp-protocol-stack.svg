@@ -1,0 +1,64 @@
+<svg viewBox="0 0 720 560" width="720" height="560" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>How MCP fits in the protocol stack</title>
+  <desc>Top to bottom: the host application uses MCP primitives (tools, resources, prompts); these are carried as JSON-RPC 2.0 messages; which travel over one of two transports — local stdio pipes or Streamable HTTP (POST plus Server-Sent Events); over the OS or TCP/TLS underneath.</desc>
+
+  <rect x="0" y="0" width="720" height="560" fill="#FFFFFF"/>
+
+  <style>
+    .h     { font-size: 18px; font-weight: 700; fill: #1A1A18; }
+    .lname { font-size: 15px; font-weight: 700; }
+    .ldesc { font-size: 11.5px; }
+    .tag   { font-size: 11px; font-weight: 600; fill: #5F5E5A; }
+  </style>
+
+  <text x="36" y="40" class="h">MCP in the protocol stack</text>
+
+  <!-- side tags -->
+  <text x="36" y="92"  class="tag">WHAT</text>
+  <text x="36" y="180" class="tag">MESSAGE</text>
+  <text x="36" y="300" class="tag">TRANSPORT</text>
+  <text x="36" y="470" class="tag">UNDERLYING</text>
+
+  <!-- Layer 1: Host application -->
+  <rect x="140" y="62" width="544" height="62" rx="11" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="412" y="88"  text-anchor="middle" class="lname" fill="#3C3489">Host application</text>
+  <text x="412" y="108" text-anchor="middle" class="ldesc" fill="#534AB7">Claude Desktop &#183; IDE &#183; agent — runs the MCP client</text>
+
+  <!-- Layer 2: MCP primitives -->
+  <rect x="140" y="138" width="544" height="62" rx="11" fill="#534AB7" stroke="#3C3489"/>
+  <text x="412" y="164" text-anchor="middle" class="lname" fill="#FFFFFF">MCP primitives</text>
+  <text x="412" y="184" text-anchor="middle" class="ldesc" fill="#CECBF6">Tools &#183; Resources &#183; Prompts (what the protocol exposes)</text>
+
+  <!-- Layer 3: JSON-RPC -->
+  <rect x="140" y="214" width="544" height="62" rx="11" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="412" y="240" text-anchor="middle" class="lname" fill="#0F6E56">JSON-RPC 2.0</text>
+  <text x="412" y="260" text-anchor="middle" class="ldesc" fill="#1D9E75">request / response / notification message format</text>
+
+  <!-- Layer 4: Transport (two branches) -->
+  <rect x="140" y="290" width="266" height="92" rx="11" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="273" y="318" text-anchor="middle" class="lname" fill="#1F4E79">stdio</text>
+  <text x="273" y="338" text-anchor="middle" class="ldesc" fill="#1F4E79">local subprocess</text>
+  <text x="273" y="356" text-anchor="middle" class="ldesc" fill="#1F4E79">stdin / stdout pipes</text>
+
+  <rect x="418" y="290" width="266" height="92" rx="11" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="551" y="318" text-anchor="middle" class="lname" fill="#993C1D">Streamable HTTP</text>
+  <text x="551" y="338" text-anchor="middle" class="ldesc" fill="#993C1D">remote server</text>
+  <text x="551" y="356" text-anchor="middle" class="ldesc" fill="#993C1D">HTTP POST + Server-Sent Events</text>
+
+  <text x="412" y="404" text-anchor="middle" class="tag" fill="#888780">— pick one transport —</text>
+
+  <!-- Layer 5: underlying -->
+  <rect x="140" y="420" width="266" height="58" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="273" y="446" text-anchor="middle" class="lname" fill="#444441">OS pipes</text>
+  <text x="273" y="465" text-anchor="middle" class="ldesc" fill="#5F5E5A">same machine</text>
+
+  <rect x="418" y="420" width="266" height="58" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="551" y="446" text-anchor="middle" class="lname" fill="#444441">TCP + TLS</text>
+  <text x="551" y="465" text-anchor="middle" class="ldesc" fill="#5F5E5A">HTTP over the network</text>
+
+  <!-- connectors -->
+  <g stroke="#888780" stroke-width="1.6" fill="none">
+    <line x1="273" y1="382" x2="273" y2="420"/>
+    <line x1="551" y1="382" x2="551" y2="420"/>
+  </g>
+</svg>
