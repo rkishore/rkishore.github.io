@@ -32,3 +32,9 @@ gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
 
 gem "faraday", "< 1.0"
 
+# Ruby 3.4+ removed these from the default gems; Jekyll 3.9 still requires them.
+gem "csv"
+gem "base64"
+gem "bigdecimal"
+gem "webrick"
+
