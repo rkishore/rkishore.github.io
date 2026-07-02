@@ -1,0 +1,68 @@
+<svg viewBox="0 0 720 470" width="720" height="470" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>All three MCP primitives ride the same list-then-fetch rails</title>
+  <desc>After the handshake — initialize, then the initialized notification, then ready — discovery is list-then-fetch for every primitive. Tools call tools/list then tools/call. Resources are special: they split across two lists, resources/list for concrete fixed-URI resources and resources/templates/list for parameterized ones, both feeding into resources/read. Prompts call prompts/list then prompts/get.</desc>
+
+  <rect x="0" y="0" width="720" height="470" fill="#FFFFFF"/>
+
+  <style>
+    .h     { font-size: 18px; font-weight: 700; fill: #1A1A18; }
+    .tag   { font-size: 11px; font-weight: 700; letter-spacing: 0.4px; fill: #5F5E5A; }
+    .lane  { font-size: 14px; font-weight: 700; }
+    .mono  { font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 600; }
+    .note  { font-size: 10.5px; fill: #888780; }
+  </style>
+
+  <text x="36" y="40" class="h">Same rails: list, then fetch</text>
+
+  <!-- Handshake strip -->
+  <text x="36" y="78" class="tag">HANDSHAKE (once)</text>
+  <rect x="160" y="62" width="150" height="34" rx="9" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="235" y="84" text-anchor="middle" class="mono" fill="#444441">initialize</text>
+  <rect x="334" y="62" width="170" height="34" rx="9" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="419" y="84" text-anchor="middle" class="mono" fill="#444441">initialized (notif)</text>
+  <rect x="528" y="62" width="120" height="34" rx="9" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="588" y="84" text-anchor="middle" class="mono" fill="#444441">ready</text>
+  <g stroke="#B4B2A9" stroke-width="1.6" fill="none">
+    <line x1="310" y1="79" x2="334" y2="79"/>
+    <line x1="504" y1="79" x2="528" y2="79"/>
+  </g>
+
+  <text x="36" y="138" class="tag">DISCOVERY (list &#8594; fetch)</text>
+
+  <!-- Tools lane (purple) -->
+  <rect x="36" y="152" width="648" height="56" rx="11" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="64" y="186" class="lane" fill="#3C3489">Tools</text>
+  <rect x="200" y="166" width="170" height="28" rx="8" fill="#FFFFFF" stroke="#AFA9EC"/>
+  <text x="285" y="185" text-anchor="middle" class="mono" fill="#534AB7">tools/list</text>
+  <rect x="460" y="166" width="170" height="28" rx="8" fill="#534AB7"/>
+  <text x="545" y="185" text-anchor="middle" class="mono" fill="#FFFFFF">tools/call</text>
+  <line x1="370" y1="180" x2="460" y2="180" stroke="#AFA9EC" stroke-width="1.8"/>
+
+  <!-- Resources lane (green) — TWO lists -->
+  <rect x="36" y="220" width="648" height="92" rx="11" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="64" y="270" class="lane" fill="#0F6E56">Resources</text>
+  <rect x="200" y="232" width="200" height="28" rx="8" fill="#FFFFFF" stroke="#5DCAA5"/>
+  <text x="300" y="251" text-anchor="middle" class="mono" fill="#0F6E56">resources/list</text>
+  <text x="300" y="274" text-anchor="middle" class="note">concrete, fixed URI</text>
+  <rect x="200" y="280" width="200" height="28" rx="8" fill="#FFFFFF" stroke="#5DCAA5"/>
+  <text x="300" y="299" text-anchor="middle" class="mono" fill="#0F6E56">resources/templates/list</text>
+  <rect x="460" y="252" width="170" height="36" rx="8" fill="#1D9E75"/>
+  <text x="545" y="275" text-anchor="middle" class="mono" fill="#FFFFFF">resources/read</text>
+  <g stroke="#5DCAA5" stroke-width="1.8" fill="none">
+    <line x1="400" y1="246" x2="460" y2="266"/>
+    <line x1="400" y1="294" x2="460" y2="274"/>
+  </g>
+  <text x="300" y="226" text-anchor="middle" class="note" fill="#0F6E56">two lists &#8212; concrete vs. parameterized</text>
+
+  <!-- Prompts lane (orange) -->
+  <rect x="36" y="324" width="648" height="56" rx="11" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="64" y="358" class="lane" fill="#993C1D">Prompts</text>
+  <rect x="200" y="338" width="170" height="28" rx="8" fill="#FFFFFF" stroke="#F0997B"/>
+  <text x="285" y="357" text-anchor="middle" class="mono" fill="#993C1D">prompts/list</text>
+  <rect x="460" y="338" width="170" height="28" rx="8" fill="#C75B36"/>
+  <text x="545" y="357" text-anchor="middle" class="mono" fill="#FFFFFF">prompts/get</text>
+  <line x1="370" y1="352" x2="460" y2="352" stroke="#F0997B" stroke-width="1.8"/>
+
+  <text x="36" y="416" class="tag" fill="#888780">SAME PATTERN, MORE NOUNS</text>
+  <text x="36" y="438" class="note" fill="#5F5E5A">Learning resources and prompts after tools isn't a new protocol &#8212; it's list-then-fetch, again.</text>
+</svg>

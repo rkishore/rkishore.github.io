@@ -1,0 +1,87 @@
+<svg viewBox="0 0 720 380" width="720" height="380" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>How a prompt reaches the model: the user fires the first arrow</title>
+  <desc>A prompt invocation flows through four actors. You pick the slash command and send it with arguments to the host (Claude Code). The host calls prompts/get on the server (real_estate_server.py). The server runs the prompt function and returns a list of rendered messages. The host seeds those messages into the conversation as your turn and sends it to the model. The model replies. The model never contacts the server for a prompt — it only sees the messages because you reached for them. A tool runs the other way: the model fires the first arrow and calls tools/call.</desc>
+
+  <rect x="0" y="0" width="720" height="380" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahGrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A8880"/></marker>
+    <marker id="ahOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C75B36"/></marker>
+    <marker id="ahPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#534AB7"/></marker>
+  </defs>
+
+  <style>
+    .h     { font-size: 18px; font-weight: 700; fill: #1A1A18; }
+    .tag   { font-size: 11px; font-weight: 700; letter-spacing: 0.4px; fill: #5F5E5A; }
+    .node  { font-size: 15px; font-weight: 700; }
+    .sub   { font-size: 10.5px; font-weight: 400; fill: #888780; }
+    .mono  { font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 600; }
+    .lbl   { font-size: 11.5px; font-weight: 700; }
+    .note  { font-size: 10.5px; fill: #888780; }
+    .badge { font-size: 12px; font-weight: 700; fill: #FFFFFF; }
+  </style>
+
+  <text x="36" y="40" class="h">How a prompt reaches the model</text>
+  <text x="36" y="62" class="tag">YOU FIRE THE FIRST ARROW</text>
+
+  <!-- discovery context note above the server -->
+  <text x="355" y="86" text-anchor="middle" class="note">prompts/list filled the slash-command menu earlier (once)</text>
+
+  <!-- Server (top, neutral) -->
+  <rect x="255" y="96" width="200" height="52" rx="11" fill="#FFFFFF" stroke="#B4B2A9"/>
+  <text x="355" y="120" text-anchor="middle" class="node" fill="#444441">Server</text>
+  <text x="355" y="138" text-anchor="middle" class="mono" fill="#5F5E5A">real_estate_server.py</text>
+
+  <!-- You (left, orange = user/prompt) -->
+  <rect x="40" y="230" width="140" height="52" rx="11" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="110" y="254" text-anchor="middle" class="node" fill="#993C1D">You</text>
+  <text x="110" y="272" text-anchor="middle" class="sub">the human</text>
+
+  <!-- Host (center, neutral) -->
+  <rect x="255" y="230" width="200" height="52" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="355" y="254" text-anchor="middle" class="node" fill="#444441">Host &#8212; Claude Code</text>
+  <text x="355" y="272" text-anchor="middle" class="sub">the MCP client / plumbing</text>
+
+  <!-- Model (right, purple = model) -->
+  <rect x="540" y="230" width="150" height="52" rx="11" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="615" y="254" text-anchor="middle" class="node" fill="#3C3489">Model</text>
+  <text x="615" y="272" text-anchor="middle" class="sub">the LLM</text>
+
+  <!-- Arrow 1: You -> Host (orange) -->
+  <line x1="182" y1="256" x2="247" y2="256" stroke="#C75B36" stroke-width="1.8" marker-end="url(#ahOrange)"/>
+  <text x="214" y="224" text-anchor="middle" class="lbl" fill="#993C1D">pick it</text>
+  <circle cx="214" cy="242" r="9.5" fill="#C75B36"/>
+  <text x="214" y="246" text-anchor="middle" class="badge">1</text>
+
+  <!-- Arrow 2: Host -> Server, up (grey) -->
+  <line x1="330" y1="228" x2="330" y2="152" stroke="#8A8880" stroke-width="1.8" marker-end="url(#ahGrey)"/>
+  <text x="322" y="182" text-anchor="end" class="mono" fill="#5F5E5A">prompts/get</text>
+  <circle cx="330" cy="200" r="9.5" fill="#8A8880"/>
+  <text x="330" y="204" text-anchor="middle" class="badge">2</text>
+
+  <!-- Arrow 3: Server -> Host, down (grey) -->
+  <line x1="378" y1="150" x2="378" y2="226" stroke="#8A8880" stroke-width="1.8" marker-end="url(#ahGrey)"/>
+  <text x="388" y="178" text-anchor="start" class="mono" fill="#5F5E5A">messages</text>
+  <text x="388" y="194" text-anchor="start" class="note">rendered template</text>
+  <circle cx="378" cy="210" r="9.5" fill="#8A8880"/>
+  <text x="378" y="214" text-anchor="middle" class="badge">3</text>
+
+  <!-- Arrow 4: Host -> Model (purple) -->
+  <line x1="457" y1="249" x2="536" y2="249" stroke="#534AB7" stroke-width="1.8" marker-end="url(#ahPurple)"/>
+  <text x="496" y="224" text-anchor="middle" class="lbl" fill="#3C3489">seed as your turn</text>
+  <circle cx="496" cy="240" r="9.5" fill="#534AB7"/>
+  <text x="496" y="244" text-anchor="middle" class="badge">4</text>
+
+  <!-- Arrow 5: Model -> Host, reply (purple) -->
+  <line x1="536" y1="266" x2="457" y2="266" stroke="#534AB7" stroke-width="1.8" marker-end="url(#ahPurple)"/>
+  <circle cx="496" cy="266" r="9.5" fill="#534AB7"/>
+  <text x="496" y="270" text-anchor="middle" class="badge">5</text>
+  <text x="496" y="300" text-anchor="middle" class="note">the model replies</text>
+
+  <!-- the slash command, under You -->
+  <text x="40" y="308" text-anchor="start" class="mono" fill="#993C1D" font-size="11">/mcp__realestate__draft_counteroffer</text>
+
+  <!-- contrast footer -->
+  <text x="36" y="346" class="tag" fill="#888780">SAME RAILS, OPPOSITE INITIATOR</text>
+  <text x="36" y="366" class="note" fill="#5F5E5A">A tool runs the other way &#8212; the model fires arrow 1 and calls tools/call. Here you fire it, and the model sees the result last.</text>
+</svg>
