@@ -1,4 +1,6 @@
-# Beyond Tools: MCP Resources, Templates &amp; Prompts
+---
+title: "Beyond Tools: MCP Resources, Templates & Prompts"
+---
 
 Jun 30, 2026
 
