@@ -1,0 +1,75 @@
+<svg viewBox="0 0 720 420" width="720" height="420" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The Streamable HTTP transport: one endpoint that answers with JSON or SSE</title>
+  <desc>The client on the left sends every message as an HTTP POST to a single MCP endpoint in the middle, such as slash mcp, which handles both POST and GET. For each POST the server replies with one of two things: a single application/json response, or a text/event-stream SSE stream when it needs to send multiple messages. The client may also open an optional GET stream for server-initiated messages. Optional stateful sessions are carried by the MCP-Session-Id header, and dropped streams can be resumed with an event id and the Last-Event-ID header.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 15px; font-weight: 700; }
+    .sub  { font-size: 11px; fill: #5F5E5A; }
+    .mono { font-size: 12.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .mons { font-size: 11.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .lbl  { font-size: 11.5px; font-weight: 600; }
+    .cap  { font-size: 11px; fill: #5F5E5A; }
+    .note { font-size: 11px; fill: #5F5E5A; }
+  </style>
+
+  <text x="36" y="36" class="h">Streamable HTTP: one endpoint, answered by JSON or SSE</text>
+
+  <!-- Client -->
+  <rect x="40" y="176" width="140" height="96" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="110" y="230" text-anchor="middle" class="node" fill="#993C1D">Client</text>
+
+  <!-- Single /mcp endpoint -->
+  <rect x="250" y="176" width="150" height="96" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="325" y="218" text-anchor="middle" class="mono" fill="#993C1D">/mcp</text>
+  <text x="325" y="240" text-anchor="middle" class="sub">one endpoint · POST + GET</text>
+
+  <!-- POST arrow client -> /mcp -->
+  <text x="215" y="206" text-anchor="middle" class="lbl" fill="#2C6BC4">POST</text>
+  <line x1="180" y1="216" x2="250" y2="216" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="215" y="252" text-anchor="middle" class="sub">every message</text>
+
+  <!-- Result box: JSON -->
+  <rect x="470" y="104" width="212" height="64" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="576" y="132" text-anchor="middle" class="mons" fill="#0F6E56">application/json</text>
+  <text x="576" y="152" text-anchor="middle" class="sub">a single response</text>
+
+  <!-- Result box: SSE -->
+  <rect x="470" y="200" width="212" height="64" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="576" y="228" text-anchor="middle" class="mons" fill="#993C1D">text/event-stream</text>
+  <text x="576" y="248" text-anchor="middle" class="sub">an SSE stream (many messages)</text>
+
+  <!-- Result box: optional GET -->
+  <rect x="470" y="296" width="212" height="64" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="576" y="324" text-anchor="middle" class="mons" fill="#444441">GET → SSE</text>
+  <text x="576" y="344" text-anchor="middle" class="sub">optional server-push stream</text>
+
+  <!-- branch label -->
+  <text x="418" y="192" text-anchor="middle" class="lbl" fill="#993C1D">server replies with one of:</text>
+
+  <!-- /mcp -> JSON (either) -->
+  <line x1="400" y1="206" x2="470" y2="140" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <text x="452" y="176" text-anchor="middle" class="lbl" fill="#5F5E5A">either</text>
+
+  <!-- /mcp -> SSE (or) -->
+  <line x1="400" y1="228" x2="470" y2="232" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <text x="437" y="222" text-anchor="middle" class="lbl" fill="#5F5E5A">or</text>
+
+  <!-- /mcp -> optional GET stream -->
+  <line x1="400" y1="250" x2="470" y2="322" stroke="#8A8880" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ahGrey)"/>
+
+  <!-- annotations -->
+  <line x1="40" y1="384" x2="682" y2="384" stroke="#E4E2DA" stroke-width="1"/>
+  <text x="40" y="406" class="note"><tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#993C1D">MCP-Session-Id</tspan>: optional stateful session   ·   <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#993C1D">Last-Event-ID</tspan>: resume a dropped stream</text>
+</svg>

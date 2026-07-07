@@ -1,0 +1,51 @@
+<svg viewBox="0 0 720 250" width="720" height="250" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The stdio transport: a subprocess and two pipes</title>
+  <desc>The host on the left launches the MCP server on the right as a subprocess. Two pipes connect them: stdin carries JSON-RPC messages from the client to the server, and stdout carries JSON-RPC messages from the server back to the client. The server may also write logs to stderr. Messages are newline-delimited. No HTTP and no network ports are involved.</desc>
+
+  <rect x="0" y="0" width="720" height="250" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 15px; font-weight: 700; fill: #1F4E79; }
+    .sub  { font-size: 11px; fill: #5F5E5A; }
+    .mono { font-size: 12px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11px; fill: #5F5E5A; }
+    .note { font-size: 10.5px; fill: #888780; }
+  </style>
+
+  <text x="36" y="38" class="h">stdio: one subprocess, two pipes</text>
+
+  <!-- Host box -->
+  <rect x="54" y="80" width="200" height="96" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="154" y="122" text-anchor="middle" class="node">Host</text>
+  <text x="154" y="144" text-anchor="middle" class="sub">the client</text>
+
+  <!-- Server box -->
+  <rect x="466" y="80" width="200" height="96" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="566" y="122" text-anchor="middle" class="node">MCP server</text>
+  <text x="566" y="144" text-anchor="middle" class="sub">a subprocess</text>
+
+  <!-- stdin: client -> server (forward, blue) -->
+  <text x="360" y="102" text-anchor="middle" class="mono" fill="#2C6BC4">stdin</text>
+  <line x1="258" y1="112" x2="462" y2="112" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="360" y="126" text-anchor="middle" class="cap">client → server</text>
+
+  <!-- stdout: server -> client (return, grey) -->
+  <line x1="462" y1="150" x2="258" y2="150" stroke="#8A8880" stroke-width="2" marker-end="url(#ahGrey)"/>
+  <text x="360" y="168" text-anchor="middle" class="mono" fill="#8A8880">stdout</text>
+
+  <!-- stderr note -->
+  <text x="566" y="196" text-anchor="middle" class="note">stderr → logs (optional)</text>
+
+  <!-- caption -->
+  <text x="360" y="228" text-anchor="middle" class="cap">The host launches the server as a subprocess; newline-delimited JSON-RPC flows over the pipes. No HTTP, no ports.</text>
+</svg>

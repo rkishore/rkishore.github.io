@@ -1,0 +1,57 @@
+<svg viewBox="0 0 760 380" width="760" height="380" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>HTTP+SSE versus Streamable HTTP, compared row by row</title>
+  <desc>A comparison table. Endpoints: HTTP+SSE uses two (a separate SSE and POST endpoint), Streamable HTTP uses one (a single slash mcp endpoint). Connection: HTTP+SSE keeps an always-on SSE stream, Streamable HTTP works per request with an optional stream. State: HTTP+SSE is stateful, Streamable HTTP is optional or stateless. Resume: HTTP+SSE has none so a drop means restart, Streamable HTTP replays with the Last-Event-ID header. Infrastructure: HTTP+SSE needs sticky sessions, Streamable HTTP is serverless-friendly.</desc>
+
+  <rect x="0" y="0" width="760" height="380" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .hdr  { font-size: 13.5px; font-weight: 700; }
+    .rl   { font-size: 12.5px; font-weight: 700; fill: #444441; }
+    .old  { font-size: 12px; fill: #5F5E5A; }
+    .new  { font-size: 12px; font-weight: 600; fill: #993C1D; }
+  </style>
+
+  <text x="24" y="36" class="h">HTTP + SSE  vs  Streamable HTTP</text>
+
+  <!-- column backgrounds -->
+  <rect x="250" y="108" width="242" height="250" rx="12" fill="#F7F5F0"/>
+  <rect x="506" y="108" width="242" height="250" rx="12" fill="#FCF1EC"/>
+
+  <!-- column headers -->
+  <rect x="250" y="58" width="242" height="40" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="371" y="83" text-anchor="middle" class="hdr" fill="#444441">HTTP + SSE (legacy)</text>
+  <rect x="506" y="58" width="242" height="40" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="627" y="83" text-anchor="middle" class="hdr" fill="#993C1D">Streamable HTTP</text>
+
+  <!-- row separators -->
+  <line x1="24" y1="156" x2="748" y2="156" stroke="#EAE8E1" stroke-width="1"/>
+  <line x1="24" y1="204" x2="748" y2="204" stroke="#EAE8E1" stroke-width="1"/>
+  <line x1="24" y1="252" x2="748" y2="252" stroke="#EAE8E1" stroke-width="1"/>
+  <line x1="24" y1="300" x2="748" y2="300" stroke="#EAE8E1" stroke-width="1"/>
+
+  <!-- Row 1: Endpoints -->
+  <text x="24" y="138" class="rl">Endpoints</text>
+  <text x="371" y="138" text-anchor="middle" class="old">Two (SSE + POST)</text>
+  <text x="627" y="138" text-anchor="middle" class="new">One (/mcp)</text>
+
+  <!-- Row 2: Connection -->
+  <text x="24" y="186" class="rl">Connection</text>
+  <text x="371" y="186" text-anchor="middle" class="old">Always-on SSE</text>
+  <text x="627" y="186" text-anchor="middle" class="new">Per request; optional stream</text>
+
+  <!-- Row 3: State -->
+  <text x="24" y="234" class="rl">State</text>
+  <text x="371" y="234" text-anchor="middle" class="old">Stateful</text>
+  <text x="627" y="234" text-anchor="middle" class="new">Optional / stateless</text>
+
+  <!-- Row 4: Resume -->
+  <text x="24" y="282" class="rl">Resume</text>
+  <text x="371" y="282" text-anchor="middle" class="old">None — drop = restart</text>
+  <text x="627" y="282" text-anchor="middle" class="new">Last-Event-ID replay</text>
+
+  <!-- Row 5: Infra -->
+  <text x="24" y="330" class="rl">Infra</text>
+  <text x="371" y="330" text-anchor="middle" class="old">Needs sticky sessions</text>
+  <text x="627" y="330" text-anchor="middle" class="new">Serverless-friendly</text>
+</svg>

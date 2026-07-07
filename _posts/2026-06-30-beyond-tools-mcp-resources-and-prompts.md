@@ -3,7 +3,7 @@ title: "Key MCP Primitives: Tools, Resources, Prompts & Sampling"
 description: "A first-person field guide to the four MCP server primitives — tools, resources, prompts, and sampling — built around one question: who's in the driver's seat?"
 ---
 
-*MCP series — 1. [Why MCP?](/2026/06/28/why-mcp-scales-as-n-plus-m.html) · 2. Key MCP Primitives (you're here) · 3. MCP Transports (coming soon)*
+*MCP series — 1. [Why MCP?](/2026/06/28/why-mcp-scales-as-n-plus-m.html) · 2. Key MCP Primitives (you're here) · 3. [MCP Transports](/2026/07/07/mcp-transports-sse-vs-streamable-http.html)*
 
 **Objective:** A first-person field guide to the **four** [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server primitives &mdash; tools, resources (and resource templates), prompts, and **sampling** &mdash; organized around one question that made them all click for me: *who's in the driver's seat?*
 
