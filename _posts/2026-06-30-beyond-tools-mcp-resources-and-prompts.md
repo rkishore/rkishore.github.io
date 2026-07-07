@@ -1,26 +1,28 @@
 ---
-title: "Beyond Tools: MCP Resources, Templates & Prompts"
+title: "Key MCP Primitives: Tools, Resources, Prompts & Sampling"
+description: "A first-person field guide to the four MCP server primitives — tools, resources, prompts, and sampling — built around one question: who's in the driver's seat?"
 ---
 
-Jun 30, 2026
+*MCP series — 1. [Why MCP?](/2026/06/28/why-mcp-scales-as-n-plus-m.html) · 2. Key MCP Primitives (you're here) · 3. MCP Transports (coming soon)*
 
-**Objective:** A first-person field guide to the three [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server primitives you meet *after* tools &mdash; resources, resource templates, and prompts &mdash; built around one question that made them all click for me.
+**Objective:** A first-person field guide to the **four** [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server primitives &mdash; tools, resources (and resource templates), prompts, and **sampling** &mdash; organized around one question that made them all click for me: *who's in the driver's seat?*
 
-I'd already built an MCP tool before any of this clicked. Tools felt obvious: the model wants to do something, it calls a function, it gets a result. But then I kept seeing "resources" and "prompts" in the spec and couldn't tell why they weren't just more tools. They *look* like functions. Why three boxes instead of one?
+I'd already built an MCP tool before any of this clicked. Tools felt obvious: the model wants to do something, it calls a function, it gets a result. But then I kept seeing "resources," "prompts," and "sampling" in the spec and couldn't tell why they weren't just more tools. They *look* like functions. Why four boxes instead of one?
 
 The thing that finally sorted it out wasn't a definition. It was a question.
 
 ## Who's in the driver's seat?
 
-Ask, for each primitive: **who decides when this fires?** That single question splits the three cleanly.
+Ask, for each primitive: **who decides when this fires?** That single question splits **all four** cleanly.
 
 - **Tools are model-controlled.** The LLM decides to call them, mid-conversation, based on what it's trying to accomplish. Side effects are fine &mdash; that's the point.
 - **Resources are host-controlled.** The *host* (not the model) decides when to attach a resource as context. They're like GET endpoints: data the model can read, no side effects. Useful for "here's reference material the agent should always have" &mdash; the host might pull one in because the user opened a file, or because it always wants some config in context.
 - **Prompts are user-controlled.** The *user* explicitly invokes them &mdash; think slash commands &mdash; and the server hands back a ready-made set of messages to seed the conversation.
+- **Sampling is server-controlled.** Mid-operation, the *server* turns around and asks the model to generate something for it &mdash; brokered by the host. It's the one arrow that points the other way; more on it at the end.
 
-![Three cards showing who controls each MCP primitive: tools are model-controlled (what the model can do), resources are host-controlled (what the model can read), prompts are user-controlled (what the user can invoke)](/images/mcp/mcp-driver-seat.svg)
+![Four cards showing who controls each MCP primitive: tools are model-controlled (what the model can do), resources are host-controlled (what the model can read), prompts are user-controlled (what the user can invoke), and sampling is server-controlled (what the server can ask the model for)](/images/mcp/mcp-driver-seat.svg)
 
-Once I had the driver's seat in my head, the FastMCP decorators stopped looking redundant. They're not three flavors of the same thing &mdash; they're three different *triggers*:
+Once I had the driver's seat in my head, the FastMCP decorators stopped looking redundant. They're not flavors of the same thing &mdash; they're different *triggers*:
 
 ```python
 @mcp.tool()
@@ -176,8 +178,44 @@ The order is the whole story: *you* fire arrow 1, the host fetches the messages 
 
 The tools on that same server show up too, but through the other door: those the *model* calls when it decides to, while the slash command waits for *me*. One server, two audiences &mdash; the whole tools-vs-prompts split, now sitting in my editor instead of a spec.
 
+## The fourth seat: sampling
+
+This is the seat that runs backwards. Ask the same question, *who decides when this fires?*, and the answer is the twist: **the server.**
+
+Everything so far flows *toward* the server. The model calls a tool; the host reads a resource; the user invokes a prompt. **Sampling flips the arrow.** Mid-operation, the *server* turns around and asks *the model* to generate something for it &mdash; a `sampling/createMessage` request that travels back up through the host.
+
+Why would a server want that? Because sometimes it has the data but not the *words*. Picture a `summarize_market_position` tool on the seller server: it has the comps and the floor price, but writing a two-sentence read of the listing is a language job, not a lookup. Rather than bundle its own LLM, the server borrows the one the host already has:
+
+```python
+# inside a tool the model called — the server now needs a sentence, not just data
+result = await ctx.session.create_message(
+    messages=[UserMessage(
+        f"In two sentences, describe this listing's market position:\n{comps_json}"
+    )],
+    max_tokens=120,
+)
+market_note = result.content.text     # the model wrote this — for the server
+```
+
+And the host holds the reins the whole time &mdash; this is the safety story, not a footnote:
+
+```python
+# host-side: nothing happens without the host's say-so
+async def on_sampling_request(request):
+    # the host — not the server — owns the model and the credentials
+    if not user_approves(request):        # can inspect, edit, or outright deny
+        raise PermissionError("sampling denied")
+    return await my_llm.complete(request.messages)
+```
+
+The server never sees my API key, never picks the model, never fires without the host agreeing. It borrows intelligence on a leash the host holds &mdash; *server-controlled*, but not server-*trusted*.
+
+![Three actors in a row — MCP server, host broker, model. The server asks for a completion via sampling/createMessage, the host relays it to the model, and the model's answer returns back through the host to the server. A tool runs the opposite way, model to server.](/images/mcp/mcp-sampling-flow.svg)
+
+Same wire, opposite arrow: a tool is the model reaching into the server; sampling is the server reaching back to the model.
+
 ## The one-liner that ties it together
 
-If I could distill all of this into one sentence, it'd be this: **tools are what the model can *do*, resources are what the model can *read*, prompts are what the user can *invoke*.** Everything else &mdash; the decorators, the two lists, the handshake &mdash; hangs off that.
+If I could distill all of this into one sentence, it'd be this: **tools are what the model can *do*, resources are what the model can *read*, prompts are what the user can *invoke*, and sampling is what the server can *ask the model for*.** Everything else &mdash; the decorators, the two lists, the handshake &mdash; hangs off that.
 
 I could adapt an MCP *client* and feel like I understood the protocol. I didn't, really. What actually made it click was building a *server*, registering the wrong kind of resource, and watching it return `Method not found` &mdash; then figuring out why the protocol was right and I was wrong.

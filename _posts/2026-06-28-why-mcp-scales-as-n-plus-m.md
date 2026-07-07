@@ -1,6 +1,10 @@
-# Why MCP is N+M, not N&times;M
+---
+description: "A short, picture-first explanation of why MCP turns integration from multiplication into addition, and where MCP sits in the protocol stack."
+---
 
-Jun 28, 2026
+# Why MCP? N+M, not N&times;M
+
+*MCP series — 1. Why MCP? (you're here) · 2. [Key MCP Primitives](/2026/06/30/beyond-tools-mcp-resources-and-prompts.html) · 3. MCP Transports (coming soon)*
 
 **Objective:** A short, picture-first explanation of why the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) turns the integration problem from multiplication into addition, and where MCP actually sits in the protocol stack.
 

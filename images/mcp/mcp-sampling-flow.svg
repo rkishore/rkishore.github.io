@@ -1,0 +1,59 @@
+<svg viewBox="0 0 720 300" width="720" height="300" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Sampling: the server borrows the model, brokered by the host</title>
+  <desc>Sampling is the one MCP primitive that runs backwards. Three actors sit in a row: the MCP server (has data but no LLM), the host (the broker that holds the model and the credentials and can approve, edit, or deny), and the model (writes the answer). A forward flow goes left to right — the server asks for a completion with sampling/createMessage, relayed by the host to the model. A return flow goes right to left — the model answers and the host relays the completion back to the server. The caption notes the contrast: a tool runs the other way, model to server; sampling reverses the arrow, server to model, brokered by the host.</desc>
+
+  <rect x="0" y="0" width="720" height="300" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C6BC4"/></marker>
+    <marker id="ahGrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A8880"/></marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 18px; font-weight: 700; fill: #1A1A18; }
+    .tag  { font-size: 11px; font-weight: 700; letter-spacing: 0.4px; fill: #5F5E5A; }
+    .node { font-size: 15px; font-weight: 700; }
+    .sub  { font-size: 10.5px; font-weight: 400; fill: #888780; }
+    .fwd  { font-size: 12px; font-weight: 600; fill: #2C6BC4; }
+    .ret  { font-size: 12px; font-weight: 600; fill: #8A8880; }
+    .mono { font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; font-weight: 700; fill: #2C6BC4; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="36" y="40" class="h">Sampling: the server borrows the model</text>
+  <text x="36" y="60" class="tag">THE ONE PRIMITIVE THAT RUNS BACKWARDS</text>
+
+  <!-- forward-flow label -->
+  <text x="360" y="104" text-anchor="middle" class="fwd">1 &#8212; the server asks: <tspan class="mono">sampling/createMessage</tspan></text>
+
+  <!-- nodes (center y = 155) -->
+  <!-- Server -->
+  <rect x="40" y="122" width="150" height="66" rx="12" fill="#F0EFEB" stroke="#C7C4BB"/>
+  <text x="115" y="152" text-anchor="middle" class="node" fill="#3C3A34">MCP Server</text>
+  <text x="115" y="170" text-anchor="middle" class="sub">has data, no LLM</text>
+
+  <!-- Host (broker — the accent) -->
+  <rect x="285" y="122" width="150" height="66" rx="12" fill="#E3EEFB" stroke="#8FB6E8"/>
+  <text x="360" y="152" text-anchor="middle" class="node" fill="#1E4E92">Host &#183; broker</text>
+  <text x="360" y="170" text-anchor="middle" class="sub">holds the model + keys</text>
+
+  <!-- Model -->
+  <rect x="530" y="122" width="150" height="66" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="605" y="152" text-anchor="middle" class="node" fill="#3C3489">Model</text>
+  <text x="605" y="170" text-anchor="middle" class="sub">writes the answer</text>
+
+  <!-- forward arrows (blue, upper) -->
+  <path d="M190,143 L285,143" fill="none" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <path d="M435,143 L530,143" fill="none" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <!-- return arrows (grey, lower) -->
+  <path d="M530,167 L435,167" fill="none" stroke="#8A8880" stroke-width="2" marker-end="url(#ahGrey)"/>
+  <path d="M285,167 L190,167" fill="none" stroke="#8A8880" stroke-width="2" marker-end="url(#ahGrey)"/>
+
+  <!-- return-flow label -->
+  <text x="360" y="214" text-anchor="middle" class="ret">2 &#8212; the model answers; the host relays the completion back</text>
+
+  <!-- contrast caption -->
+  <text x="360" y="258" text-anchor="middle" class="cap">A tool runs the other way &#8212; model &#8594; server. Sampling reverses the arrow:</text>
+  <text x="360" y="276" text-anchor="middle" class="cap">server &#8594; model, and the host can inspect, edit, or deny before it fires.</text>
+</svg>

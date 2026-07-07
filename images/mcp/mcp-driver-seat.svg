@@ -1,46 +1,56 @@
 <svg viewBox="0 0 720 360" width="720" height="360" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>Who's in the driver's seat for each MCP primitive</title>
-  <desc>Three cards side by side. Tools are model-controlled — what the model can do; the LLM decides to call them. Resources are host-controlled — what the model can read; the host decides what to attach as context, like GET endpoints with no side effects. Prompts are user-controlled — what the user can invoke; the user triggers them like slash commands and the server returns ready-made messages.</desc>
+  <desc>Four cards side by side. Tools are model-controlled — what the model can do; the LLM decides to call them. Resources are host-controlled — what the model can read; the host decides what to attach as context, like GET endpoints with no side effects. Prompts are user-controlled — what the user can invoke; the user triggers them like slash commands and the server returns ready-made messages. Sampling is server-controlled — what the server can ask the model for; mid-operation the server asks the model back for a completion, brokered by the host.</desc>
 
   <rect x="0" y="0" width="720" height="360" fill="#FFFFFF"/>
 
   <style>
     .h      { font-size: 18px; font-weight: 700; fill: #1A1A18; }
-    .name   { font-size: 17px; font-weight: 700; }
-    .who    { font-size: 11px; font-weight: 700; letter-spacing: 0.4px; }
-    .what   { font-size: 13px; font-weight: 600; }
-    .desc   { font-size: 11.5px; }
+    .name   { font-size: 15px; font-weight: 700; }
+    .who    { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; }
+    .what   { font-size: 10.5px; font-weight: 600; }
+    .desc   { font-size: 10px; }
   </style>
 
   <text x="36" y="42" class="h">Who's in the driver's seat?</text>
 
   <!-- Tools card: model-controlled (purple) -->
-  <rect x="36" y="70" width="200" height="250" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
-  <text x="136" y="106" text-anchor="middle" class="name" fill="#3C3489">Tools</text>
-  <rect x="60" y="122" width="152" height="26" rx="13" fill="#534AB7"/>
-  <text x="136" y="139" text-anchor="middle" class="who" fill="#FFFFFF">MODEL-CONTROLLED</text>
-  <text x="136" y="186" text-anchor="middle" class="what" fill="#3C3489">what the model can do</text>
-  <text x="136" y="232" text-anchor="middle" class="desc" fill="#534AB7">The LLM decides to call</text>
-  <text x="136" y="250" text-anchor="middle" class="desc" fill="#534AB7">them, mid-conversation.</text>
-  <text x="136" y="284" text-anchor="middle" class="desc" fill="#534AB7">Side effects allowed.</text>
+  <rect x="36" y="70" width="144" height="250" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="108" y="106" text-anchor="middle" class="name" fill="#3C3489">Tools</text>
+  <rect x="48" y="122" width="120" height="26" rx="13" fill="#534AB7"/>
+  <text x="108" y="139" text-anchor="middle" class="who" fill="#FFFFFF">MODEL-CONTROLLED</text>
+  <text x="108" y="186" text-anchor="middle" class="what" fill="#3C3489">what the model can do</text>
+  <text x="108" y="228" text-anchor="middle" class="desc" fill="#534AB7">The LLM calls them,</text>
+  <text x="108" y="246" text-anchor="middle" class="desc" fill="#534AB7">mid-conversation.</text>
+  <text x="108" y="264" text-anchor="middle" class="desc" fill="#534AB7">Side effects allowed.</text>
 
   <!-- Resources card: host-controlled (green) -->
-  <rect x="260" y="70" width="200" height="250" rx="12" fill="#E1F5EE" stroke="#5DCAA5"/>
-  <text x="360" y="106" text-anchor="middle" class="name" fill="#0F6E56">Resources</text>
-  <rect x="284" y="122" width="152" height="26" rx="13" fill="#1D9E75"/>
-  <text x="360" y="139" text-anchor="middle" class="who" fill="#FFFFFF">HOST-CONTROLLED</text>
-  <text x="360" y="186" text-anchor="middle" class="what" fill="#0F6E56">what the model can read</text>
-  <text x="360" y="232" text-anchor="middle" class="desc" fill="#1D9E75">The host decides what to</text>
-  <text x="360" y="250" text-anchor="middle" class="desc" fill="#1D9E75">attach as context. Like GET</text>
-  <text x="360" y="284" text-anchor="middle" class="desc" fill="#1D9E75">endpoints &#8212; no side effects.</text>
+  <rect x="204" y="70" width="144" height="250" rx="12" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="276" y="106" text-anchor="middle" class="name" fill="#0F6E56">Resources</text>
+  <rect x="216" y="122" width="120" height="26" rx="13" fill="#1D9E75"/>
+  <text x="276" y="139" text-anchor="middle" class="who" fill="#FFFFFF">HOST-CONTROLLED</text>
+  <text x="276" y="186" text-anchor="middle" class="what" fill="#0F6E56">what the model can read</text>
+  <text x="276" y="228" text-anchor="middle" class="desc" fill="#1D9E75">The host attaches them</text>
+  <text x="276" y="246" text-anchor="middle" class="desc" fill="#1D9E75">as context &#8212; like GET</text>
+  <text x="276" y="264" text-anchor="middle" class="desc" fill="#1D9E75">endpoints, no writes.</text>
 
   <!-- Prompts card: user-controlled (orange) -->
-  <rect x="484" y="70" width="200" height="250" rx="12" fill="#FAECE7" stroke="#F0997B"/>
-  <text x="584" y="106" text-anchor="middle" class="name" fill="#993C1D">Prompts</text>
-  <rect x="508" y="122" width="152" height="26" rx="13" fill="#C75B36"/>
-  <text x="584" y="139" text-anchor="middle" class="who" fill="#FFFFFF">USER-CONTROLLED</text>
-  <text x="584" y="186" text-anchor="middle" class="what" fill="#993C1D">what the user can invoke</text>
-  <text x="584" y="232" text-anchor="middle" class="desc" fill="#993C1D">The user triggers them</text>
-  <text x="584" y="250" text-anchor="middle" class="desc" fill="#993C1D">(think slash commands);</text>
-  <text x="584" y="284" text-anchor="middle" class="desc" fill="#993C1D">server returns messages.</text>
+  <rect x="372" y="70" width="144" height="250" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="444" y="106" text-anchor="middle" class="name" fill="#993C1D">Prompts</text>
+  <rect x="384" y="122" width="120" height="26" rx="13" fill="#C75B36"/>
+  <text x="444" y="139" text-anchor="middle" class="who" fill="#FFFFFF">USER-CONTROLLED</text>
+  <text x="444" y="186" text-anchor="middle" class="what" fill="#993C1D">what the user can invoke</text>
+  <text x="444" y="228" text-anchor="middle" class="desc" fill="#993C1D">The user picks one;</text>
+  <text x="444" y="246" text-anchor="middle" class="desc" fill="#993C1D">server returns a</text>
+  <text x="444" y="264" text-anchor="middle" class="desc" fill="#993C1D">ready-made message set.</text>
+
+  <!-- Sampling card: server-controlled (blue) -->
+  <rect x="540" y="70" width="144" height="250" rx="12" fill="#E3EEFB" stroke="#8FB6E8"/>
+  <text x="612" y="106" text-anchor="middle" class="name" fill="#1E4E92">Sampling</text>
+  <rect x="552" y="122" width="120" height="26" rx="13" fill="#2C6BC4"/>
+  <text x="612" y="139" text-anchor="middle" class="who" fill="#FFFFFF">SERVER-CONTROLLED</text>
+  <text x="612" y="186" text-anchor="middle" class="what" fill="#1E4E92">what the server can ask</text>
+  <text x="612" y="228" text-anchor="middle" class="desc" fill="#2C6BC4">The server asks the</text>
+  <text x="612" y="246" text-anchor="middle" class="desc" fill="#2C6BC4">model back mid-op,</text>
+  <text x="612" y="264" text-anchor="middle" class="desc" fill="#2C6BC4">brokered by the host.</text>
 </svg>
