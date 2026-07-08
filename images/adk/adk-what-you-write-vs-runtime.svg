@@ -1,0 +1,67 @@
+<svg viewBox="0 0 780 430" width="780" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>What you write versus what adk web builds for you</title>
+  <desc>On the left, the one thing you write: a single agent.py that defines root_agent as an LlmAgent object with a name, model, instruction, and a tools list holding an MCPToolset. In the middle, the adk web command discovers and wires it. On the right, the runtime builds four things for you: the Runner (the model-to-tool loop), the SessionService (conversation memory), a Chat UI web app, and agent discovery that finds root_agent. You write the declaration; the framework builds the machinery.</desc>
+
+  <rect x="0" y="0" width="780" height="430" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahGrey" markerWidth="10" markerHeight="10" refX="7.5" refY="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .ph   { font-size: 13.5px; font-weight: 700; }
+    .name { font-size: 13px; font-weight: 700; fill: #444441; }
+    .sub  { font-size: 11px; fill: #5F5E5A; }
+    .mono { font-size: 12px; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #3C3489; }
+    .note { font-size: 10.5px; fill: #888780; }
+    .cmd  { font-size: 13px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #5F5E5A; }
+  </style>
+
+  <text x="28" y="38" class="h">What I write  vs.  what adk web builds</text>
+
+  <!-- LEFT: what you write -->
+  <rect x="28" y="72" width="252" height="322" rx="14" fill="#FBFAFF" stroke="#AFA9EC"/>
+  <text x="154" y="100" text-anchor="middle" class="ph" fill="#3C3489">You write</text>
+  <text x="154" y="118" text-anchor="middle" class="sub">one agent.py</text>
+
+  <rect x="46" y="134" width="216" height="212" rx="10" fill="#FFFFFF" stroke="#C9C6EE"/>
+  <text x="62" y="162" class="mono">root_agent = LlmAgent(</text>
+  <text x="84" y="186" class="mono">name="buyer_agent",</text>
+  <text x="84" y="210" class="mono">model="openai/gpt-4o",</text>
+  <text x="84" y="234" class="mono">instruction="…",</text>
+  <text x="84" y="258" class="mono">tools=[</text>
+  <text x="106" y="282" class="mono">MCPToolset(…),</text>
+  <text x="84" y="306" class="mono">],</text>
+  <text x="62" y="330" class="mono">)</text>
+
+  <text x="154" y="368" text-anchor="middle" class="note">+ an __init__.py, and that's the whole agent</text>
+
+  <!-- CENTER arrow -->
+  <text x="390" y="222" text-anchor="middle" class="cmd">adk web</text>
+  <line x1="286" y1="240" x2="494" y2="240" stroke="#8A8880" stroke-width="2.4" marker-end="url(#ahGrey)"/>
+  <text x="390" y="262" text-anchor="middle" class="sub">discovers + wires it all</text>
+
+  <!-- RIGHT: what the runtime builds -->
+  <rect x="500" y="72" width="256" height="322" rx="14" fill="#F5F4F0" stroke="#B4B2A9"/>
+  <text x="628" y="100" text-anchor="middle" class="ph" fill="#5F5E5A">The runtime builds</text>
+  <text x="628" y="118" text-anchor="middle" class="sub">for free, no code</text>
+
+  <rect x="516" y="134" width="224" height="52" rx="9" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <text x="628" y="158" text-anchor="middle" class="name">Runner</text>
+  <text x="628" y="176" text-anchor="middle" class="sub">the model ↔ tool loop</text>
+
+  <rect x="516" y="196" width="224" height="52" rx="9" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <text x="628" y="220" text-anchor="middle" class="name">SessionService</text>
+  <text x="628" y="238" text-anchor="middle" class="sub">conversation memory</text>
+
+  <rect x="516" y="258" width="224" height="52" rx="9" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <text x="628" y="282" text-anchor="middle" class="name">Chat UI</text>
+  <text x="628" y="300" text-anchor="middle" class="sub">a web app to talk to it</text>
+
+  <rect x="516" y="320" width="224" height="52" rx="9" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <text x="628" y="344" text-anchor="middle" class="name">Agent discovery</text>
+  <text x="628" y="362" text-anchor="middle" class="sub">finds your root_agent</text>
+</svg>

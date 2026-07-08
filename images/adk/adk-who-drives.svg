@@ -1,0 +1,79 @@
+<svg viewBox="0 0 800 440" width="800" height="440" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>LlmAgent versus workflow agents: who picks the next step</title>
+  <desc>Two contrasting styles. On the left, an LlmAgent: the model is in the middle and dynamically chooses its next step at runtime — call a tool, call another, or answer. The model drives. On the right, workflow agents whose control flow is fixed in code: a Sequential runs sub-agents A then B then C in order; a Parallel fans out to several branches concurrently and merges them; a Loop repeats a step until a stop condition or the max iterations. Your code drives. The mnemonic: LlmAgent thinks; workflow agents march.</desc>
+
+  <rect x="0" y="0" width="800" height="440" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahPurple" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#534AB7"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .ph   { font-size: 13.5px; font-weight: 700; }
+    .rl   { font-size: 12.5px; font-weight: 700; fill: #444441; }
+    .node { font-size: 15px; font-weight: 700; fill: #FFFFFF; }
+    .sub  { font-size: 11px; fill: #5F5E5A; }
+    .boxt { font-size: 12px; font-weight: 700; fill: #444441; }
+    .cap  { font-size: 11.5px; font-style: italic; }
+  </style>
+
+  <text x="24" y="38" class="h">Who picks the next step?</text>
+
+  <!-- LEFT panel: LlmAgent, model drives (purple) -->
+  <rect x="24" y="72" width="340" height="334" rx="14" fill="#F7F6FE" stroke="#AFA9EC"/>
+  <text x="194" y="100" text-anchor="middle" class="ph" fill="#3C3489">LlmAgent · the model drives</text>
+
+  <rect x="134" y="126" width="120" height="46" rx="12" fill="#534AB7"/>
+  <text x="194" y="155" text-anchor="middle" class="node">LLM</text>
+
+  <!-- three dynamic choices -->
+  <line x1="194" y1="172" x2="82" y2="238" stroke="#534AB7" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ahPurple)"/>
+  <line x1="194" y1="172" x2="194" y2="238" stroke="#534AB7" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ahPurple)"/>
+  <line x1="194" y1="172" x2="306" y2="238" stroke="#534AB7" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ahPurple)"/>
+  <text x="82"  y="258" text-anchor="middle" class="sub">call a tool</text>
+  <text x="194" y="258" text-anchor="middle" class="sub">call another</text>
+  <text x="306" y="258" text-anchor="middle" class="sub">answer</text>
+
+  <text x="194" y="320" text-anchor="middle" class="sub">It chooses at runtime, turn by turn.</text>
+  <text x="194" y="384" text-anchor="middle" class="cap" fill="#3C3489">LlmAgent thinks.</text>
+
+  <!-- RIGHT panel: workflow agents, code drives (grey) -->
+  <rect x="388" y="72" width="388" height="334" rx="14" fill="#F5F4F0" stroke="#B4B2A9"/>
+  <text x="582" y="100" text-anchor="middle" class="ph" fill="#5F5E5A">Workflow agents · your code drives</text>
+
+  <!-- Sequential -->
+  <text x="404" y="152" class="rl">Sequential</text>
+  <rect x="536" y="134" width="44" height="30" rx="7" fill="#FFFFFF" stroke="#C7C4BB"/><text x="558" y="154" text-anchor="middle" class="boxt">A</text>
+  <rect x="606" y="134" width="44" height="30" rx="7" fill="#FFFFFF" stroke="#C7C4BB"/><text x="628" y="154" text-anchor="middle" class="boxt">B</text>
+  <rect x="676" y="134" width="44" height="30" rx="7" fill="#FFFFFF" stroke="#C7C4BB"/><text x="698" y="154" text-anchor="middle" class="boxt">C</text>
+  <line x1="580" y1="149" x2="606" y2="149" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahGrey)"/>
+  <line x1="650" y1="149" x2="676" y2="149" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahGrey)"/>
+
+  <!-- Parallel -->
+  <text x="404" y="244" class="rl">Parallel</text>
+  <rect x="504" y="228" width="40" height="30" rx="7" fill="#FFFFFF" stroke="#C7C4BB"/><text x="524" y="248" text-anchor="middle" class="sub">in</text>
+  <rect x="614" y="210" width="40" height="18" rx="5" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <rect x="614" y="234" width="40" height="18" rx="5" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <rect x="614" y="258" width="40" height="18" rx="5" fill="#FFFFFF" stroke="#C7C4BB"/>
+  <rect x="716" y="228" width="44" height="30" rx="7" fill="#FFFFFF" stroke="#C7C4BB"/><text x="738" y="248" text-anchor="middle" class="sub">merge</text>
+  <line x1="544" y1="243" x2="614" y2="219" stroke="#8A8880" stroke-width="1.4" marker-end="url(#ahGrey)"/>
+  <line x1="544" y1="243" x2="614" y2="243" stroke="#8A8880" stroke-width="1.4" marker-end="url(#ahGrey)"/>
+  <line x1="544" y1="243" x2="614" y2="267" stroke="#8A8880" stroke-width="1.4" marker-end="url(#ahGrey)"/>
+  <line x1="654" y1="219" x2="716" y2="240" stroke="#8A8880" stroke-width="1.4" marker-end="url(#ahGrey)"/>
+  <line x1="654" y1="243" x2="716" y2="243" stroke="#8A8880" stroke-width="1.4" marker-end="url(#ahGrey)"/>
+  <line x1="654" y1="267" x2="716" y2="246" stroke="#8A8880" stroke-width="1.4" marker-end="url(#ahGrey)"/>
+
+  <!-- Loop -->
+  <text x="404" y="336" class="rl">Loop</text>
+  <rect x="520" y="320" width="70" height="30" rx="7" fill="#FFFFFF" stroke="#C7C4BB"/><text x="555" y="340" text-anchor="middle" class="boxt">step</text>
+  <path d="M 584 320 C 596 296 514 296 526 318" fill="none" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahGrey)"/>
+  <text x="694" y="340" text-anchor="middle" class="sub">until stop / max iters</text>
+
+  <text x="582" y="384" text-anchor="middle" class="cap" fill="#5F5E5A">Workflow agents march.</text>
+</svg>
