@@ -1,0 +1,66 @@
+<svg viewBox="0 0 800 400" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The A2A discover-then-send handshake and task lifecycle</title>
+  <desc>A client first discovers an agent by fetching its Agent Card from the well-known URL, which returns the agent's name, url, skills, and capabilities. The client then sends a message with message/send to the agent server, which runs under adk web with the a2a flag. The message creates a Task whose lifecycle runs submitted, then working, then completed — or failed. Completed means the turn finished, not that the business goal such as a deal was reached.</desc>
+
+  <rect x="0" y="0" width="800" height="400" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 14px; font-weight: 700; }
+    .sub  { font-size: 10px; fill: #5F5E5A; }
+    .step { font-size: 12px; font-weight: 700; fill: #2C6BC4; }
+    .mono { font-size: 11px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .life { font-size: 12px; font-weight: 700; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .lbl  { font-size: 12px; font-weight: 700; fill: #444441; }
+  </style>
+
+  <text x="24" y="34" class="h">Discover, then send</text>
+
+  <!-- Client -->
+  <rect x="36" y="150" width="146" height="96" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="109" y="194" text-anchor="middle" class="node" fill="#1F4E79">Client</text>
+  <text x="109" y="214" text-anchor="middle" class="sub">the caller</text>
+
+  <!-- Agent Card chip (discovery result) -->
+  <rect x="286" y="74" width="288" height="60" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="430" y="100" text-anchor="middle" class="mono" fill="#444441">GET /.well-known/agent-card.json</text>
+  <text x="430" y="120" text-anchor="middle" class="sub">name · url · skills · capabilities</text>
+
+  <!-- Agent server -->
+  <rect x="612" y="164" width="152" height="80" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="688" y="198" text-anchor="middle" class="node" fill="#3C3489">Agent</text>
+  <text x="688" y="218" text-anchor="middle" class="sub">adk web --a2a</text>
+
+  <!-- (1) discover arrow -->
+  <path d="M 182 182 C 224 168, 244 140, 286 120" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <text x="196" y="158" class="step">① discover</text>
+
+  <!-- (2) send arrow -->
+  <line x1="182" y1="214" x2="612" y2="206" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="392" y="198" text-anchor="middle" class="step">② message/send</text>
+
+  <!-- Task lifecycle -->
+  <text x="36" y="312" class="lbl">Task:</text>
+  <rect x="98" y="294" width="112" height="32" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="154" y="314" text-anchor="middle" class="life" fill="#5F5E5A">submitted</text>
+  <line x1="210" y1="310" x2="246" y2="310" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahGrey)"/>
+  <rect x="246" y="294" width="96" height="32" rx="8" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="294" y="314" text-anchor="middle" class="life" fill="#1F4E79">working</text>
+  <line x1="342" y1="310" x2="378" y2="310" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahGrey)"/>
+  <rect x="378" y="294" width="112" height="32" rx="8" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="434" y="314" text-anchor="middle" class="life" fill="#0F6E56">completed</text>
+  <text x="512" y="314" class="sub">| failed</text>
+
+  <!-- caption -->
+  <text x="24" y="366" class="cap"><tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#0F6E56">completed</tspan> = the turn finished — <tspan font-weight="700" fill="#1A1A18">not</tspan> that the goal (a deal) was reached. That's your app's logic.</text>
+</svg>

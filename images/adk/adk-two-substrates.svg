@@ -1,0 +1,80 @@
+<svg viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The same buyer-seller negotiation on two substrates: in-process shared state versus networked A2A</title>
+  <desc>Left: the in-process substrate. A LoopAgent framework box contains the buyer and seller agents, which communicate through one shared session state bag using output_key and placeholder templating; the framework orchestrates and loops each round. Right: the networked substrate. The buyer and seller run as independent services with no shared memory; a matchmaker script that you own relays messages between them over HTTP with message/send, keeping a separate contextId thread for each. Same agents and same negotiation logic; only the substrate changes.</desc>
+
+  <rect x="0" y="0" width="800" height="430" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahWire" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#993C1D"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 16px; font-weight: 700; fill: #1A1A18; }
+    .ph   { font-size: 13.5px; font-weight: 700; }
+    .node { font-size: 13px; font-weight: 700; fill: #3C3489; }
+    .tiny { font-size: 9px; fill: #5F5E5A; }
+    .lab  { font-size: 10.5px; font-weight: 700; }
+    .mono { font-size: 9.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11px; fill: #5F5E5A; }
+  </style>
+
+  <text x="20" y="32" class="h">Same negotiation, two substrates</text>
+
+  <line x1="400" y1="58" x2="400" y2="372" stroke="#E4E2DA" stroke-width="1.5"/>
+
+  <!-- ===== LEFT: in-process ===== -->
+  <text x="200" y="80" text-anchor="middle" class="ph" fill="#5F5E5A">In-process</text>
+
+  <rect x="20" y="118" width="360" height="254" rx="14" fill="#FBFAF7" stroke="#B4B2A9" stroke-dasharray="7 4"/>
+  <text x="36" y="140" class="lab" fill="#5F5E5A">LoopAgent — framework orchestrates</text>
+
+  <rect x="44" y="156" width="140" height="52" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="114" y="188" text-anchor="middle" class="node">buyer</text>
+  <rect x="214" y="156" width="140" height="52" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="284" y="188" text-anchor="middle" class="node">seller</text>
+
+  <path d="M 284 156 C 272 128, 126 128, 114 156" fill="none" stroke="#8A8880" stroke-width="1.5" marker-end="url(#ahGrey)"/>
+  <text x="199" y="122" text-anchor="middle" class="tiny">next round (escalate + max_iters)</text>
+
+  <rect x="96" y="288" width="208" height="56" rx="16" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="200" y="312" text-anchor="middle" class="lab" fill="#0F6E56">one shared session state</text>
+  <text x="200" y="331" text-anchor="middle" class="mono" fill="#0F6E56">output_key → {placeholder}</text>
+
+  <line x1="114" y1="208" x2="140" y2="288" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="102" y="252" text-anchor="end" class="tiny" fill="#2C6BC4">writes</text>
+  <line x1="270" y1="288" x2="288" y2="208" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="300" y="252" class="tiny" fill="#2C6BC4">reads</text>
+
+  <!-- ===== RIGHT: networked ===== -->
+  <text x="600" y="80" text-anchor="middle" class="ph" fill="#5F5E5A">Networked · A2A</text>
+  <text x="424" y="140" class="lab" fill="#5F5E5A">you orchestrate — independent services</text>
+
+  <rect x="424" y="156" width="132" height="52" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="490" y="180" text-anchor="middle" class="node">buyer</text>
+  <text x="490" y="197" text-anchor="middle" class="tiny">own service</text>
+
+  <rect x="648" y="156" width="132" height="52" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="714" y="180" text-anchor="middle" class="node">seller</text>
+  <text x="714" y="197" text-anchor="middle" class="tiny">own service</text>
+
+  <rect x="540" y="288" width="168" height="56" rx="12" fill="#F5F4F0" stroke="#B4B2A9"/>
+  <text x="624" y="312" text-anchor="middle" class="lab" fill="#5F5E5A">matchmaker</text>
+  <text x="624" y="331" text-anchor="middle" class="mono" fill="#5F5E5A">your script · message/send</text>
+
+  <line x1="574" y1="288" x2="516" y2="208" stroke="#993C1D" stroke-width="2" marker-start="url(#ahWire)" marker-end="url(#ahWire)"/>
+  <text x="478" y="250" text-anchor="middle" class="mono" fill="#993C1D">buyer contextId</text>
+  <line x1="674" y1="288" x2="700" y2="208" stroke="#993C1D" stroke-width="2" marker-start="url(#ahWire)" marker-end="url(#ahWire)"/>
+  <text x="742" y="250" text-anchor="middle" class="mono" fill="#993C1D">seller contextId</text>
+
+  <!-- caption -->
+  <text x="20" y="398" class="cap">Same buyer &amp; seller, same negotiation logic. Only the substrate changes: <tspan font-weight="700" fill="#0F6E56">one shared state bag</tspan> the framework runs</text>
+  <text x="20" y="417" class="cap">vs. <tspan font-weight="700" fill="#993C1D">two contextId threads</tspan> a matchmaker (you) relays over HTTP — no shared memory, discovered via Agent Cards.</text>
+</svg>
