@@ -1,0 +1,59 @@
+<svg viewBox="0 0 820 400" width="820" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The capstone negotiation orchestrator: a LoopAgent wrapping a Sequential buyer-then-seller round</title>
+  <desc>An outer LoopAgent, up to five rounds, contains a SequentialAgent that runs the buyer then the seller. The buyer writes output_key buyer_offer and reads seller_response from the prior round. An arrow passes buyer_offer to the seller, which reads it, writes output_key seller_response, and calls submit_decision to record a structured seller_decision. A loop-back arrow carries seller_response into the next round for the buyer. Each agent has a before_tool allowlist — the seller additionally sees the floor price. The loop repeats until the seller's decision is ACCEPT, which sets escalate to true, or five rounds pass.</desc>
+
+  <rect x="0" y="0" width="820" height="400" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .loop { font-size: 12.5px; font-weight: 700; fill: #5F5E5A; }
+    .seq  { font-size: 11.5px; font-weight: 700; fill: #888780; }
+    .node { font-size: 14px; font-weight: 700; fill: #3C3489; }
+    .mono { font-size: 10.5px; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #3C3489; }
+    .flow { font-size: 10.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #2C6BC4; }
+    .note { font-size: 10px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="34" class="h">The capstone: a negotiation loop, wired from Part 2's parts</text>
+
+  <!-- LoopAgent outer -->
+  <rect x="40" y="66" width="740" height="284" rx="16" fill="#FBFAF7" stroke="#B4B2A9" stroke-dasharray="7 4"/>
+  <text x="58" y="90" class="loop">LoopAgent — up to 5 rounds</text>
+  <text x="410" y="122" text-anchor="middle" class="seq">SequentialAgent · one round</text>
+
+  <!-- buyer -->
+  <rect x="96" y="140" width="264" height="120" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="112" y="166" class="node">buyer</text>
+  <text x="112" y="192" class="mono">output_key="buyer_offer"</text>
+  <text x="112" y="212" class="mono">reads {seller_response}</text>
+  <text x="112" y="240" class="note">before_tool → buyer allowlist</text>
+
+  <!-- seller -->
+  <rect x="460" y="140" width="264" height="120" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="476" y="166" class="node">seller</text>
+  <text x="476" y="190" class="mono">reads {buyer_offer}</text>
+  <text x="476" y="209" class="mono">output_key="seller_response"</text>
+  <text x="476" y="228" class="mono">submit_decision → seller_decision</text>
+  <text x="476" y="250" class="note">before_tool → seller allowlist (+ floor price)</text>
+
+  <!-- forward: buyer -> seller -->
+  <text x="410" y="184" text-anchor="middle" class="flow">{buyer_offer}</text>
+  <line x1="360" y1="196" x2="460" y2="196" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <!-- loop-back: seller_response into next round -->
+  <path d="M 592 260 C 592 312, 228 312, 228 262" fill="none" stroke="#8A8880" stroke-width="1.8" marker-end="url(#ahGrey)"/>
+  <text x="410" y="306" text-anchor="middle" class="note">next round → buyer reads {seller_response}</text>
+
+  <!-- caption -->
+  <text x="24" y="380" class="cap">Repeats until the seller's <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#1A1A18">submit_decision</tspan> is <tspan font-weight="700" fill="#1A1A18">ACCEPT</tspan> (an <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#1A1A18">after_agent_callback</tspan> sets <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#1A1A18">escalate = True</tspan>) — or 5 rounds pass.</text>
+</svg>

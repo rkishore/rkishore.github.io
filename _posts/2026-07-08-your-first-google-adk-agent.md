@@ -3,7 +3,7 @@ title: "Your First Google ADK Agent: What You Write vs. What the Framework Build
 description: "Google ADK is declarative — you describe an agent as one object and adk web conjures the runtime, memory, and chat UI. A field guide to what you write, what the framework builds, and when to take back the wheel."
 ---
 
-*ADK series — 1. Your First ADK Agent (you're here) · more parts coming*
+*ADK series — 1. Your First ADK Agent (you're here) · 2. [State & Control](/2026/07/09/adk-state-and-control.html) · more coming*
 
 **Objective:** A first-person field guide to writing your first agent in [Google's Agent Development Kit (ADK)](https://google.github.io/adk-docs/) &mdash; organized around one question: *what does the framework do for you, and what do you actually write?*
 

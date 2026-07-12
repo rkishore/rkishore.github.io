@@ -1,0 +1,65 @@
+<svg viewBox="0 0 800 380" width="800" height="380" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>ADK callbacks as deterministic gates around each model and tool step</title>
+  <desc>A left-to-right pipeline. A before_model gate redacts or scrubs the prompt, then the LLM runs. A before_tool gate does allowlisting and argument checks and can return a dict to block the tool. Then the Tool runs. An after_tool gate observes or logs and can return a dict to override the result. The tool result then flows back to the model. Returning None passes through; returning a dict intervenes — blocking before the tool or overriding after it.</desc>
+
+  <rect x="0" y="0" width="800" height="380" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .gate { font-size: 11.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #5F5E5A; }
+    .node { font-size: 15px; font-weight: 700; }
+    .sub  { font-size: 9.5px; fill: #888780; }
+    .ret  { font-size: 11px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="34" class="h">Callbacks: deterministic gates around each step</text>
+
+  <!-- before_model gate -->
+  <rect x="24" y="140" width="112" height="84" rx="10" fill="#F5F4F0" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+  <text x="80" y="170" text-anchor="middle" class="gate">before_model</text>
+  <text x="80" y="192" text-anchor="middle" class="sub">redact / scrub</text>
+  <text x="80" y="207" text-anchor="middle" class="sub">the prompt</text>
+
+  <!-- LLM -->
+  <rect x="156" y="140" width="104" height="84" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="208" y="188" text-anchor="middle" class="node" fill="#3C3489">LLM</text>
+
+  <!-- before_tool gate -->
+  <rect x="280" y="140" width="124" height="84" rx="10" fill="#F5F4F0" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+  <text x="342" y="170" text-anchor="middle" class="gate">before_tool</text>
+  <text x="342" y="192" text-anchor="middle" class="sub">allowlist + args</text>
+  <text x="342" y="207" text-anchor="middle" class="sub">dict ⇒ block</text>
+
+  <!-- Tool -->
+  <rect x="424" y="140" width="104" height="84" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="476" y="188" text-anchor="middle" class="node" fill="#993C1D">Tool</text>
+
+  <!-- after_tool gate -->
+  <rect x="548" y="140" width="124" height="84" rx="10" fill="#F5F4F0" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+  <text x="610" y="170" text-anchor="middle" class="gate">after_tool</text>
+  <text x="610" y="192" text-anchor="middle" class="sub">observe / log</text>
+  <text x="610" y="207" text-anchor="middle" class="sub">dict ⇒ override</text>
+
+  <!-- forward arrows -->
+  <line x1="136" y1="182" x2="156" y2="182" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="260" y1="182" x2="280" y2="182" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="404" y1="182" x2="424" y2="182" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="528" y1="182" x2="548" y2="182" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <!-- return arc: after_tool result back to the model -->
+  <path d="M 610 224 C 610 286, 208 286, 208 226" fill="none" stroke="#8A8880" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ahGrey)"/>
+  <text x="409" y="279" text-anchor="middle" class="ret">tool result → back to the model</text>
+
+  <!-- caption -->
+  <text x="24" y="336" class="cap">Return <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#1A1A18">None</tspan> to pass through; return a <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#1A1A18">dict</tspan> to intervene — block before the tool, override after it. The same wheel, both sides of the call.</text>
+</svg>

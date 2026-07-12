@@ -1,0 +1,34 @@
+<svg viewBox="0 0 760 430" width="760" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The four ADK state scopes, nested by lifetime</title>
+  <desc>Four concentric boxes showing ADK state scopes nested by how long they live and how widely they are shared. The outermost is app scope, shared across every user and session. Inside it is user scope, bound to one user across their sessions. Inside that is session scope, the default with no prefix, lasting one conversation. Innermost is temp scope, lasting only the current turn and never persisted. A tool selects a scope by prefixing the key, for example tool_context.state of user colon total_offers.</desc>
+
+  <rect x="0" y="0" width="760" height="430" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .lab  { font-size: 13px; font-weight: 700; }
+    .mono { font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="40" y="38" class="h">State scopes: nested by lifetime</text>
+
+  <!-- app: outermost -->
+  <rect x="40" y="62" width="680" height="322" rx="16" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="58" y="85" class="lab" fill="#5F5E5A"><tspan class="mono">app:</tspan>  every user, every session — global</text>
+
+  <!-- user: -->
+  <rect x="100" y="108" width="560" height="234" rx="14" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="118" y="131" class="lab" fill="#1F4E79"><tspan class="mono">user:</tspan>  one user, across their sessions</text>
+
+  <!-- session: (no prefix) -->
+  <rect x="160" y="154" width="440" height="152" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="178" y="177" class="lab" fill="#3C3489"><tspan class="mono">(no prefix)</tspan>  this one conversation</text>
+
+  <!-- temp: innermost -->
+  <rect x="220" y="200" width="320" height="66" rx="10" fill="#FAECE7" stroke="#F0997B" stroke-dasharray="6 4"/>
+  <text x="380" y="238" text-anchor="middle" class="lab" fill="#993C1D"><tspan class="mono">temp:</tspan>  this one turn — never persisted</text>
+
+  <!-- caption -->
+  <text x="40" y="410" class="cap">Outer = longer-lived and more widely shared. A tool picks the shelf by prefix: <tspan class="mono" fill="#1A1A18">tool_context.state["user:total_offers"]</tspan></text>
+</svg>
