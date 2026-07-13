@@ -1,0 +1,76 @@
+<svg viewBox="0 0 800 470" width="800" height="470" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The matchmaker relays one round across two separate contextId threads</title>
+  <desc>A sequence diagram of one negotiation round over A2A. Three lifelines: the buyer agent on the left, the matchmaker script you own in the center, and the seller agent on the right. The matchmaker sends message/send to the buyer on the buyer's own contextId thread and gets an offer back (read artifacts-first). It then extracts that text, f-strings it into a prompt, and sends message/send to the seller on the seller's own separate contextId thread, getting ACCEPT or COUNTER back. The whole round repeats up to a maximum number of rounds and breaks when the seller response matches ACCEPT and not COUNTER. The buyer and seller never share a thread; the matchmaker is the only party that knows about both.</desc>
+
+  <rect x="0" y="0" width="800" height="470" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 14px; font-weight: 700; }
+    .sub  { font-size: 10px; fill: #5F5E5A; }
+    .step { font-size: 12px; font-weight: 700; fill: #2C6BC4; }
+    .ret  { font-size: 12px; font-weight: 700; fill: #5F5E5A; }
+    .mono { font-size: 11px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .lbl  { font-size: 11px; font-weight: 700; fill: #444441; }
+    .loop { font-size: 11px; font-weight: 700; fill: #8A8880; }
+  </style>
+
+  <text x="24" y="34" class="h">The matchmaker bridges two contextId threads</text>
+
+  <!-- Lifelines -->
+  <line x1="130" y1="116" x2="130" y2="404" stroke="#AFA9EC" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="400" y1="116" x2="400" y2="404" stroke="#85B7EB" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <line x1="670" y1="116" x2="670" y2="404" stroke="#AFA9EC" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+  <!-- Header boxes -->
+  <rect x="55" y="52" width="150" height="62" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="130" y="80" text-anchor="middle" class="node" fill="#3C3489">Buyer</text>
+  <text x="130" y="99" text-anchor="middle" class="sub">A2A service · ctxB thread</text>
+
+  <rect x="325" y="52" width="150" height="62" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="400" y="80" text-anchor="middle" class="node" fill="#1F4E79">Matchmaker</text>
+  <text x="400" y="99" text-anchor="middle" class="sub">you own it</text>
+
+  <rect x="595" y="52" width="150" height="62" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="670" y="80" text-anchor="middle" class="node" fill="#3C3489">Seller</text>
+  <text x="670" y="99" text-anchor="middle" class="sub">A2A service · ctxS thread</text>
+
+  <!-- Round loop frame -->
+  <rect x="60" y="150" width="680" height="236" rx="10" fill="none" stroke="#B4B2A9" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <rect x="60" y="150" width="150" height="22" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="70" y="165" class="loop">round · &#8804; MAX_ROUNDS</text>
+
+  <!-- (1) matchmaker -> buyer -->
+  <line x1="400" y1="204" x2="132" y2="204" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="266" y="196" text-anchor="middle" class="step">&#9312; message/send &#183; ctxB</text>
+
+  <!-- (2) buyer -> matchmaker -->
+  <line x1="130" y1="240" x2="398" y2="240" stroke="#8A8880" stroke-width="1.8" marker-end="url(#ahGrey)"/>
+  <text x="266" y="232" text-anchor="middle" class="ret">&#9313; offer &#8212; artifacts-first</text>
+
+  <!-- extract note on matchmaker lifeline -->
+  <rect x="286" y="256" width="228" height="26" rx="7" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="400" y="273" text-anchor="middle" class="lbl" fill="#993C1D">extract text, f-string into seller prompt</text>
+
+  <!-- (3) matchmaker -> seller -->
+  <line x1="400" y1="316" x2="668" y2="316" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="535" y="308" text-anchor="middle" class="step">&#9314; message/send &#183; ctxS</text>
+
+  <!-- (4) seller -> matchmaker -->
+  <line x1="670" y1="352" x2="402" y2="352" stroke="#8A8880" stroke-width="1.8" marker-end="url(#ahGrey)"/>
+  <text x="535" y="344" text-anchor="middle" class="ret"><tspan fill="#0F6E56">ACCEPT</tspan> / <tspan fill="#993C1D">COUNTER</tspan></text>
+
+  <!-- termination + caption -->
+  <text x="24" y="422" class="cap">Break on <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#0F6E56">\bACCEPT\b</tspan> &#8743; &#172;<tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#993C1D">COUNTER</tspan> &#8212; otherwise loop to the next round.</text>
+  <text x="24" y="446" class="cap">Two <tspan font-weight="700" fill="#1A1A18">separate</tspan> contextId threads: the buyer and seller never share one &#8212; the matchmaker is the only party that knows both.</text>
+</svg>

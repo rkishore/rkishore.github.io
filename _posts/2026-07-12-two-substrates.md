@@ -43,6 +43,31 @@ else:
     print("Max rounds reached — no agreement.")
 ```
 
+The loop leans on one helper, `send_a2a_message`, and that's where the typed A2A SDK earns its keep. It builds the `message/send` envelope from typed objects and &mdash; the part that makes threading work &mdash; hands back the `contextId` the server assigned, so the caller can echo it on the next round:
+
+```python
+async def send_a2a_message(client, text, context_id=None):
+    """POST one TextPart; return (Task, its contextId) so the caller can thread it."""
+    request = SendMessageRequest(
+        id=f"req_{uuid.uuid4().hex[:8]}",
+        params=MessageSendParams(message=Message(
+            messageId=f"msg_{uuid.uuid4().hex[:8]}",
+            role=Role.user,
+            parts=[TextPart(text=text)],
+            contextId=context_id,          # None on round 1 → server assigns one
+        )),
+    )
+    result = (await client.send_message(request)).root
+    if isinstance(result, SendMessageSuccessResponse) and isinstance(result.result, Task):
+        task = result.result
+        return task, task.context_id       # capture the assigned contextId, thread it next round
+    raise RuntimeError(f"unexpected A2A response: {result}")
+```
+
+That return of `task.context_id` is the whole threading mechanism: round 1 sends `None`, the server mints a `contextId`, and every later round hands it straight back in &mdash; which is why the loop keeps `buyer_ctx` and `seller_ctx` as separate variables. One round, drawn out:
+
+![A sequence diagram of one negotiation round over A2A. Three lifelines: the buyer agent on the left, the matchmaker script you own in the center, and the seller agent on the right. The matchmaker sends message/send to the buyer on the buyer's own contextId thread and gets an offer back, read artifacts-first. It extracts that text, f-strings it into a prompt, and sends message/send to the seller on the seller's own separate contextId thread, getting ACCEPT or COUNTER back. The round repeats up to a maximum and breaks when the seller response matches ACCEPT and not COUNTER. The buyer and seller never share a thread; the matchmaker is the only party that knows about both.](/images/adk/adk-matchmaker-relay.svg)
+
 Two subtleties I had to get right, both of which the framework had hidden from me in substrate #1. First, **the matchmaker is the *only* thing that knows about both agents** &mdash; each side just sees messages "from a user," so I thread `buyer_ctx` and `seller_ctx` separately and f-string the seller's reply into the buyer's next prompt myself. Second, **termination is now string-matching**, not a callback: `\bACCEPT\b` with a word boundary and *not* `COUNTER` (the `'ACCEPT' in 'acceptable'` trap from [Part 2](/2026/07/09/adk-state-and-control.html) is back, uncaught by any structured `submit_decision`), and the no-deal path rides Python's `for…else`.
 
 ## The substrate contrast
@@ -66,7 +91,7 @@ The negotiation *reasoning* &mdash; how the buyer picks a number, how the seller
 
 ## Same protocol, two dialects
 
-A quick aside, because it surprised me. I wrote the matchmaker two ways. One uses the **typed A2A SDK** &mdash; `SendMessageRequest`, `Message`, `TextPart` objects, with `A2AClient` handling the JSON-RPC framing. The other drops to **raw `httpx`** and hand-builds the envelope:
+A quick aside, because it surprised me. I wrote the matchmaker two ways. The `send_a2a_message` above is the **typed A2A SDK** dialect &mdash; `SendMessageRequest`, `Message`, `TextPart` objects, with `A2AClient` handling the JSON-RPC framing. The other build drops to **raw `httpx`** and hand-builds that exact same envelope itself:
 
 ```python
 # same message/send, no SDK — just the JSON-RPC dict
@@ -93,7 +118,36 @@ The matchmaker above is a *script* &mdash; a pure A2A client. But it can become 
 - an **A2A server** to its callers (they send it "negotiate 742 Evergreen Terrace" via `message/send`), and
 - an **A2A client** to the buyer and seller (it discovers and calls them, keeping their separate `contextId`s).
 
-That dual role is how A2A networks grow past two agents: the two peers stay hidden behind the matchmaker's card, and *its* callers don't know or care that there's a negotiation happening underneath &mdash; recursion all the way down. One detail ties it back to [Part 1](/2026/07/08/your-first-google-adk-agent.html): the matchmaker's root is a **workflow agent, not a plain `LlmAgent`**. Its job is deterministic relay-and-terminate control flow &mdash; *code drives*, not a model improvising &mdash; exactly the "take back the wheel" distinction from the very first post. (For sub-agents that are genuinely remote, ADK's `RemoteA2aAgent` wraps a card URL so you can drop it into `sub_agents=[...]` as if it were local.)
+That dual role is how A2A networks grow past two agents: the two peers stay hidden behind the matchmaker's card, and *its* callers don't know or care that there's a negotiation happening underneath &mdash; recursion all the way down. One detail ties it back to [Part 1](/2026/07/08/your-first-google-adk-agent.html): the matchmaker's root is a **workflow agent, not a plain `LlmAgent`**. Its job is deterministic relay-and-terminate control flow &mdash; *code drives*, not a model improvising &mdash; exactly the "take back the wheel" distinction from the very first post.
+
+There's also a tidier way to reach the remote peers than hand-rolling the `httpx` calls. When a sub-agent is genuinely remote, ADK gives you `RemoteA2aAgent` &mdash; wrap it around a card URL and it drops into a workflow agent's `sub_agents=[...]` as if it were local:
+
+```python
+# Illustrative sketch — real ADK API (verified against the SDK), but note that
+# ADK still marks RemoteA2aAgent as EXPERIMENTAL and subject to change.
+from google.adk.agents import SequentialAgent
+from google.adk.agents.remote_a2a_agent import RemoteA2aAgent, AGENT_CARD_WELL_KNOWN_PATH
+
+BASE = "http://127.0.0.1:8000"          # where `adk web --a2a` serves the two peers
+
+buyer = RemoteA2aAgent(
+    name="buyer",
+    agent_card=f"{BASE}/a2a/buyer_agent{AGENT_CARD_WELL_KNOWN_PATH}",   # /.well-known/agent-card.json
+    description="Remote buyer, discovered by its Agent Card.",
+)
+seller = RemoteA2aAgent(
+    name="seller",
+    agent_card=f"{BASE}/a2a/seller_agent{AGENT_CARD_WELL_KNOWN_PATH}",
+    description="Remote seller, discovered by its Agent Card.",
+)
+
+# The remote peers slot into a workflow agent exactly like local sub-agents —
+# same Sequential/Loop shape as Part 2, only buyer and seller now live on the
+# wire. The card is fetched lazily, on first call, not at construction time.
+root_agent = SequentialAgent(name="negotiation_matchmaker", sub_agents=[buyer, seller])
+```
+
+The payoff is the *substitutability*: `sub_agents=[buyer, seller]` reads identically whether those two are local Python objects or `RemoteA2aAgent` handles to services on another host &mdash; the workflow wrapper can't tell the difference. That's the same "take back the wheel" workflow agent from Part 1, now orchestrating peers over the wire. (The hand-rolled matchmaker loop earlier in this post is the do-it-yourself version of the same idea; `RemoteA2aAgent` is ADK doing the discovery-and-relay plumbing for you.)
 
 ## When to choose which
 
