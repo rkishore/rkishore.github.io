@@ -109,6 +109,8 @@ Three things to know about it:
 
 One more nuance worth naming: there are **two families** of fusion. **Weighted score fusion** (`α·dense + (1−α)·sparse`) *requires* normalizing both scorers to a common 0&ndash;1 range &mdash; because you're literally adding scores. **RRF** needs no normalization at all, because ranks are already on a common scale. Neither is "wrong" &mdash; but when your scorers are on incompatible scales, which dense-cosine and sparse-dot-product *always* are, **RRF is the one that sidesteps the whole problem.**
 
+You can watch both families play out in the commercial vector databases. [Pinecone's hybrid search](https://docs.pinecone.io/guides/search/hybrid-search) picks **weighted score fusion** &mdash; a convex combination `α·dense + (1−α)·sparse` with a single `alpha` knob (`1.0` = pure dense, `0.0` = pure sparse). And because raw sparse scores are unbounded and would otherwise swamp the bounded dense ones, Pinecone makes them comparable by *scaling the query vectors before search* &mdash; the very normalization step family (1) can't avoid. [Qdrant's Query API](https://qdrant.tech/articles/hybrid-search/) picks the other family: **RRF**, which its docs call *"the de facto standard,"* fusing on rank with no normalization (with a distribution-based score-fusion variant on offer for when you *do* want to work in scores). Same two families, two vendors &mdash; and the same trade-off you just reasoned through.
+
 ## The pipeline, end to end
 
 Put it together and the whole system is one query fanning out into two indexes and back into one list:
