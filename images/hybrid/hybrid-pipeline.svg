@@ -1,0 +1,74 @@
+<svg viewBox="0 0 800 380" width="800" height="380" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The hybrid pipeline: one query fans out to a dense HNSW search and a sparse inverted-index search, whose two ranked lists are fused by RRF</title>
+  <desc>A left-to-right pipeline. One query fans out into two paths. The top path embeds the query as a dense 1024-dimension vector and searches an HNSW graph index, producing ranked list D. The bottom path embeds the query as a sparse SPLADE vector over the vocabulary and searches an inverted index, producing ranked list S. Both paths read from one collection that holds two named vectors per document. The two ranked lists feed into Reciprocal Rank Fusion, which merges them using ranks only — no score normalization — and emits one fused result list.</desc>
+
+  <rect x="0" y="0" width="800" height="380" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 13px; font-weight: 700; }
+    .sub  { font-size: 10px; fill: #5F5E5A; }
+    .mono { font-size: 11px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .path { font-size: 11px; font-weight: 700; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="32" class="h">One query, two indexes, one fused list</text>
+
+  <!-- Query -->
+  <rect x="24" y="158" width="118" height="58" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="83" y="184" text-anchor="middle" class="node" fill="#993C1D">query</text>
+  <text x="83" y="202" text-anchor="middle" class="sub">one search string</text>
+
+  <!-- fan-out arrows -->
+  <path d="M 142 178 C 170 150, 180 118, 214 106" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <path d="M 142 196 C 170 224, 180 256, 214 268" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- ===== Dense path (top) ===== -->
+  <rect x="214" y="80" width="180" height="54" rx="11" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="304" y="102" text-anchor="middle" class="node" fill="#3C3489">dense embed → HNSW</text>
+  <text x="304" y="119" text-anchor="middle" class="sub">1024-d vector &#183; ANN graph</text>
+
+  <rect x="430" y="82" width="132" height="50" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="496" y="103" text-anchor="middle" class="path" fill="#3C3489">ranked list D</text>
+  <text x="496" y="120" text-anchor="middle" class="sub">semantic recall</text>
+  <line x1="394" y1="107" x2="428" y2="107" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- ===== Sparse path (bottom) ===== -->
+  <rect x="214" y="246" width="180" height="54" rx="11" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="304" y="268" text-anchor="middle" class="node" fill="#0F6E56">SPLADE → inverted index</text>
+  <text x="304" y="285" text-anchor="middle" class="sub">sparse over vocab &#183; postings</text>
+
+  <rect x="430" y="248" width="132" height="50" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="496" y="269" text-anchor="middle" class="path" fill="#0F6E56">ranked list S</text>
+  <text x="496" y="286" text-anchor="middle" class="sub">lexical precision</text>
+  <line x1="394" y1="273" x2="428" y2="273" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- one collection annotation -->
+  <rect x="214" y="150" width="348" height="34" rx="9" fill="#FBFBF9" stroke="#E4E2DA" stroke-dasharray="5 4"/>
+  <text x="388" y="171" text-anchor="middle" class="sub">one collection &#183; two named vectors per document (<tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#444441">text-dense</tspan> + <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#444441">text-sparse</tspan>)</text>
+
+  <!-- fan-in to RRF -->
+  <path d="M 562 107 C 600 128, 612 156, 636 176" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <path d="M 562 273 C 600 252, 612 224, 636 204" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- RRF -->
+  <rect x="638" y="152" width="138" height="72" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="707" y="180" text-anchor="middle" class="node" fill="#1F4E79">RRF</text>
+  <text x="707" y="197" text-anchor="middle" class="sub">ranks only</text>
+  <text x="707" y="212" text-anchor="middle" class="sub">no normalization</text>
+
+  <!-- fused output -->
+  <line x1="707" y1="224" x2="707" y2="256" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <text x="707" y="278" text-anchor="middle" class="path" fill="#1F4E79">one fused list</text>
+  <text x="707" y="295" text-anchor="middle" class="sub">consensus wins</text>
+
+  <!-- caption -->
+  <text x="24" y="352" class="cap"><tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#1F4E79">rrf(doc) = &#931; 1/(k + rank)</tspan>, k&#8776;60 — a doc in <tspan font-weight="700" fill="#1A1A18">both</tspan> lists sums two reciprocals and beats a doc in only one.</text>
+</svg>

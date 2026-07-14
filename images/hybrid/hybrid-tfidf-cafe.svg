@@ -1,0 +1,79 @@
+<svg viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>TF-IDF on three café menus: coffee scores low because it is common, espresso scores high because it is rare</title>
+  <desc>Three small café menus. Menu A lists espresso, latte, coffee. Menu B lists coffee, tea, juice. Menu C lists coffee, coffee, bagel. The word coffee appears in every menu, so it is common; espresso appears in only one menu, so it is rare. Below, two scoring rows show TF-IDF as term frequency times inverse document frequency. For coffee, the TF bar is high but the IDF rarity bar is near zero because it is in all three menus, so multiplying gives a low score. For espresso, TF is moderate and the IDF rarity bar is high because it is in one of three menus, so the product is a high score. The takeaway: a search for "espresso latte" ranks Menu A first, because the rare distinctive word carries almost all the weight while the ubiquitous word coffee barely moves the needle.</desc>
+
+  <rect x="0" y="0" width="800" height="430" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .chiph{ font-size: 12px; font-weight: 700; fill: #1F4E79; }
+    .word { font-size: 11.5px; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #5F5E5A; }
+    .colh { font-size: 11px; font-weight: 700; fill: #8A8880; }
+    .lab  { font-size: 13px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .op   { font-size: 18px; font-weight: 700; fill: #8A8880; }
+    .val  { font-size: 11px; font-weight: 700; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .track{ fill: #F4F3EF; }
+  </style>
+
+  <text x="24" y="32" class="h">Why TF-IDF rewards the rare word</text>
+
+  <!-- ===== menu chips ===== -->
+  <rect x="24" y="50" width="240" height="56" rx="11" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="40" y="72" class="chiph">Menu A</text>
+  <text x="40" y="93" class="word"><tspan fill="#0F6E56" font-weight="700">espresso</tspan> · latte · <tspan fill="#5F5E5A" font-weight="700">coffee</tspan></text>
+
+  <rect x="280" y="50" width="240" height="56" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="296" y="72" class="chiph" fill="#5F5E5A">Menu B</text>
+  <text x="296" y="93" class="word"><tspan fill="#5F5E5A" font-weight="700">coffee</tspan> · tea · juice</text>
+
+  <rect x="536" y="50" width="240" height="56" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="552" y="72" class="chiph" fill="#5F5E5A">Menu C</text>
+  <text x="552" y="93" class="word"><tspan fill="#5F5E5A" font-weight="700">coffee</tspan> · <tspan fill="#5F5E5A" font-weight="700">coffee</tspan> · bagel</text>
+
+  <text x="24" y="132" class="cap"><tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#5F5E5A">coffee</tspan> is in every menu (common) · <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#0F6E56">espresso</tspan> is in one (rare)</text>
+
+  <!-- ===== column headers ===== -->
+  <text x="215" y="168" text-anchor="middle" class="colh">TF · frequency</text>
+  <text x="375" y="168" text-anchor="middle" class="colh">IDF · rarity</text>
+  <text x="595" y="168" text-anchor="middle" class="colh">TF-IDF · score</text>
+
+  <!-- ===== row: coffee ===== -->
+  <text x="24" y="216" class="lab" fill="#5F5E5A">coffee</text>
+  <!-- TF track + bar (high) -->
+  <rect x="130" y="200" width="170" height="20" rx="4" class="track"/>
+  <rect x="130" y="200" width="150" height="20" rx="4" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="288" y="215" class="val" fill="#5F5E5A">high</text>
+  <text x="312" y="216" class="op">×</text>
+  <!-- IDF track + bar (~0) -->
+  <rect x="336" y="200" width="170" height="20" rx="4" class="track"/>
+  <rect x="336" y="200" width="9" height="20" rx="4" fill="#B4B2A9"/>
+  <text x="352" y="215" class="val" fill="#993C1D">≈0 (in all 3)</text>
+  <text x="512" y="216" class="op">=</text>
+  <!-- score bar (low) -->
+  <rect x="536" y="200" width="220" height="20" rx="4" class="track"/>
+  <rect x="536" y="200" width="14" height="20" rx="4" fill="#B4B2A9"/>
+  <text x="560" y="215" class="val" fill="#5F5E5A">low — score collapses</text>
+
+  <!-- ===== row: espresso ===== -->
+  <text x="24" y="286" class="lab" fill="#0F6E56">espresso</text>
+  <!-- TF (some) -->
+  <rect x="130" y="270" width="170" height="20" rx="4" class="track"/>
+  <rect x="130" y="270" width="86" height="20" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="224" y="285" class="val" fill="#0F6E56">some</text>
+  <text x="312" y="286" class="op">×</text>
+  <!-- IDF (high) -->
+  <rect x="336" y="270" width="170" height="20" rx="4" class="track"/>
+  <rect x="336" y="270" width="156" height="20" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="360" y="285" class="val" fill="#0F6E56">high (1 of 3)</text>
+  <text x="512" y="286" class="op">=</text>
+  <!-- score (high) -->
+  <rect x="536" y="270" width="220" height="20" rx="4" class="track"/>
+  <rect x="536" y="270" width="200" height="20" rx="4" fill="#5DCAA5" stroke="#0F6E56"/>
+  <text x="560" y="285" class="val" fill="#0F6E56">high — distinctive</text>
+
+  <!-- ===== punchline ===== -->
+  <rect x="24" y="336" width="752" height="60" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="400" y="362" text-anchor="middle" class="chiph">Search "espresso latte" → Menu A ranks first</text>
+  <text x="400" y="382" text-anchor="middle" class="cap">The rare, distinctive query word carries the weight; ubiquitous <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#5F5E5A">coffee</tspan> barely moves the needle.</text>
+</svg>

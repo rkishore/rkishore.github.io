@@ -1,0 +1,55 @@
+<svg viewBox="0 0 800 400" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Same document, incompatible scores: dense cosine 0.835 versus sparse dot-product 14.742 — so fuse on rank, not score</title>
+  <desc>A bar chart of the same winning document scored by two retrievers, drawn on one shared axis from 0 to 16. The dense cosine score is 0.835, a bounded value between 0 and 1, so its bar is a tiny sliver. The sparse dot-product score is 14.742, unbounded from 0 upward, so its bar is far taller. The two numbers cannot be meaningfully averaged. But the document is ranked number 1 in both lists, so fusing on rank — 1 and 1 — is well defined. The conclusion: fuse on rank, not score.</desc>
+
+  <rect x="0" y="0" width="800" height="400" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .axis { stroke: #B4B2A9; stroke-width: 1.4; }
+    .grid { stroke: #ECEAE3; stroke-width: 1; }
+    .tick { font-size: 10px; fill: #8A8880; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .barlbl { font-size: 15px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .name  { font-size: 13px; font-weight: 700; }
+    .sub   { font-size: 10.5px; fill: #5F5E5A; }
+    .rank  { font-size: 11px; font-weight: 700; fill: #1F4E79; }
+    .cap   { font-size: 12px; fill: #444441; }
+    .punch { font-size: 13px; font-weight: 700; fill: #1F4E79; }
+  </style>
+
+  <text x="24" y="32" class="h">One document, two incompatible scores</text>
+  <text x="24" y="52" class="cap">The <tspan font-weight="700" fill="#1A1A18">same</tspan> winning doc from a smoke test, scored by each retriever:</text>
+
+  <!-- plot area: x from 120 to 620, baseline y=300, top y=80. axis 0..16 -->
+  <!-- gridlines -->
+  <line x1="120" y1="300" x2="620" y2="300" class="axis"/>
+  <line x1="120" y1="80"  x2="120" y2="300" class="axis"/>
+  <!-- x ticks every 4 units: scale 500px / 16 = 31.25 px per unit -->
+  <line x1="245" y1="80" x2="245" y2="300" class="grid"/>
+  <line x1="370" y1="80" x2="370" y2="300" class="grid"/>
+  <line x1="495" y1="80" x2="495" y2="300" class="grid"/>
+  <line x1="620" y1="80" x2="620" y2="300" class="grid"/>
+  <text x="120" y="318" text-anchor="middle" class="tick">0</text>
+  <text x="245" y="318" text-anchor="middle" class="tick">4</text>
+  <text x="370" y="318" text-anchor="middle" class="tick">8</text>
+  <text x="495" y="318" text-anchor="middle" class="tick">12</text>
+  <text x="620" y="318" text-anchor="middle" class="tick">16</text>
+
+  <!-- Dense bar: value 0.835 -> width 0.835*31.25 = 26.1px. bar y 100..140 -->
+  <rect x="120" y="104" width="26" height="40" rx="4" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="132" y="96" class="name" fill="#3C3489">dense — cosine</text>
+  <text x="156" y="131" class="barlbl" fill="#3C3489">0.835</text>
+  <text x="238" y="128" class="sub">bounded 0–1</text>
+  <text x="238" y="142" class="rank">ranked #1</text>
+
+  <!-- Sparse bar: value 14.742 -> width 14.742*31.25 = 460.7px. bar y 200..240 -->
+  <rect x="120" y="204" width="461" height="40" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="120" y="196" class="name" fill="#0F6E56">sparse — dot-product</text>
+  <text x="592" y="231" class="barlbl" fill="#0F6E56">14.742</text>
+  <text x="360" y="228" text-anchor="middle" class="sub">unbounded 0&#8594;&#8734;</text>
+  <text x="360" y="242" text-anchor="middle" class="rank" fill="#0F6E56">ranked #1</text>
+
+  <!-- punchline -->
+  <rect x="24" y="344" width="752" height="44" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="400" y="371" text-anchor="middle" class="punch">Average 0.835 and 14.742? Meaningless. Both rank #1 — so fuse on rank, not score.</text>
+</svg>

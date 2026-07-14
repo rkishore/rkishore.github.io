@@ -1,0 +1,77 @@
+<svg viewBox="0 0 800 440" width="800" height="440" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>BM25 versus SPLADE: BM25 weights only the tokens literally present, while SPLADE also activates related absent vocabulary terms</title>
+  <desc>The same document, "exhaust fan ventilation," scored two ways as a sparse vector over the vocabulary. Top, BM25: it puts weight only on the tokens literally present — exhaust, fan, ventilation — so a query for "airflow" finds nothing and misses the document. Bottom, SPLADE: it keeps those present terms at full weight but also activates related vocabulary terms the text never used — airflow and quiet — each at a smaller learned weight, produced by a BERT masked-language-model head that projects every token onto the whole vocabulary. Now a query for "airflow" matches the activated dimension. The contrast shows how learned term expansion lets a still-sparse retriever cross the vocabulary-mismatch gap that sinks BM25.</desc>
+
+  <rect x="0" y="0" width="800" height="440" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .doc  { font-size: 12px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .rowh { font-size: 13px; font-weight: 700; }
+    .tok  { font-size: 10.5px; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #5F5E5A; }
+    .base { stroke: #B4B2A9; stroke-width: 1.3; }
+    .res  { font-size: 12px; font-weight: 700; }
+    .sub  { font-size: 10px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="32" class="h">BM25 vs SPLADE: term expansion closes the vocabulary gap</text>
+
+  <!-- document -->
+  <rect x="24" y="196" width="120" height="60" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="84" y="220" text-anchor="middle" class="sub" fill="#993C1D">document</text>
+  <text x="84" y="238" text-anchor="middle" class="doc" fill="#993C1D">exhaust fan</text>
+  <text x="84" y="251" text-anchor="middle" class="doc" fill="#993C1D">ventilation</text>
+
+  <line x1="144" y1="212" x2="176" y2="118" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <line x1="144" y1="240" x2="176" y2="330" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- ================= BM25 (top) ================= -->
+  <text x="188" y="78" class="rowh" fill="#5F5E5A">BM25 — literal tokens only</text>
+  <!-- baseline -->
+  <line x1="188" y1="150" x2="470" y2="150" class="base"/>
+  <!-- present-term bars (exhaust 1.8, fan 2.1, ventilation 1.5) scale 26px/unit -->
+  <rect x="196" y="103" width="44" height="47" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <rect x="256" y="95"  width="44" height="55" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <rect x="316" y="111" width="44" height="39" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="218" y="163" text-anchor="middle" class="tok">exhaust</text>
+  <text x="278" y="163" text-anchor="middle" class="tok">fan</text>
+  <text x="338" y="163" text-anchor="middle" class="tok">ventilation</text>
+  <!-- query test -->
+  <rect x="512" y="104" width="256" height="52" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="528" y="126" class="doc" fill="#993C1D">query: "airflow"</text>
+  <text x="528" y="145" class="res" fill="#993C1D">✗ not in the vector — missed</text>
+
+  <!-- ================= SPLADE (bottom) ================= -->
+  <text x="188" y="288" class="rowh" fill="#0F6E56">SPLADE — present terms + learned expansion</text>
+  <!-- baseline -->
+  <line x1="188" y1="360" x2="560" y2="360" class="base"/>
+  <!-- present-term bars (solid green) -->
+  <rect x="196" y="313" width="40" height="47" fill="#5DCAA5" stroke="#0F6E56"/>
+  <rect x="252" y="305" width="40" height="55" fill="#5DCAA5" stroke="#0F6E56"/>
+  <rect x="308" y="321" width="40" height="39" fill="#5DCAA5" stroke="#0F6E56"/>
+  <text x="216" y="373" text-anchor="middle" class="tok">exhaust</text>
+  <text x="272" y="373" text-anchor="middle" class="tok">fan</text>
+  <text x="328" y="373" text-anchor="middle" class="tok">ventilation</text>
+  <!-- expansion bars (light green, absent-but-activated) -->
+  <rect x="392" y="337" width="40" height="23" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <rect x="448" y="345" width="40" height="15" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="412" y="373" text-anchor="middle" class="tok" fill="#0F6E56">airflow</text>
+  <text x="468" y="373" text-anchor="middle" class="tok" fill="#0F6E56">quiet</text>
+  <text x="392" y="326" class="sub" fill="#0F6E56">↑ expansion (never in the text)</text>
+  <!-- query test -->
+  <rect x="576" y="314" width="200" height="52" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="592" y="336" class="doc" fill="#0F6E56">query: "airflow"</text>
+  <text x="592" y="355" class="res" fill="#0F6E56">✓ matches activated dim</text>
+  <line x1="432" y1="345" x2="574" y2="338" stroke="#5DCAA5" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+  <!-- caption -->
+  <text x="24" y="410" class="cap">SPLADE's BERT masked-language-model head projects every token onto the whole vocabulary, lighting up related</text>
+  <text x="24" y="428" class="cap">words the text never used — each at a smaller learned weight. Still sparse and lexical, but it crosses the synonym gap.</text>
+</svg>

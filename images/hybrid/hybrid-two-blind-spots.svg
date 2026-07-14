@@ -1,0 +1,76 @@
+<svg viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The two blind spots: lexical search misses synonyms, dense search blurs exact rare tokens</title>
+  <desc>Two panels. Left panel, the lexical blind spot: the query "quiet bathroom exhaust fan" goes to a keyword or BM25 retriever, which matches surface tokens only, so a genuinely relevant product whose description says "whisper-silent operation" is missed because it never contains the word quiet — a vocabulary mismatch. Right panel, the dense blind spot: the exact query "revent 80 cfm" goes to a dense semantic retriever, which compresses the query to one meaning vector and returns similar-feeling fans while blurring the exact model number and spec, so the exact product is not ranked first. The takeaway: hybrid runs both retrievers so each covers the other's blind spot.</desc>
+
+  <rect x="0" y="0" width="800" height="430" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .pt   { font-size: 13px; font-weight: 700; }
+    .node { font-size: 13px; font-weight: 700; }
+    .sub  { font-size: 10.5px; fill: #5F5E5A; }
+    .mono { font-size: 11.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .miss { font-size: 12px; font-weight: 700; fill: #993C1D; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .tag  { font-size: 11px; font-weight: 700; }
+  </style>
+
+  <text x="24" y="32" class="h">Two retrievers, two blind spots</text>
+
+  <!-- ===== Panel 1: lexical blind spot ===== -->
+  <rect x="24" y="52" width="366" height="286" rx="14" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="80" class="pt" fill="#0F6E56">Lexical / BM25 — the vocabulary blind spot</text>
+
+  <!-- query chip -->
+  <rect x="44" y="96" width="326" height="34" rx="9" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="207" y="118" text-anchor="middle" class="mono" fill="#993C1D">"quiet bathroom exhaust fan"</text>
+
+  <!-- retriever -->
+  <rect x="120" y="152" width="174" height="46" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="207" y="173" text-anchor="middle" class="node" fill="#0F6E56">keyword match</text>
+  <text x="207" y="189" text-anchor="middle" class="sub">surface tokens only</text>
+  <line x1="207" y1="130" x2="207" y2="150" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- doc -->
+  <rect x="44" y="224" width="326" height="52" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="60" y="246" class="mono" fill="#444441">"...whisper-<tspan fill="#0F6E56">silent</tspan> operation..."</text>
+  <text x="60" y="266" class="sub">relevant product — but never says "quiet"</text>
+  <line x1="207" y1="198" x2="207" y2="222" stroke="#8A8880" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+  <text x="44" y="302" class="miss">&#10007; missed — "quiet" &#8800; "silent"</text>
+  <text x="44" y="324" class="cap">vocabulary mismatch (synonymy)</text>
+
+  <!-- ===== Panel 2: dense blind spot ===== -->
+  <rect x="410" y="52" width="366" height="286" rx="14" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="430" y="80" class="pt" fill="#3C3489">Dense / semantic — the exact-token blind spot</text>
+
+  <!-- query chip -->
+  <rect x="430" y="96" width="326" height="34" rx="9" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="593" y="118" text-anchor="middle" class="mono" fill="#993C1D">"revent 80 cfm"</text>
+
+  <!-- retriever -->
+  <rect x="506" y="152" width="174" height="46" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="593" y="173" text-anchor="middle" class="node" fill="#3C3489">one meaning vector</text>
+  <text x="593" y="189" text-anchor="middle" class="sub">1024-d, tokens blurred</text>
+  <line x1="593" y1="130" x2="593" y2="150" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- doc -->
+  <rect x="430" y="224" width="326" height="52" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="446" y="246" class="mono" fill="#444441">"quiet 90 cfm bathroom fan"</text>
+  <text x="446" y="266" class="sub">similar-feeling — wrong model &amp; spec</text>
+  <line x1="593" y1="198" x2="593" y2="222" stroke="#8A8880" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+  <text x="430" y="302" class="miss">&#10007; blurred — exact "revent 80" lost</text>
+  <text x="430" y="324" class="cap">exact rare tokens (model / SKU / spec)</text>
+
+  <!-- ===== takeaway bar ===== -->
+  <rect x="24" y="356" width="752" height="52" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="400" y="381" text-anchor="middle" class="tag" fill="#1F4E79">Hybrid runs BOTH — each retriever covers the other's blind spot</text>
+  <text x="400" y="399" text-anchor="middle" class="sub">semantic recall (dense) + lexical precision (sparse)</text>
+</svg>
