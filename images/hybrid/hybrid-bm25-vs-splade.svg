@@ -1,6 +1,6 @@
 <svg viewBox="0 0 800 440" width="800" height="440" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>BM25 versus SPLADE: BM25 weights only the tokens literally present, while SPLADE also activates related absent vocabulary terms</title>
-  <desc>The same document, "exhaust fan ventilation," scored two ways as a sparse vector over the vocabulary. Top, BM25: it puts weight only on the tokens literally present — exhaust, fan, ventilation — so a query for "airflow" finds nothing and misses the document. Bottom, SPLADE: it keeps those present terms at full weight but also activates related vocabulary terms the text never used — airflow and quiet — each at a smaller learned weight, produced by a BERT masked-language-model head that projects every token onto the whole vocabulary. Now a query for "airflow" matches the activated dimension. The contrast shows how learned term expansion lets a still-sparse retriever cross the vocabulary-mismatch gap that sinks BM25.</desc>
+  <desc>The same document, "exhaust fan ventilation," scored two ways as a sparse vector over the vocabulary. Top, BM25: it puts weight only on the tokens literally present — exhaust, fan, ventilation — so a query for "airflow" finds nothing and misses the document. Bottom, SPLADE: it keeps those present terms at full weight but also activates related vocabulary terms the text never used — airflow and quiet — each at a smaller learned weight, produced by scoring the whole vocabulary for how well each word fits the document's context. Now a query for "airflow" matches the activated dimension. The contrast shows how learned term expansion lets a still-sparse retriever cross the vocabulary-mismatch gap that sinks BM25.</desc>
 
   <rect x="0" y="0" width="800" height="440" fill="#FFFFFF"/>
 
@@ -72,6 +72,6 @@
   <line x1="432" y1="345" x2="574" y2="338" stroke="#5DCAA5" stroke-width="1.6" stroke-dasharray="4 3"/>
 
   <!-- caption -->
-  <text x="24" y="410" class="cap">SPLADE's BERT masked-language-model head projects every token onto the whole vocabulary, lighting up related</text>
-  <text x="24" y="428" class="cap">words the text never used — each at a smaller learned weight. Still sparse and lexical, but it crosses the synonym gap.</text>
+  <text x="24" y="410" class="cap">SPLADE scores the whole vocabulary by "what word fits here?", lighting up related words the text never used —</text>
+  <text x="24" y="428" class="cap">each at a smaller learned weight. Still sparse and lexical, but it crosses the synonym gap BM25 can't.</text>
 </svg>
