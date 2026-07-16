@@ -1,0 +1,68 @@
+<svg viewBox="0 0 800 380" width="800" height="380" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The indexing build: 100 PubMedQA abstracts to one Qdrant collection with two named vectors</title>
+  <desc>The indexing side of the hybrid build, left to right. Start with 100 PubMedQA abstracts of structured fields. build_document joins the context paragraphs as [BACKGROUND] to [CONCLUSION] and deliberately excludes the question field, producing combined_text. That text is embedded two ways: a dense BGE-large vector of 1024 dimensions, and a sparse SPLADE vector with about 120 non-zeros out of a 30,522-word vocabulary. make_points packs each document into one PointStruct carrying both named vectors, which is upserted into a single Qdrant collection holding text-dense and text-sparse. At query time both vectors fan out in one batch and fuse with RRF, the same pipeline as part 1.</desc>
+
+  <rect x="0" y="0" width="800" height="380" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 12.5px; font-weight: 700; }
+    .mono { font-size: 10.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .sub  { font-size: 9.5px; fill: #5F5E5A; }
+    .warn { font-size: 10px; font-weight: 700; fill: #993C1D; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="32" class="h">The build: indexing 100 abstracts</text>
+
+  <!-- A: abstracts -->
+  <rect x="20" y="150" width="120" height="66" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="80" y="178" text-anchor="middle" class="node" fill="#5F5E5A">100 PubMedQA</text>
+  <text x="80" y="195" text-anchor="middle" class="node" fill="#5F5E5A">abstracts</text>
+  <text x="80" y="210" text-anchor="middle" class="sub">structured fields</text>
+
+  <!-- B: build_document -->
+  <rect x="168" y="144" width="164" height="78" rx="11" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="250" y="167" text-anchor="middle" class="mono" fill="#1F4E79">build_document</text>
+  <text x="250" y="184" text-anchor="middle" class="sub">[BACKGROUND] … [CONCLUSION]</text>
+  <text x="250" y="205" text-anchor="middle" class="warn">✗ exclude the question field</text>
+  <line x1="140" y1="183" x2="166" y2="183" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- embedders -->
+  <rect x="368" y="96" width="150" height="54" rx="11" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="443" y="118" text-anchor="middle" class="node" fill="#3C3489">dense — BGE</text>
+  <text x="443" y="136" text-anchor="middle" class="sub">1024-d, all non-zero</text>
+
+  <rect x="368" y="216" width="150" height="54" rx="11" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="443" y="238" text-anchor="middle" class="node" fill="#0F6E56">sparse — SPLADE</text>
+  <text x="443" y="256" text-anchor="middle" class="sub">~120 of 30,522 non-zero</text>
+
+  <path d="M 332 172 C 348 150, 352 135, 366 124" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <path d="M 332 194 C 348 216, 352 231, 366 242" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- make_points -->
+  <rect x="552" y="150" width="104" height="66" rx="11" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="604" y="176" text-anchor="middle" class="mono" fill="#444441">make_points</text>
+  <text x="604" y="196" text-anchor="middle" class="sub">1 id · 2 vectors</text>
+  <path d="M 518 123 C 534 145, 538 160, 550 172" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <path d="M 518 243 C 534 221, 538 206, 550 194" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- Qdrant collection -->
+  <rect x="676" y="140" width="108" height="86" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="730" y="164" text-anchor="middle" class="node" fill="#1F4E79">Qdrant</text>
+  <text x="730" y="180" text-anchor="middle" class="sub">"pubmedqa"</text>
+  <rect x="686" y="188" width="88" height="15" rx="4" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="730" y="200" text-anchor="middle" class="sub" fill="#3C3489">text-dense</text>
+  <rect x="686" y="205" width="88" height="15" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="730" y="217" text-anchor="middle" class="sub" fill="#0F6E56">text-sparse</text>
+  <line x1="656" y1="183" x2="674" y2="183" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- caption -->
+  <text x="24" y="322" class="cap">At query time both vectors fan out in one <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" fill="#444441">query_batch_points</tspan> call and fuse with RRF — the same pipeline as Part 1.</text>
+</svg>

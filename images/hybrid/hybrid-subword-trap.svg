@@ -1,0 +1,72 @@
+<svg viewBox="0 0 800 420" width="800" height="420" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The SPLADE subword trap: querying ILC2 collides with unrelated documents through shared WordPiece subwords</title>
+  <desc>The rare acronym ILC2 is tokenized by WordPiece into three subwords: il, then ##c, then ##2. Two of those subwords are promiscuous. The ##c subword matches document 85, RCC, which tokenizes to rc and ##c. The ##2 subword matches document 7, sPLA2, which tokenizes to sp, ##la, ##2, and document 46, Lp-PLA2, which tokenizes to lp, dash, pl, ##a, ##2. These three documents share only a subword with ILC2 — nothing conceptual — yet the sparse retriever ranks them high, in positions 2 through 5. The lesson: exact-term retrieval is only as exact as the tokenizer, and a rare acronym can shatter into common subwords that match unrelated documents.</desc>
+
+  <rect x="0" y="0" width="800" height="420" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahWarn" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#993C1D"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .mono { font-size: 12px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .tok  { font-size: 12px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .lbl  { font-size: 10.5px; font-weight: 700; fill: #5F5E5A; }
+    .sub  { font-size: 9.5px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="32" class="h">The SPLADE subword trap: querying <tspan font-family="'SF Mono', SFMono-Regular, Menlo, Consolas, monospace">ILC2</tspan></text>
+
+  <!-- query -->
+  <rect x="24" y="150" width="104" height="50" rx="11" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="76" y="172" text-anchor="middle" class="lbl" fill="#993C1D">query</text>
+  <text x="76" y="190" text-anchor="middle" class="mono" fill="#993C1D">ILC2</text>
+
+  <text x="239" y="86" text-anchor="middle" class="lbl">WordPiece</text>
+
+  <!-- subword chips -->
+  <rect x="196" y="96"  width="86" height="34" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="239" y="118" text-anchor="middle" class="tok" fill="#5F5E5A">il</text>
+  <rect x="196" y="158" width="86" height="34" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="2"/>
+  <text x="239" y="180" text-anchor="middle" class="tok" fill="#993C1D">##c</text>
+  <rect x="196" y="220" width="86" height="34" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="2"/>
+  <text x="239" y="242" text-anchor="middle" class="tok" fill="#993C1D">##2</text>
+  <text x="196" y="278" class="sub">promiscuous subwords</text>
+
+  <line x1="128" y1="175" x2="194" y2="140" stroke="#8A8880" stroke-width="1.4"/>
+  <line x1="128" y1="175" x2="194" y2="175" stroke="#8A8880" stroke-width="1.4"/>
+  <line x1="128" y1="175" x2="194" y2="234" stroke="#8A8880" stroke-width="1.4"/>
+
+  <!-- collision docs -->
+  <!-- RCC via ##c -->
+  <rect x="470" y="92" width="300" height="52" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="484" y="114" class="mono" fill="#444441">id 85 · RCC</text>
+  <text x="484" y="133" class="tok" fill="#B4B2A9">rc <tspan fill="#0F6E56">##c</tspan></text>
+  <text x="632" y="133" class="sub">renal cell carcinoma</text>
+  <path d="M 282 172 C 360 150, 400 122, 468 118" fill="none" stroke="#993C1D" stroke-width="1.8" marker-end="url(#ahWarn)"/>
+
+  <!-- sPLA2 via ##2 -->
+  <rect x="470" y="182" width="300" height="52" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="484" y="204" class="mono" fill="#444441">id 7 · sPLA2</text>
+  <text x="484" y="223" class="tok" fill="#B4B2A9">sp ##la <tspan fill="#0F6E56">##2</tspan></text>
+  <text x="632" y="223" class="sub">phospholipase A2</text>
+  <path d="M 282 240 C 360 224, 400 214, 468 208" fill="none" stroke="#993C1D" stroke-width="1.8" marker-end="url(#ahWarn)"/>
+
+  <!-- Lp-PLA2 via ##2 -->
+  <rect x="470" y="272" width="300" height="52" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="484" y="294" class="mono" fill="#444441">id 46 · Lp-PLA2</text>
+  <text x="484" y="313" class="tok" fill="#B4B2A9">lp - pl ##a <tspan fill="#0F6E56">##2</tspan></text>
+  <text x="648" y="313" class="sub">lipoprotein-assoc.</text>
+  <path d="M 282 245 C 370 290, 400 300, 468 298" fill="none" stroke="#993C1D" stroke-width="1.8" marker-end="url(#ahWarn)"/>
+
+  <text x="470" y="160" class="sub">sparse ranks these in positions 2–5 — they share only a subword with ILC2, nothing conceptual</text>
+
+  <!-- lesson -->
+  <rect x="24" y="352" width="746" height="52" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="397" y="376" text-anchor="middle" class="lbl" fill="#993C1D">Exact-term retrieval is only as exact as the tokenizer.</text>
+  <text x="397" y="393" text-anchor="middle" class="sub">The real ILC2 abstract (id 0) still ranks #1 — but a rare acronym shatters into common subwords that drag in unrelated docs.</text>
+</svg>

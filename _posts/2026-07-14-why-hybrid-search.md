@@ -3,7 +3,7 @@ title: "Why Hybrid Search: Two Blind Spots, One Fusion"
 description: "Part 1 of a hybrid retrieval series: keyword search and semantic search each have a blind spot. What exactly are they — dense vs sparse vectors, HNSW vs inverted index, BM25 vs SPLADE — and how does fusing both with RRF cover for each, no score normalization required."
 ---
 
-*Hybrid Search series &mdash; 1. Why Hybrid (you're here) &middot; 2. Building the Retriever &middot; 3. Hybrid Search Inside an Agent &middot; more coming*
+*Hybrid Search series &mdash; 1. Why Hybrid (you're here) &middot; 2. [Building the Retriever](/2026/07/16/building-the-hybrid-retriever.html) &middot; 3. Hybrid Search Inside an Agent &middot; more coming*
 
 **Objective:** A first-person field guide to *hybrid retrieval* &mdash; organized around one question: *keyword search and semantic search each have a blind spot; what exactly are they, and how does running both and fusing the results cover for each?*
 
