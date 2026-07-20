@@ -3,7 +3,7 @@ title: "Building the Hybrid Retriever: PubMedQA, Qdrant, and Three Surprises"
 description: "Part 2 of the hybrid search series: a build log. I build the dense + sparse + RRF retriever from Part 1 on biomedical abstracts with Qdrant and FastEmbed — and hit three results I didn't fully expect, including a SPLADE subword trap on a rare acronym."
 ---
 
-*Hybrid Search series &mdash; 1. [Why Hybrid](/2026/07/14/why-hybrid-search.html) &middot; 2. Building the Retriever (you're here) &middot; 3. Hybrid Search Inside an Agent &middot; more coming*
+*Hybrid Search series &mdash; 1. [Why Hybrid](/2026/07/14/why-hybrid-search.html) &middot; 2. Building the Retriever (you're here) &middot; 3. [Hybrid Search Inside an Agent](/2026/07/20/hybrid-search-inside-an-agent.html)*
 
 **Objective:** A first-person build log &mdash; organized around one question: *[Part 1](/2026/07/14/why-hybrid-search.html) argued hybrid retrieval should beat either method alone; does it actually, when I build it on a domain full of rare, specialized terms? Here's the build, and three results I didn't fully expect.*
 

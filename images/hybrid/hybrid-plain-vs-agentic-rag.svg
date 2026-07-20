@@ -1,0 +1,87 @@
+<svg viewBox="0 0 800 420" width="800" height="420" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Plain RAG versus agentic RAG: one blind retrieval versus a model-driven search loop</title>
+  <desc>Two panels. Top, plain RAG: a straight line from query to retrieve to generate to answer — retrieval happens once, before the model reasons. Bottom, agentic RAG: the model runs a loop — query, analyze, search with the hybrid_search_tool, evaluate — and from evaluate it either loops back to search with a refined query or moves on to synthesize and cite, then answer. The model decides what to search, whether to search again, and when it has enough to answer. The retriever itself is unchanged; it is just a tool the agent can choose to call.</desc>
+
+  <rect x="0" y="0" width="800" height="420" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahOrange" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#993C1D"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .panel{ font-size: 12.5px; font-weight: 700; }
+    .node { font-size: 12px; font-weight: 700; }
+    .mono { font-size: 10.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .sub  { font-size: 10px; fill: #5F5E5A; }
+    .loop { font-size: 11px; font-weight: 700; fill: #993C1D; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="30" class="h">Plain RAG vs agentic RAG</text>
+
+  <!-- ===== Panel A: plain ===== -->
+  <text x="24" y="66" class="panel" fill="#5F5E5A">Plain RAG — retrieve once, then generate</text>
+
+  <rect x="40" y="80" width="110" height="46" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="95" y="108" text-anchor="middle" class="node" fill="#993C1D">query</text>
+  <rect x="196" y="80" width="130" height="46" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="261" y="108" text-anchor="middle" class="node" fill="#0F6E56">retrieve</text>
+  <rect x="372" y="80" width="130" height="46" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="437" y="108" text-anchor="middle" class="node" fill="#3C3489">generate</text>
+  <rect x="548" y="80" width="110" height="46" rx="10" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="603" y="108" text-anchor="middle" class="node" fill="#1F4E79">answer</text>
+
+  <line x1="150" y1="103" x2="194" y2="103" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="326" y1="103" x2="370" y2="103" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="502" y1="103" x2="546" y2="103" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="674" y="107" class="sub">one blind pass</text>
+
+  <line x1="24" y1="150" x2="776" y2="150" stroke="#ECEAE3" stroke-width="1"/>
+
+  <!-- ===== Panel B: agentic ===== -->
+  <text x="24" y="184" class="panel" fill="#3C3489">Agentic RAG — the model runs the loop</text>
+
+  <rect x="24" y="206" width="80" height="48" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="64" y="235" text-anchor="middle" class="node" fill="#993C1D">query</text>
+
+  <rect x="122" y="206" width="104" height="48" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="174" y="235" text-anchor="middle" class="node" fill="#3C3489">analyze</text>
+
+  <rect x="244" y="206" width="158" height="48" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="323" y="229" text-anchor="middle" class="node" fill="#0F6E56">search</text>
+  <text x="323" y="245" text-anchor="middle" class="mono" fill="#0F6E56">hybrid_search_tool</text>
+
+  <rect x="420" y="206" width="104" height="48" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="472" y="235" text-anchor="middle" class="node" fill="#3C3489">evaluate</text>
+
+  <rect x="542" y="206" width="146" height="48" rx="10" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="615" y="229" text-anchor="middle" class="node" fill="#1F4E79">synthesize</text>
+  <text x="615" y="245" text-anchor="middle" class="sub">+ cite pubids</text>
+
+  <rect x="706" y="206" width="74" height="48" rx="10" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="743" y="235" text-anchor="middle" class="node" fill="#1F4E79">answer</text>
+
+  <line x1="104" y1="230" x2="120" y2="230" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="226" y1="230" x2="242" y2="230" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="402" y1="230" x2="418" y2="230" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="524" y1="230" x2="540" y2="230" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="688" y1="230" x2="704" y2="230" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <!-- refine loop: evaluate -> search -->
+  <path d="M 472 254 C 472 312, 323 312, 323 256" fill="none" stroke="#993C1D" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ahOrange)"/>
+  <text x="398" y="330" text-anchor="middle" class="loop">not enough → refine query, search again</text>
+
+  <!-- legend -->
+  <rect x="24" y="356" width="14" height="14" rx="3" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="44" y="368" class="cap">model reasoning</text>
+  <rect x="176" y="356" width="14" height="14" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="196" y="368" class="cap">tool call (the Part 2 retriever, unchanged)</text>
+
+  <text x="24" y="398" class="cap">The model decides <tspan font-weight="700" fill="#1A1A18">what</tspan> to search, <tspan font-weight="700" fill="#1A1A18">whether</tspan> to search again, and <tspan font-weight="700" fill="#1A1A18">when</tspan> it has enough to answer.</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg viewBox="0 0 800 400" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The same retriever wrapped by two agent scaffolds: LangChain and Google ADK</title>
+  <desc>One retriever in the center — the Part 2 hybrid retriever that runs search, then RRF, then retrieve, then format to a string. On the left, the LangChain scaffold wraps it: a tool decorator turns hybrid_search_tool into a tool, and create_agent with model gpt-4o and a system prompt builds the agent. On the right, the Google ADK scaffold wraps the identical retriever: the tool is a plain function whose type hints and docstring are its schema, and an LlmAgent with model openai slash gpt-4o and an instruction builds the agent. Both scaffolds call the same retriever and run the same reason-and-call loop. The point: agentic RAG is a pattern, not a framework feature.</desc>
+
+  <rect x="0" y="0" width="800" height="400" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .fw   { font-size: 13px; font-weight: 700; }
+    .node { font-size: 12px; font-weight: 700; }
+    .mono { font-size: 10.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .sub  { font-size: 9.5px; fill: #5F5E5A; }
+    .cap  { font-size: 12px; font-weight: 700; fill: #0F6E56; }
+  </style>
+
+  <text x="24" y="32" class="h">Same retriever, two scaffolds</text>
+
+  <!-- center retriever -->
+  <rect x="300" y="150" width="200" height="96" rx="14" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="2"/>
+  <text x="400" y="176" text-anchor="middle" class="node" fill="#0F6E56">the retriever (Part 2)</text>
+  <text x="400" y="198" text-anchor="middle" class="mono" fill="#0F6E56">search → rrf</text>
+  <text x="400" y="214" text-anchor="middle" class="mono" fill="#0F6E56">→ retrieve → format</text>
+  <text x="400" y="234" text-anchor="middle" class="sub">returns a string</text>
+
+  <!-- LangChain scaffold (left) -->
+  <rect x="30" y="120" width="220" height="156" rx="14" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="140" y="146" text-anchor="middle" class="fw" fill="#1F4E79">LangChain</text>
+  <rect x="46" y="158" width="188" height="44" rx="9" fill="#FFFFFF" stroke="#85B7EB"/>
+  <text x="140" y="176" text-anchor="middle" class="mono" fill="#1F4E79">@tool</text>
+  <text x="140" y="192" text-anchor="middle" class="sub">docstring = spec</text>
+  <rect x="46" y="212" width="188" height="48" rx="9" fill="#FFFFFF" stroke="#85B7EB"/>
+  <text x="140" y="230" text-anchor="middle" class="mono" fill="#1F4E79">create_agent(...)</text>
+  <text x="140" y="247" text-anchor="middle" class="sub">model "gpt-4o" · system_prompt</text>
+
+  <!-- ADK scaffold (right) -->
+  <rect x="550" y="120" width="220" height="156" rx="14" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="660" y="146" text-anchor="middle" class="fw" fill="#3C3489">Google ADK</text>
+  <rect x="566" y="158" width="188" height="44" rx="9" fill="#FFFFFF" stroke="#AFA9EC"/>
+  <text x="660" y="176" text-anchor="middle" class="mono" fill="#3C3489">plain function</text>
+  <text x="660" y="192" text-anchor="middle" class="sub">type hints + docstring = schema</text>
+  <rect x="566" y="212" width="188" height="48" rx="9" fill="#FFFFFF" stroke="#AFA9EC"/>
+  <text x="660" y="230" text-anchor="middle" class="mono" fill="#3C3489">LlmAgent(...)</text>
+  <text x="660" y="247" text-anchor="middle" class="sub">model "openai/gpt-4o" · instruction</text>
+
+  <!-- arrows to center -->
+  <line x1="250" y1="198" x2="298" y2="198" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="550" y1="198" x2="502" y2="198" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <text x="274" y="188" text-anchor="middle" class="sub">wraps</text>
+  <text x="526" y="188" text-anchor="middle" class="sub">wraps</text>
+
+  <!-- caption -->
+  <rect x="24" y="316" width="752" height="56" rx="12" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="400" y="341" text-anchor="middle" class="cap">Agentic RAG is a pattern, not a framework feature</text>
+  <text x="400" y="360" text-anchor="middle" class="sub">a retriever wrapped as a tool + an LLM that decides when to call it — the loop and the retriever are identical on both sides</text>
+</svg>
