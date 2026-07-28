@@ -1,0 +1,107 @@
+<svg viewBox="0 0 800 432" width="800" height="432" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The whole composed system: one request from input guards through the agent to output guards, with each part's instrument annotated</title>
+  <desc>A left-to-right request-response spine across the top. A request enters an INPUT GUARDS gate that runs, cheapest-first, moderation, regex, an LLM injection classifier, and Presidio PII redaction. It then reaches the agent — Part 1's graph — where a supervisor routes to a specialist; the policy RAG path is shown as supervisor to retrieve to generate. The generated answer passes through an OUTPUT GUARDS gate that validates with Guardrails AI (SSN patterns, toxicity, competitor names) and redacts PII with Presidio, then returns as the response. Below the spine, four bands show where each part's instrument attaches: Part 1 Observability traces every box as one parent-child run tree per request; Part 2 Evaluation scores each hop — routing, retrieval via precision, recall and MRR, faithfulness, and correctness; Part 3 Guardrails is the two gates, cheapest-first and fail-open on the way in, validate-and-redact and fail-closed on the way out; Part 4 Cost meters every LLM run, where the retriever's cost lands on the generate step and output tokens bill four to five times input. A caveat band notes that in this series the guards ran only in Part 3's pipeline while Parts 1, 2 and 4 exercised the bare agent, so this diagram is the composed production system — how the four pieces fit into one request — not a single run that used all four.</desc>
+
+  <rect x="0" y="0" width="800" height="432" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerUnits="userSpaceOnUse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto-start-reverse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#2C6BC4"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sm   { font-size: 10px; font-weight: 700; }
+    .node { font-size: 11.5px; font-weight: 700; }
+    .gate { font-size: 11px; font-weight: 700; }
+    .mono { font-size: 9px; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; fill: #5F5E5A; }
+    .sub  { font-size: 9px; fill: #5F5E5A; }
+    .cap  { font-size: 11px; fill: #5F5E5A; }
+    .num  { font-size: 22px; font-weight: 700; }
+    .nm   { font-size: 12px; font-weight: 700; }
+    .hdr  { font-size: 10px; font-weight: 700; fill: #8A8880; letter-spacing: 0.6px; }
+    .tag  { font-size: 11.5px; font-weight: 700; }
+  </style>
+
+  <text x="24" y="32" class="h">The whole system &#8212; one request, four instruments</text>
+
+  <!-- ===================== spine ===================== -->
+  <!-- request -->
+  <rect x="24" y="73" width="54" height="44" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="51" y="99" text-anchor="middle" class="sm" fill="#993C1D">request</text>
+
+  <!-- input guards gate -->
+  <rect x="90" y="56" width="186" height="78" rx="12" fill="#FBFBF9" stroke="#F0997B" stroke-width="1.6"/>
+  <text x="183" y="73" text-anchor="middle" class="gate" fill="#993C1D">INPUT GUARDS</text>
+  <text x="100" y="90" class="mono">1 &#183; moderation</text>
+  <text x="100" y="102" class="mono">2 &#183; regex</text>
+  <text x="100" y="114" class="mono">3 &#183; injection (LLM)</text>
+  <text x="100" y="126" class="mono">4 &#183; redact PII &#183; Presidio</text>
+
+  <!-- agent group -->
+  <rect x="288" y="56" width="236" height="78" rx="12" fill="#FBFBF9" stroke="#B4B2A9"/>
+  <text x="406" y="73" text-anchor="middle" class="node" fill="#1A1A18">the agent &#8212; Part 1's graph</text>
+  <!-- chips -->
+  <rect x="296" y="86" width="76" height="40" rx="9" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="334" y="104" text-anchor="middle" class="sm" fill="#8A6D1F">supervisor</text>
+  <text x="334" y="118" text-anchor="middle" class="sub">route</text>
+  <rect x="380" y="86" width="64" height="40" rx="9" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="412" y="110" text-anchor="middle" class="sm" fill="#0F6E56">retrieve</text>
+  <rect x="452" y="86" width="64" height="40" rx="9" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="484" y="110" text-anchor="middle" class="sm" fill="#3C3489">generate</text>
+  <line x1="372" y1="106" x2="379" y2="106" stroke="#2C6BC4" stroke-width="1.6" marker-end="url(#ahBlue)"/>
+  <line x1="444" y1="106" x2="451" y2="106" stroke="#2C6BC4" stroke-width="1.6" marker-end="url(#ahBlue)"/>
+
+  <!-- output guards gate -->
+  <rect x="536" y="56" width="170" height="78" rx="12" fill="#FBFBF9" stroke="#F0997B" stroke-width="1.6"/>
+  <text x="621" y="73" text-anchor="middle" class="gate" fill="#993C1D">OUTPUT GUARDS</text>
+  <text x="546" y="92" class="mono">Guardrails AI</text>
+  <text x="556" y="104" class="mono">SSN &#183; toxicity &#183; competitor</text>
+  <text x="546" y="122" class="mono">redact PII &#183; Presidio</text>
+
+  <!-- response -->
+  <rect x="718" y="73" width="58" height="44" rx="10" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="747" y="99" text-anchor="middle" class="sm" fill="#1F4E79">response</text>
+
+  <!-- spine arrows -->
+  <line x1="78"  y1="95" x2="89"  y2="95" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="276" y1="95" x2="287" y2="95" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="524" y1="95" x2="535" y2="95" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="706" y1="95" x2="717" y2="95" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <text x="24" y="150" class="sub">The composed request path &#8212; the policy (RAG) route is shown; the supervisor also routes to <tspan font-weight="700" fill="#1A1A18">account</tspan> and <tspan font-weight="700" fill="#1A1A18">escalation</tspan>.</text>
+
+  <!-- ===================== instrument bands ===================== -->
+  <text x="24" y="172" class="hdr">WHERE EACH PART'S INSTRUMENT ATTACHES</text>
+
+  <!-- P1 -->
+  <rect x="24" y="180" width="752" height="38" rx="10" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="46" y="205" class="num" fill="#1F4E79">1</text>
+  <text x="72" y="198" class="nm" fill="#1F4E79">Observability &#8212; traces the whole flow</text>
+  <text x="72" y="212" class="sub">every box above is a traced run: one parent-child tree per request &#8212; and a <tspan font-weight="700" fill="#1A1A18">missing</tspan> box is evidence too</text>
+
+  <!-- P2 -->
+  <rect x="24" y="222" width="752" height="38" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="46" y="247" class="num" fill="#0F6E56">2</text>
+  <text x="72" y="240" class="nm" fill="#0F6E56">Evaluation &#8212; scores each hop, not the edges</text>
+  <text x="72" y="254" class="sub">routing &#183; retrieval (precision / recall / MRR) &#183; faithfulness &#183; correctness</text>
+
+  <!-- P3 -->
+  <rect x="24" y="264" width="752" height="38" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="46" y="289" class="num" fill="#993C1D">3</text>
+  <text x="72" y="282" class="nm" fill="#993C1D">Guardrails &#8212; the two gates</text>
+  <text x="72" y="296" class="sub">cheapest-first on the way in (<tspan font-weight="700" fill="#1A1A18">fail-open</tspan>) &#183; validate + redact on the way out (<tspan font-weight="700" fill="#1A1A18">fail-closed</tspan>)</text>
+
+  <!-- P4 -->
+  <rect x="24" y="306" width="752" height="38" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="46" y="331" class="num" fill="#3C3489">4</text>
+  <text x="72" y="324" class="nm" fill="#3C3489">Cost &#8212; meters every llm run</text>
+  <text x="72" y="338" class="sub">the retriever's cost lands on <tspan font-weight="700" fill="#1A1A18">generate</tspan> (87 &#8594; 1,240 tok) &#183; output bills ~4&#8211;5&#215; input</text>
+
+  <!-- ===================== caveat ===================== -->
+  <rect x="24" y="354" width="752" height="60" rx="12" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="44" y="378" class="tag" fill="#8A6D1F">Caveat: this is the <tspan fill="#1A1A18">composed</tspan> system, not a single run</text>
+  <text x="44" y="397" class="cap">The guards ran only in Part 3's pipeline; Parts 1, 2 and 4 exercised the bare agent. The diagram shows how the four</text>
+  <text x="44" y="410" class="cap">pieces fit into one production request &#8212; not one run that used all of them at once.</text>
+</svg>
