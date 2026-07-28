@@ -1,0 +1,62 @@
+<svg viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Faithfulness and correctness are orthogonal — a two-by-two of the four outcomes</title>
+  <desc>A two-by-two grid with correctness increasing along the horizontal axis and faithfulness increasing along the vertical axis. Bottom left, low faithfulness and low correctness: hallucinating, ungrounded and wrong. Bottom right, low faithfulness and high correctness: right answer with zero grounding, a shortcut that is fragile the day it breaks. Top left, high faithfulness and low correctness: faithful to the wrong or incomplete document — the RAG signature, and where the run landed with faithfulness 0.93 and correctness 0.77. Top right, high on both: grounded and right, the only quadrant you can ship. A marked point sits in the top-left quadrant at correctness 0.77 and faithfulness 0.93. The caption notes that a single score cannot distinguish these four quadrants.</desc>
+
+  <rect x="0" y="0" width="800" height="430" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahAxis" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .qt   { font-size: 12.5px; font-weight: 700; }
+    .sub  { font-size: 10.5px; fill: #5F5E5A; }
+    .axis { font-size: 11.5px; font-weight: 700; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .mono { font-size: 11px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+  </style>
+
+  <text x="24" y="32" class="h">Faithful &#8800; correct &#8212; they fail independently</text>
+
+  <!-- quadrants -->
+  <rect x="120" y="60" width="300" height="150" rx="10" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="140" y="88" class="qt" fill="#8A6D1F">faithful to the wrong document</text>
+  <text x="140" y="110" class="sub">high faithfulness, low correctness</text>
+  <text x="140" y="130" class="sub">&#8220;the model honestly reports what it retrieved &#8212;</text>
+  <text x="140" y="146" class="sub">but what it retrieved was incomplete.&#8221;</text>
+  <text x="140" y="170" class="mono" fill="#8A6D1F">the RAG signature &#8594; fix retrieval</text>
+  <circle cx="146" cy="191" r="6" fill="#993C1D"/>
+  <text x="160" y="195" class="mono" fill="#993C1D">the run landed here &#8212; 0.93 / 0.77</text>
+
+  <rect x="430" y="60" width="300" height="150" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="450" y="88" class="qt" fill="#0F6E56">grounded and right</text>
+  <text x="450" y="110" class="sub">high faithfulness, high correctness</text>
+  <text x="450" y="132" class="sub">every claim traces to a retrieved chunk,</text>
+  <text x="450" y="148" class="sub">and the facts match ground truth.</text>
+  <text x="450" y="176" class="mono" fill="#0F6E56">the only shippable quadrant</text>
+
+  <rect x="120" y="220" width="300" height="150" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="140" y="248" class="qt" fill="#993C1D">hallucinating</text>
+  <text x="140" y="270" class="sub">low faithfulness, low correctness</text>
+  <text x="140" y="292" class="sub">claims that are in neither the context</text>
+  <text x="140" y="308" class="sub">nor the ground truth.</text>
+  <text x="140" y="336" class="mono" fill="#993C1D">the failure everyone tests for</text>
+
+  <rect x="430" y="220" width="300" height="150" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="450" y="248" class="qt" fill="#3C3489">right answer, zero grounding</text>
+  <text x="450" y="270" class="sub">low faithfulness, high correctness</text>
+  <text x="450" y="292" class="sub">the model answered from prior knowledge</text>
+  <text x="450" y="308" class="sub">or a shortcut, ignoring the context.</text>
+  <text x="450" y="336" class="mono" fill="#3C3489">right today; breaks the day the shortcut does</text>
+
+  <!-- axes -->
+  <line x1="104" y1="378" x2="104" y2="56" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahAxis)"/>
+  <line x1="112" y1="386" x2="736" y2="386" stroke="#8A8880" stroke-width="1.6" marker-end="url(#ahAxis)"/>
+  <text x="88" y="220" class="axis" text-anchor="middle" transform="rotate(-90 88 220)">faithfulness &#8594;</text>
+  <text x="424" y="404" text-anchor="middle" class="axis">correctness &#8594;</text>
+
+  <text x="24" y="424" class="cap">One &#8220;is it correct?&#8221; number cannot tell these four apart &#8212; and only the <tspan font-weight="700" fill="#1A1A18">gap</tspan> between the two scores names the quadrant.</text>
+</svg>

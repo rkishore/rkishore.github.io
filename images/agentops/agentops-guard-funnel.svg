@@ -1,0 +1,56 @@
+<svg viewBox="0 0 800 440" width="800" height="440" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The four-strategy guardrail funnel, cheapest first — each layer catches what the one above it cannot</title>
+  <desc>A funnel of four narrowing bands, widest at the top. Band one, regex: about one millisecond, zero dollars, deterministic; it catches literal patterns such as the token SSN, social security numbers formatted as three digits dash two dash four, card numbers and blocked keywords. Band two, the OpenAI Moderation API: about one hundred milliseconds, free, input only; it catches intent, for example "I want to end it all because of my debt", which contains no matchable keyword. Band three, Presidio named-entity recognition: ten to fifty milliseconds, local, no API key; it catches entity classes that have no fixed format at all, such as PERSON, EMAIL_ADDRESS, PHONE_NUMBER and LOCATION. Band four, an LLM classifier: two hundred to five hundred milliseconds and about one tenth of a cent per call; it catches meaning and rephrasing, for example asking for the last four digits of the social security number on file, which contains no blocked keyword. Beneath the funnel, a note explains the trade is not cost versus accuracy but cost and latency versus semantic coverage — regex is not inaccurate, it is narrow: perfectly precise on its pattern and incapable outside it.</desc>
+
+  <rect x="0" y="0" width="800" height="440" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .nm   { font-size: 13px; font-weight: 700; }
+    .cost { font-size: 10.5px; font-weight: 700; fill: #5F5E5A; }
+    .sub  { font-size: 10.5px; fill: #5F5E5A; }
+    .mono { font-size: 10.5px; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .hdr  { font-size: 10px; font-weight: 700; fill: #8A8880; letter-spacing: 0.6px; }
+  </style>
+
+  <text x="24" y="32" class="h">The guardrail funnel &#8212; cheapest first</text>
+  <text x="360" y="62" class="hdr">WHAT IT CATCHES THAT THE LAYER ABOVE CANNOT</text>
+  <text x="30" y="62" class="hdr">STRATEGY</text>
+
+  <!-- band 1 -->
+  <path d="M 30 74 L 330 74 L 312 128 L 48 128 Z" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="48" y="99" class="nm" fill="#0F6E56">1 &#183; regex</text>
+  <text x="48" y="118" class="cost">~1ms &#183; $0 &#183; deterministic</text>
+  <text x="360" y="96" class="sub">literal patterns you can enumerate</text>
+  <text x="360" y="116" class="mono" fill="#0F6E56">\bssn\b &#183; ###-##-#### &#183; card numbers</text>
+
+  <!-- band 2 -->
+  <path d="M 48 136 L 312 136 L 294 190 L 66 190 Z" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="66" y="161" class="nm" fill="#1F4E79">2 &#183; Moderation API</text>
+  <text x="66" y="180" class="cost">~100ms &#183; free &#183; input only</text>
+  <text x="360" y="158" class="sub"><tspan font-weight="700" fill="#1A1A18">intent</tspan> &#8212; no keyword to match on</text>
+  <text x="360" y="178" class="mono" fill="#1F4E79">"I want to end it all because of my debt"</text>
+
+  <!-- band 3 -->
+  <path d="M 66 198 L 294 198 L 276 252 L 84 252 Z" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="84" y="223" class="nm" fill="#3C3489">3 &#183; Presidio NER</text>
+  <text x="84" y="242" class="cost">~10&#8211;50ms &#183; local, no key</text>
+  <text x="360" y="220" class="sub"><tspan font-weight="700" fill="#1A1A18">entity classes</tspan> with no fixed format</text>
+  <text x="360" y="240" class="mono" fill="#3C3489">PERSON &#183; EMAIL_ADDRESS &#183; PHONE_NUMBER</text>
+
+  <!-- band 4 -->
+  <path d="M 84 260 L 276 260 L 258 314 L 102 314 Z" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="102" y="285" class="nm" fill="#993C1D">4 &#183; LLM classifier</text>
+  <text x="102" y="304" class="cost">~200&#8211;500ms &#183; ~$0.001</text>
+  <text x="360" y="282" class="sub"><tspan font-weight="700" fill="#1A1A18">meaning</tspan> &#8212; survives any rephrasing</text>
+  <text x="360" y="302" class="mono" fill="#993C1D">"last 4 of the social security number on file"</text>
+
+  <!-- volume note -->
+  <text x="180" y="338" text-anchor="middle" class="cap">each cheap layer shrinks the volume reaching the expensive one</text>
+
+  <!-- takeaway -->
+  <rect x="30" y="356" width="746" height="66" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="50" y="382" class="nm" fill="#1A1A18">The trade isn't cost vs accuracy &#8212; it's cost/latency vs <tspan fill="#993C1D">semantic coverage</tspan></text>
+  <text x="50" y="406" class="cap">regex isn't inaccurate, it's <tspan font-weight="700" fill="#1A1A18">narrow</tspan>: 100% precise on its pattern, 0% capable outside it &#8212; and you can't tune it into understanding.</text>
+</svg>

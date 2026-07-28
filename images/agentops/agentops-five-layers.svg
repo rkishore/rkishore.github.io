@@ -1,0 +1,70 @@
+<svg viewBox="0 0 800 440" width="800" height="440" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Five evaluation layers, five evaluators — end-to-end metrics detect, per-layer evaluators localize</title>
+  <desc>Five stacked rows, one per evaluation layer. Row one, route: the routing_accuracy evaluator, free and deterministic, asks did the supervisor pick the right agent. Row two, retrieve: precision at k and recall at k ask how much of what came back was relevant, and how much of what was relevant came back. Row three, rank: mean reciprocal rank asks how high the right document was ranked. Row four, faithfulness: an LLM judge over the answer and the retrieved context asks whether every claim is grounded. Row five, correctness: an LLM judge over the answer and the ground truth asks whether the facts match. A bracket on the right shows that a single end-to-end "is it correct?" score collapses all five rows into one number. The takeaway bar: end-to-end metrics detect that something is wrong; per-layer evaluators localize which layer is wrong.</desc>
+
+  <rect x="0" y="0" width="800" height="440" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .lay  { font-size: 13px; font-weight: 700; }
+    .mono { font-size: 11px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .sub  { font-size: 10.5px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .tag  { font-size: 12px; font-weight: 700; }
+    .hdr  { font-size: 10px; font-weight: 700; fill: #8A8880; letter-spacing: 0.6px; }
+  </style>
+
+  <text x="24" y="32" class="h">Five layers, five evaluators</text>
+
+  <text x="40" y="62" class="hdr">LAYER</text>
+  <text x="170" y="62" class="hdr">EVALUATOR</text>
+  <text x="360" y="62" class="hdr">THE QUESTION IT ANSWERS</text>
+
+  <!-- row 1 -->
+  <rect x="30" y="72" width="600" height="48" rx="10" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="48" y="102" class="lay" fill="#8A6D1F">route</text>
+  <text x="170" y="95" class="mono" fill="#8A6D1F">routing_accuracy</text>
+  <text x="170" y="111" class="sub">free, exact match</text>
+  <text x="360" y="102" class="cap">did the supervisor pick the right agent?</text>
+
+  <!-- row 2 -->
+  <rect x="30" y="130" width="600" height="48" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="48" y="160" class="lay" fill="#0F6E56">retrieve</text>
+  <text x="170" y="153" class="mono" fill="#0F6E56">precision@k &#183; recall@k</text>
+  <text x="170" y="169" class="sub">free, set membership</text>
+  <text x="360" y="160" class="cap">how much came back, and how much was <tspan font-weight="700" fill="#1A1A18">noise</tspan>?</text>
+
+  <!-- row 3 -->
+  <rect x="30" y="188" width="600" height="48" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="48" y="218" class="lay" fill="#0F6E56">rank</text>
+  <text x="170" y="211" class="mono" fill="#0F6E56">MRR</text>
+  <text x="170" y="227" class="sub">free, rank of first hit</text>
+  <text x="360" y="218" class="cap">how <tspan font-weight="700" fill="#1A1A18">high</tspan> was it ranked &#8212; #1 or buried at #4?</text>
+
+  <!-- row 4 -->
+  <rect x="30" y="246" width="600" height="48" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="48" y="276" class="lay" fill="#3C3489">faithfulness</text>
+  <text x="170" y="269" class="mono" fill="#3C3489">f(answer, context)</text>
+  <text x="170" y="285" class="sub">LLM judge &#183; ~1 call/example</text>
+  <text x="360" y="276" class="cap">is every claim grounded in what we retrieved?</text>
+
+  <!-- row 5 -->
+  <rect x="30" y="304" width="600" height="48" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="48" y="334" class="lay" fill="#3C3489">correctness</text>
+  <text x="170" y="327" class="mono" fill="#3C3489">f(answer, truth)</text>
+  <text x="170" y="343" class="sub">LLM judge &#183; ~1 call/example</text>
+  <text x="360" y="334" class="cap">does it match the labeled ground truth?</text>
+
+  <!-- collapse bracket -->
+  <path d="M 646 76 L 664 76 L 664 348 L 646 348" fill="none" stroke="#C4694A" stroke-width="1.8"/>
+  <path d="M 664 212 L 690 212" stroke="#C4694A" stroke-width="1.8"/>
+  <rect x="690" y="180" width="86" height="64" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="733" y="204" text-anchor="middle" class="mono" fill="#993C1D">one score</text>
+  <text x="733" y="222" text-anchor="middle" class="sub">&#8220;is it</text>
+  <text x="733" y="236" text-anchor="middle" class="sub">correct?&#8221;</text>
+
+  <!-- takeaway -->
+  <rect x="30" y="374" width="746" height="50" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="403" y="398" text-anchor="middle" class="tag" fill="#1F4E79">End-to-end metrics <tspan fill="#1A1A18">detect</tspan>. Per-layer evaluators <tspan fill="#1A1A18">localize</tspan>.</text>
+  <text x="403" y="416" text-anchor="middle" class="sub">collapse the five rows into one number and you know something is wrong, not <tspan font-weight="700" fill="#1A1A18">where</tspan></text>
+</svg>

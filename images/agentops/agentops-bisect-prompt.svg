@@ -1,0 +1,75 @@
+<svg viewBox="0 0 800 410" width="800" height="410" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Bisect the pipeline at one field: the final LLM run's input</title>
+  <desc>Across the top, the four-stage pipeline: route, then retrieve, then assemble, then generate, then answer. A dashed callout drops from the boundary between assemble and generate to a highlighted focal box: read the final llm run's input, the fully rendered prompt. From that box the diagnosis splits two ways. If the correct fact is absent from the prompt, the bug is upstream — retrieval, chunking or assembly — and nothing downstream could have saved it. If the correct fact is present in the prompt, the bug is downstream in generation — either hallucination or distractor confusion, where the model grabbed a different real number from another retrieved chunk. The whole pipeline bisects at that single field.</desc>
+
+  <rect x="0" y="0" width="800" height="410" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#8A8880"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .node { font-size: 12px; font-weight: 700; }
+    .mono { font-size: 11px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .sub  { font-size: 10px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .bad  { font-size: 12.5px; font-weight: 700; fill: #993C1D; }
+    .good { font-size: 12.5px; font-weight: 700; fill: #3C3489; }
+  </style>
+
+  <text x="24" y="32" class="h">The highest-value click: bisect at the rendered prompt</text>
+
+  <!-- ===== pipeline row ===== -->
+  <rect x="30" y="60" width="120" height="44" rx="10" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="90" y="87" text-anchor="middle" class="node" fill="#8A6D1F">route</text>
+
+  <rect x="180" y="60" width="140" height="44" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="250" y="87" text-anchor="middle" class="node" fill="#0F6E56">retrieve</text>
+
+  <rect x="350" y="60" width="140" height="44" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="420" y="87" text-anchor="middle" class="node" fill="#0F6E56">assemble</text>
+
+  <rect x="520" y="60" width="130" height="44" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="585" y="87" text-anchor="middle" class="node" fill="#3C3489">generate</text>
+
+  <rect x="680" y="60" width="90" height="44" rx="10" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="725" y="87" text-anchor="middle" class="node" fill="#1F4E79">answer</text>
+
+  <line x1="150" y1="82" x2="178" y2="82" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="320" y1="82" x2="348" y2="82" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="490" y1="82" x2="518" y2="82" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+  <line x1="650" y1="82" x2="678" y2="82" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <!-- callout to the focal field -->
+  <path d="M 505 106 C 505 146, 420 130, 400 154" fill="none" stroke="#8A8880" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ahGrey)"/>
+
+  <!-- ===== focal box ===== -->
+  <rect x="200" y="158" width="400" height="62" rx="12" fill="#FAECE7" stroke="#F0997B" stroke-width="2"/>
+  <text x="400" y="182" text-anchor="middle" class="mono" fill="#993C1D">final llm run &#183; input</text>
+  <text x="400" y="204" text-anchor="middle" class="sub">the fully rendered prompt &#8212; what the model <tspan font-weight="700" fill="#1A1A18">actually saw</tspan></text>
+
+  <!-- split arrows -->
+  <path d="M 300 220 L 230 254" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+  <path d="M 500 220 L 570 254" fill="none" stroke="#2C6BC4" stroke-width="1.8" marker-end="url(#ahBlue)"/>
+
+  <!-- ===== branches ===== -->
+  <rect x="40" y="258" width="340" height="96" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="60" y="284" class="bad">correct fact <tspan text-decoration="underline">absent</tspan> from the prompt</text>
+  <text x="60" y="308" class="cap">&#8594; retrieval / chunking / <tspan font-weight="700" fill="#1A1A18">assembly</tspan> bug</text>
+  <text x="60" y="330" class="sub">nothing downstream could have saved it</text>
+  <text x="60" y="346" class="sub">everything upstream of the prompt is suspect</text>
+
+  <rect x="420" y="258" width="340" height="96" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="440" y="284" class="good">correct fact <tspan text-decoration="underline">present</tspan> in the prompt</text>
+  <text x="440" y="308" class="cap">&#8594; generation bug</text>
+  <text x="440" y="330" class="sub">hallucination, or <tspan font-weight="700" fill="#1A1A18">distractor confusion</tspan></text>
+  <text x="440" y="346" class="sub">&#8212; the right number, from the wrong chunk</text>
+
+  <text x="400" y="386" text-anchor="middle" class="cap">Logs give you the query and the answer. Only the trace shows the middle.</text>
+</svg>

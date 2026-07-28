@@ -1,0 +1,72 @@
+<svg viewBox="0 0 800 400" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Fail open on the way in, fail closed on the way out — and what happens if you flip them</title>
+  <desc>Two panels showing what to do when a guard itself breaks, meaning the classifier API is down rather than the guard catching something. Left panel, the input guard: when it errors, fail open and let the query through, because later layers still backstop it and blocking all traffic because one dependency is down is a self-inflicted outage. Right panel, the output guard: when it errors, fail closed and return the safe fallback instead, because it is the last line and a leak is both irreversible and regulatory. A bar across the bottom shows the inverted policy: fail closed on input and open on output gives you outages on benign traffic and leaks on sensitive traffic — exactly the wrong pair of errors. The principle: fail in the direction of the cheaper, recoverable error — availability on the way in, security on the way out.</desc>
+
+  <rect x="0" y="0" width="800" height="400" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2C6BC4"/>
+    </marker>
+    <marker id="ahRed" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#993C1D"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .pt   { font-size: 13px; font-weight: 700; }
+    .node { font-size: 12px; font-weight: 700; }
+    .mono { font-size: 10.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .sub  { font-size: 10.5px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .tag  { font-size: 12px; font-weight: 700; }
+  </style>
+
+  <text x="24" y="32" class="h">When the guard itself breaks</text>
+  <text x="24" y="52" class="sub">&#8220;failure&#8221; = the classifier API is down &#8212; not the guard catching something</text>
+
+  <!-- ===== input panel ===== -->
+  <rect x="24" y="70" width="366" height="222" rx="14" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="98" class="pt" fill="#1F4E79">Input guard &#8212; the perimeter</text>
+
+  <rect x="44" y="112" width="120" height="40" rx="9" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="104" y="137" text-anchor="middle" class="node" fill="#1F4E79">query</text>
+  <rect x="196" y="112" width="174" height="40" rx="9" fill="#FFFFFF" stroke="#C4694A" stroke-dasharray="5 4"/>
+  <text x="283" y="130" text-anchor="middle" class="mono" fill="#993C1D">moderation API</text>
+  <text x="283" y="145" text-anchor="middle" class="sub">timed out</text>
+  <line x1="164" y1="132" x2="194" y2="132" stroke="#2C6BC4" stroke-width="2" marker-end="url(#ahBlue)"/>
+
+  <rect x="44" y="170" width="326" height="46" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="207" y="190" text-anchor="middle" class="tag" fill="#0F6E56">FAIL OPEN &#8212; let it through</text>
+  <text x="207" y="208" text-anchor="middle" class="sub">regex, injection classifier and the output guard still stand</text>
+
+  <text x="44" y="242" class="cap">Blocking <tspan font-weight="700" fill="#1A1A18">all</tspan> traffic because one dependency</text>
+  <text x="44" y="260" class="cap">hiccupped is a self-inflicted outage.</text>
+  <text x="44" y="280" class="sub">the error is recoverable &#8212; later layers backstop it</text>
+
+  <!-- ===== output panel ===== -->
+  <rect x="410" y="70" width="366" height="222" rx="14" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="430" y="98" class="pt" fill="#993C1D">Output guard &#8212; the last line</text>
+
+  <rect x="430" y="112" width="120" height="40" rx="9" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="490" y="137" text-anchor="middle" class="node" fill="#3C3489">response</text>
+  <rect x="582" y="112" width="174" height="40" rx="9" fill="#FFFFFF" stroke="#C4694A" stroke-dasharray="5 4"/>
+  <text x="669" y="130" text-anchor="middle" class="mono" fill="#993C1D">validator</text>
+  <text x="669" y="145" text-anchor="middle" class="sub">errored</text>
+  <line x1="550" y1="132" x2="580" y2="132" stroke="#993C1D" stroke-width="2" marker-end="url(#ahRed)"/>
+
+  <rect x="430" y="170" width="326" height="46" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="593" y="190" text-anchor="middle" class="tag" fill="#993C1D">FAIL CLOSED &#8212; send the fallback</text>
+  <text x="593" y="208" text-anchor="middle" class="sub">if you can't validate a response, don't send it</text>
+
+  <text x="430" y="242" class="cap">Nothing stands behind this layer, and a leak</text>
+  <text x="430" y="260" class="cap">is <tspan font-weight="700" fill="#1A1A18">irreversible</tspan> &#8212; and regulatory.</text>
+  <text x="430" y="280" class="sub">the error is not recoverable &#8212; the data has left the building</text>
+
+  <!-- inverted bar -->
+  <rect x="24" y="308" width="752" height="72" rx="12" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="44" y="332" class="tag" fill="#8A6D1F">Flip the two and you get exactly the wrong pair of errors:</text>
+  <text x="44" y="354" class="cap">closed on input &#8594; <tspan font-weight="700" fill="#993C1D">outages on benign traffic</tspan> &#160;&#183;&#160; open on output &#8594; <tspan font-weight="700" fill="#993C1D">leaks on sensitive traffic</tspan></text>
+  <text x="44" y="372" class="sub">fail in the direction of the cheaper, recoverable error: availability on the way in, security on the way out</text>
+</svg>

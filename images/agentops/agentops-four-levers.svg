@@ -1,0 +1,61 @@
+<svg viewBox="0 0 800 430" width="800" height="430" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Four cost levers, in the order to try them — and how to pick by bottleneck</title>
+  <desc>Four numbered cards in the order to reach for them. One, trim the retrieved context: cut top k and chunk size, the highest impact and lowest effort, with the risk that if the relevant chunk sat at rank four you just lost it, so check MRR after every cut. Two, caching: provider-side prompt caching bills a repeated static prefix at a fraction of the input price, while semantic caching in your own vector store eliminates the call entirely on a hit — completely different mechanisms, not two names for one thing. Three, the Batch API: about fifty percent off for anything not real-time and tolerant of up to twenty-four hours, which is exactly what an offline evaluation run is. Four, model routing, deliberately last, because the complexity classifier itself costs tokens and latency and is a new component that can fail or misroute. Below the cards, a strip on picking by bottleneck: input-bound workloads want trimming and caching, easy-query-heavy traffic wants routing, and latency-tolerant bulk work wants the Batch API.</desc>
+
+  <rect x="0" y="0" width="800" height="430" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .num  { font-size: 22px; font-weight: 700; }
+    .nm   { font-size: 13px; font-weight: 700; }
+    .sub  { font-size: 10.5px; fill: #5F5E5A; }
+    .mono { font-size: 10.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .warn { font-size: 10.5px; font-weight: 700; fill: #993C1D; }
+    .tag  { font-size: 12px; font-weight: 700; }
+    .hdr  { font-size: 10px; font-weight: 700; fill: #8A8880; letter-spacing: 0.6px; }
+  </style>
+
+  <text x="24" y="32" class="h">Four levers, in the order to try them</text>
+
+  <!-- card 1 -->
+  <rect x="24" y="54" width="752" height="66" rx="12" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="48" y="95" class="num" fill="#0F6E56">1</text>
+  <text x="80" y="80" class="nm" fill="#0F6E56">Trim the retrieved context</text>
+  <text x="80" y="99" class="sub">cut <tspan class="mono" fill="#0F6E56">top_k</tspan> and <tspan class="mono" fill="#0F6E56">chunk_size</tspan> &#8212; highest impact, lowest effort, and it attacks the pile that dominates the bill</text>
+  <text x="80" y="114" class="warn">risk: if the answer chunk sat at rank 4, you just deleted it &#8212; check MRR after every cut</text>
+
+  <!-- card 2 -->
+  <rect x="24" y="130" width="752" height="66" rx="12" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="48" y="171" class="num" fill="#1F4E79">2</text>
+  <text x="80" y="156" class="nm" fill="#1F4E79">Caching &#8212; two different mechanisms, not two names for one</text>
+  <text x="80" y="175" class="sub"><tspan font-weight="700" fill="#1A1A18">prompt caching:</tspan> provider-side, automatic, bills the repeated static prefix at a fraction &#8212; reduces <tspan font-weight="700" fill="#1A1A18">input</tspan> cost</text>
+  <text x="80" y="190" class="sub"><tspan font-weight="700" fill="#1A1A18">semantic caching:</tspan> your vector store, embed-and-lookup &#8212; eliminates the call <tspan font-weight="700" fill="#1A1A18">entirely</tspan> on a hit</text>
+
+  <!-- card 3 -->
+  <rect x="24" y="206" width="752" height="58" rx="12" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="48" y="243" class="num" fill="#3C3489">3</text>
+  <text x="80" y="230" class="nm" fill="#3C3489">Batch API</text>
+  <text x="80" y="249" class="sub">~50% off for anything not real-time, up to 24h &#8212; right for eval runs and backfills, wrong for live support</text>
+
+  <!-- card 4 -->
+  <rect x="24" y="274" width="752" height="66" rx="12" fill="#FDF3DC" stroke="#E0B84C"/>
+  <text x="48" y="315" class="num" fill="#8A6D1F">4</text>
+  <text x="80" y="300" class="nm" fill="#8A6D1F">Model routing &#8212; deliberately <tspan text-decoration="underline">last</tspan></text>
+  <text x="80" y="319" class="sub">a cheap model for the easy paths sounds like the obvious first move&#8230;</text>
+  <text x="80" y="334" class="warn">&#8230;but the complexity classifier costs tokens and latency, and it's a new component that can fail or misroute</text>
+
+  <!-- pick-by-bottleneck strip -->
+  <text x="24" y="368" class="hdr">PICK BY BOTTLENECK</text>
+  <rect x="24" y="376" width="240" height="42" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="144" y="394" text-anchor="middle" class="tag" fill="#0F6E56">input-bound</text>
+  <text x="144" y="410" text-anchor="middle" class="cap">&#8594; trim &#183; cache</text>
+
+  <rect x="280" y="376" width="240" height="42" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="400" y="394" text-anchor="middle" class="tag" fill="#8A6D1F">easy-query-heavy</text>
+  <text x="400" y="410" text-anchor="middle" class="cap">&#8594; route</text>
+
+  <rect x="536" y="376" width="240" height="42" rx="10" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="656" y="394" text-anchor="middle" class="tag" fill="#3C3489">latency-tolerant bulk</text>
+  <text x="656" y="410" text-anchor="middle" class="cap">&#8594; batch</text>
+</svg>
