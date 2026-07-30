@@ -1,1 +1,1 @@
-Hello and welcome to my blog. The focus here is primarily on the applications of deep learning and neural nets.
+Hello and welcome to my blog. It's a running log of what I'm learning in applied AI — from neural-net fundamentals to agentic AI and LLM systems.
