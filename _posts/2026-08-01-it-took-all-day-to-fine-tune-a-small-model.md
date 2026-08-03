@@ -1,5 +1,5 @@
 ---
-title: "It Took Me All Day to Fine-Tune a 1.5B Model"
+title: "The 20-Minute Fine-Tune That Took All Day"
 description: "Part 5 and the close of the fine-tuning series: 'QLoRA fine-tunes a model on a free GPU in 20 minutes' is true in principle and took me a full day. OOM on a T4, a lost run at 157/250 steps, a P100 that breaks 4-bit, and two GPUs that made it fail instead of faster."
 ---
 
