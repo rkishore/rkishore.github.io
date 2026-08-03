@@ -1,5 +1,5 @@
 ---
-title: "When Not to Fine-Tune (a Fine-Tuning Post)"
+title: "When Not to Fine-Tune"
 description: "Part 2 of the fine-tuning series: I fine-tuned a capable 1.5B model on 112k real medical Q&A pairs and it got worse on every axis. Fine-tuning is the third thing you try — the ladder is prompt engineering, then RAG, then fine-tuning — because it changes form, not facts."
 ---
 
@@ -43,7 +43,7 @@ The model faithfully learned the *form* of its training data: short, abrupt, per
 
 Even when fine-tuning *works*, there's a strategic bill that the compute cost hides: **fine-tuning locks you to open-weight models.** The moment you invest in a fine-tune of an open model, you've opted out of the frontier — and frontier models improve *monthly*. Your painstakingly fine-tuned 1.5B is competing against next quarter's base model that a prompt change would have gotten you for free. That's not a GPU-hour cost; it's an opportunity cost that compounds.
 
-Weigh a fine-tune against three budgets, not one: **cost, latency, and accuracy** — and against the reversibility you're giving up. Prompt changes are free and instant to undo. A fine-tune is a fork you maintain.
+Weigh a fine-tune against three budgets, not one: **cost, latency, and accuracy** — and against the reversibility you're giving up. Prompt changes are free and a lot easier to undo. A fine-tune is a fork you maintain.
 
 ## The one-liner that ties it together
 
