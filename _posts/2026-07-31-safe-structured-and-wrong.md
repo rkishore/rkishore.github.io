@@ -41,4 +41,4 @@ Distilled: **a single evaluation number — especially a safety number — will 
 
 It was safe, structured, and wrong — and the one evaluator a safety gate would trust was the only one it fooled.
 
-**Coming next:** all of this assumed the training even *ran*. Getting a 1.5B QLoRA job to complete on free hardware was the single hardest part of the week — an infrastructure gauntlet nobody screenshots. [Part 5](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html) is that day.
+**Coming next:** all of this assumed the training even *ran*. Getting a 1.5B QLoRA job to complete on free hardware was the single hardest part of the week — an infrastructure gauntlet the screenshots leave out. [Part 5](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html) is that day.

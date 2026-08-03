@@ -7,7 +7,7 @@ description: "Part 5 and the close of the fine-tuning series: 'QLoRA fine-tunes 
 
 **Objective:** The close of the series — organized around one question: *the tutorials say "QLoRA fine-tunes a model on a free GPU in 20 minutes," so why did it take me a full day?* The gap between those two sentences is the whole post. Knowing the failure modes in advance turns out to be worth more than knowing the config.
 
-"QLoRA fine-tunes a model on a free GPU in 20 minutes." True — *in principle*. It took me a full day, and none of the day was the 20 minutes. It was the infrastructure gauntlet nobody screenshots.
+"QLoRA fine-tunes a model on a free GPU in 20 minutes." True — *in principle*. It took me a full day, and none of the day was the 20 minutes. It was the infrastructure gauntlet the screenshots leave out.
 
 ## The one idea: the tutorials show you the happy path
 
