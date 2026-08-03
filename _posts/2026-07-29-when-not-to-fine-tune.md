@@ -39,7 +39,7 @@ This is the counterintuitive bit: it didn't just fail to help, it *regressed*. T
 
 The model faithfully learned the *form* of its training data: short, abrupt, persona-stamped answers. Since the data was noisy, "learning the form" meant importing its worst habits. It changed exactly what fine-tuning changes — and that was the problem. (The *why* behind "the data was noisy" is [Part 3](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html): I could have predicted this from the dataset alone, before training.)
 
-## The cost nobody puts on the slide
+## The cost that doesn't make the slide
 
 Even when fine-tuning *works*, there's a strategic bill that the compute cost hides: **fine-tuning locks you to open-weight models.** The moment you invest in a fine-tune of an open model, you've opted out of the frontier — and frontier models improve *monthly*. Your painstakingly fine-tuned 1.5B is competing against next quarter's base model that a prompt change would have gotten you for free. That's not a GPU-hour cost; it's an opportunity cost that compounds.
 
