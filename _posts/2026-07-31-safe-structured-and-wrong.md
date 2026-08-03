@@ -13,11 +13,11 @@ My fine-tuned medical model was asked about **asthma** and answered about **COPD
 
 I scored every answer with an LLM-as-judge ([GPT-4o-mini](https://platform.openai.com/docs/models), temperature 0) across **three independent evaluators — helpfulness, accuracy, safety** — deliberately using a different model family from the one under test (OpenAI grading Qwen) to dodge self-evaluation bias. Three axes, not one, and here is why one would have failed me:
 
-![Safe, structured, and wrong: one eval row. The model was asked about asthma and answered about COPD, the wrong disease — well-formatted, politely hedged, with a disclaimer. Three independent axes: accuracy scores 0.2 and helpfulness scores 0.2, both correctly cratering because the answer is about the wrong disease; but safety scores 0.8 because the answer hedged and disclaimed politely. A well-mannered wrong answer passes a safety check — a safety gate alone would have shipped it. Only one of the three evaluators noticed.](/images/finetuning/finetuning-safe-structured-wrong.svg)
+![Safe, structured, and wrong: one eval row. The model was asked about asthma and answered about COPD, the wrong disease — well-formatted, politely hedged, with a disclaimer. Three independent axes: accuracy scores 0.2 and helpfulness scores 0.2, both correctly cratering because the answer is about the wrong disease; but safety scores 0.8 because the answer hedged and disclaimed politely. A well-mannered wrong answer passes a safety check — a safety gate alone would have shipped it. Two of the three evaluators caught it — accuracy and helpfulness both scored 0.2 — while the safety score, the one a gate would trust, did not.](/images/finetuning/finetuning-safe-structured-wrong.svg)
 
 The COPD answer is the argument in one row. Because it was about the wrong disease, accuracy and helpfulness correctly crater to **0.2**. But safety stays at **0.8** — because the answer *hedged, disclaimed, and was politely formatted.* Everything a safety rubric rewards, it did. It just did it about the wrong illness.
 
-**A well-mannered wrong answer passes a safety check.** The failure that hurts someone doesn't look unsafe; it looks *polished*. Which is exactly the failure mode fine-tuning is most likely to produce, because — per [Part 2](/2026/07/29/when-not-to-fine-tune.html) — fine-tuning installs *form*, and a safety score is heavily a measure of form.
+**A well-mannered wrong answer passes a safety check.** The failure that hurts someone doesn't look unsafe; it looks *polished*. Which is exactly the failure mode fine-tuning is especially prone to produce, because — per [Part 2](/2026/07/29/when-not-to-fine-tune.html) — fine-tuning installs *form*, and a safety score is heavily a measure of form.
 
 So: **measure safety, but never *only* it.** Correctness has to be its own axis, or a confidently-wrong-but-polite model slips straight through. Safety scores give false comfort precisely when you most need real information.
 
@@ -39,6 +39,6 @@ One habit worth naming because it's seductive: **helpfulness ≠ readability.** 
 
 Distilled: **a single evaluation number — especially a safety number — will lie to you, because the failure that hurts someone hides inside a healthy average and behind polite formatting.** You need independent axes so correctness can contradict safety, and per-example inspection so the tail can contradict the mean.
 
-It was safe, structured, and wrong — and only one of my three evaluators noticed.
+It was safe, structured, and wrong — and the one evaluator a safety gate would trust was the only one it fooled.
 
 **Coming next:** all of this assumed the training even *ran*. Getting a 1.5B QLoRA job to complete on free hardware was the single hardest part of the week — an infrastructure gauntlet nobody screenshots. [Part 5](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html) is that day.

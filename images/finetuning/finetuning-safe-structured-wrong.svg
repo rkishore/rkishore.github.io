@@ -39,5 +39,5 @@
 
   <text x="24" y="282" class="cap">A well-mannered wrong answer <tspan font-weight="700" fill="#1f1e1b">passes a safety check.</tspan> A safety gate alone would have shipped it.</text>
   <text x="24" y="304" class="cap">Measure safety &#8212; but never <tspan font-weight="700" fill="#1f1e1b">only</tspan> it. Correctness has to be its own axis.</text>
-  <text x="24" y="324" class="cap">Only one of the three evaluators noticed.</text>
+  <text x="24" y="324" class="cap">Two of the three caught it; the safety score was the one that didn't.</text>
 </svg>
