@@ -1,0 +1,38 @@
+<svg width="720" height="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect x="0" y="0" width="720" height="400" fill="#ffffff"/>
+  <title>LoRA structure: a frozen weight matrix W in parallel with two small trainable matrices A and B</title>
+  <desc>Input x flows through two paths. The top path goes through the frozen 4096 by 4096 weight matrix W. The bottom path goes through A, which squeezes 4096 dimensions down to 8, then B, which expands 8 back to 4096. The two outputs are added together.</desc>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a5a096"/>
+    </marker>
+  </defs>
+  <text x="24" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#1f1e1b">h = W·x  +  B·A·x</text>
+  <rect x="24" y="180" width="50" height="44" rx="8" fill="#ffffff" stroke="#cfcabf"/>
+  <text x="49" y="208" font-size="15" text-anchor="middle" fill="#1f1e1b">x</text>
+  <path d="M 74 202 L 122 202" stroke="#a5a096" fill="none"/>
+  <path d="M 122 202 L 122 96 L 174 96" stroke="#a5a096" fill="none" marker-end="url(#ar)"/>
+  <path d="M 122 202 L 122 272 L 174 272" stroke="#a5a096" fill="none" marker-end="url(#ar)"/>
+  <rect x="180" y="52" width="190" height="88" rx="8" fill="#faf9f6" stroke="#cfcabf" stroke-dasharray="5 4"/>
+  <text x="275" y="90" font-size="16" text-anchor="middle" fill="#4d4a44">W  (pretrained)</text>
+  <text x="275" y="112" font-size="11" text-anchor="middle" fill="#8b877e">4096 × 4096  ·  16.8M weights</text>
+  <rect x="304" y="150" width="66" height="18" rx="9" fill="#ffffff" stroke="#e4e0d8"/>
+  <text x="337" y="163" font-size="10" text-anchor="middle" fill="#8b877e">FROZEN</text>
+  <rect x="180" y="238" width="98" height="68" rx="8" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="229" y="270" font-size="16" text-anchor="middle" fill="#b3541e">A</text>
+  <text x="229" y="290" font-size="11" text-anchor="middle" fill="#b3541e">4096 → 8</text>
+  <path d="M 278 272 L 326 272" stroke="#a5a096" fill="none" marker-end="url(#ar)"/>
+  <text x="302" y="258" font-size="10" text-anchor="middle" fill="#8b877e">r=8</text>
+  <rect x="332" y="238" width="98" height="68" rx="8" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="381" y="270" font-size="16" text-anchor="middle" fill="#b3541e">B</text>
+  <text x="381" y="290" font-size="11" text-anchor="middle" fill="#b3541e">8 → 4096</text>
+  <text x="305" y="330" font-size="11" text-anchor="middle" fill="#b3541e">65K weights · trainable</text>
+  <path d="M 370 96 L 518 96 L 518 176" stroke="#a5a096" fill="none" marker-end="url(#ar)"/>
+  <path d="M 430 272 L 518 272 L 518 228" stroke="#a5a096" fill="none" marker-end="url(#ar)"/>
+  <circle cx="518" cy="202" r="22" fill="#ffffff" stroke="#cfcabf"/>
+  <text x="518" y="209" font-size="18" text-anchor="middle" fill="#1f1e1b">+</text>
+  <path d="M 540 202 L 606 202" stroke="#a5a096" fill="none" marker-end="url(#ar)"/>
+  <rect x="610" y="180" width="50" height="44" rx="8" fill="#ffffff" stroke="#cfcabf"/>
+  <text x="635" y="208" font-size="15" text-anchor="middle" fill="#1f1e1b">h</text>
+  <text x="24" y="376" font-size="11" fill="#8b877e">Dashed = frozen, no gradients stored.   Solid accent = the only weights that change.   65K / 16.8M = 0.4%</text>
+</svg>

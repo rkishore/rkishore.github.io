@@ -1,0 +1,30 @@
+<svg width="720" height="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect x="0" y="0" width="720" height="270" fill="#ffffff"/>
+  <title>Uniform 4-bit levels versus NF4 levels placed against the bell-curve distribution of weights</title>
+  <desc>Both panels show the same bell-shaped weight distribution with 16 ticks beneath. On the left the ticks are evenly spaced, so many fall in empty tails. On the right the NF4 ticks crowd near the centre where most weights sit.</desc>
+  <text x="24" y="26" font-size="12" fill="#4d4a44">4 bits buys you 16 possible values. Where you put them is a choice.</text>
+  <text x="24" y="46" font-size="10" fill="#8b877e">The curve is how a layer's weights are really distributed — bunched near zero, thin at the edges.</text>
+  <text x="180" y="84" font-size="11" text-anchor="middle" fill="#4d4a44">Evenly spaced (plain 4-bit)</text>
+  <polygon points="45,199 68,196 90,188 113,171 135,145 158,121 180,110 203,121 225,145 248,171 270,188 293,196 315,199 315,200 45,200" fill="#fdf1e7" stroke="#b3541e"/>
+  <line x1="45" y1="200" x2="315" y2="200" stroke="#cfcabf"/>
+  <g stroke="#1f1e1b">
+    <line x1="45" y1="200" x2="45" y2="213"/><line x1="63" y1="200" x2="63" y2="213"/><line x1="81" y1="200" x2="81" y2="213"/><line x1="99" y1="200" x2="99" y2="213"/>
+    <line x1="117" y1="200" x2="117" y2="213"/><line x1="135" y1="200" x2="135" y2="213"/><line x1="153" y1="200" x2="153" y2="213"/><line x1="171" y1="200" x2="171" y2="213"/>
+    <line x1="189" y1="200" x2="189" y2="213"/><line x1="207" y1="200" x2="207" y2="213"/><line x1="225" y1="200" x2="225" y2="213"/><line x1="243" y1="200" x2="243" y2="213"/>
+    <line x1="261" y1="200" x2="261" y2="213"/><line x1="279" y1="200" x2="279" y2="213"/><line x1="297" y1="200" x2="297" y2="213"/><line x1="315" y1="200" x2="315" y2="213"/>
+  </g>
+  <text x="180" y="236" font-size="10" text-anchor="middle" fill="#8b877e">Many levels sit out in the tails,</text>
+  <text x="180" y="251" font-size="10" text-anchor="middle" fill="#8b877e">describing weights that barely exist.</text>
+  <line x1="360" y1="70" x2="360" y2="255" stroke="#e4e0d8"/>
+  <text x="540" y="84" font-size="11" text-anchor="middle" fill="#b3541e">NF4 spacing</text>
+  <polygon points="405,199 428,196 450,188 473,171 495,145 518,121 540,110 563,121 585,145 608,171 630,188 653,196 675,199 675,200 405,200" fill="#fdf1e7" stroke="#b3541e"/>
+  <line x1="405" y1="200" x2="675" y2="200" stroke="#cfcabf"/>
+  <g stroke="#b3541e">
+    <line x1="405" y1="200" x2="405" y2="213"/><line x1="428" y1="200" x2="428" y2="213"/><line x1="452" y1="200" x2="452" y2="213"/><line x1="473" y1="200" x2="473" y2="213"/>
+    <line x1="491" y1="200" x2="491" y2="213"/><line x1="506" y1="200" x2="506" y2="213"/><line x1="520" y1="200" x2="520" y2="213"/><line x1="533" y1="200" x2="533" y2="213"/>
+    <line x1="547" y1="200" x2="547" y2="213"/><line x1="560" y1="200" x2="560" y2="213"/><line x1="574" y1="200" x2="574" y2="213"/><line x1="590" y1="200" x2="590" y2="213"/>
+    <line x1="608" y1="200" x2="608" y2="213"/><line x1="628" y1="200" x2="628" y2="213"/><line x1="653" y1="200" x2="653" y2="213"/><line x1="675" y1="200" x2="675" y2="213"/>
+  </g>
+  <text x="540" y="236" font-size="10" text-anchor="middle" fill="#b3541e">Levels crowd where the weights are,</text>
+  <text x="540" y="251" font-size="10" text-anchor="middle" fill="#b3541e">so the typical weight is described well.</text>
+</svg>

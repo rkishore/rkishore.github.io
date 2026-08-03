@@ -1,0 +1,37 @@
+<svg width="720" height="320" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect x="0" y="0" width="720" height="320" fill="#ffffff"/>
+  <title>Anatomy of a rank-one slice: the top edge is a row of A, the left edge is a column of B, and the interior is the generated slice of delta W</title>
+  <desc>The four numbers across the top are one row of A. The four numbers down the left are one column of B. The sixteen interior numbers are their products, forming one rank-one slice of delta W, computed on the fly and never stored.</desc>
+  <text x="24" y="28" font-size="12" fill="#4d4a44">Three different things, three different names</text>
+  <text x="272" y="66" font-size="10" text-anchor="middle" fill="#b3541e">one row of A — stored, trained</text>
+  <rect x="160" y="80" width="34" height="34" rx="5" fill="#faf9f6" stroke="#e4e0d8"/>
+  <text x="177" y="103" font-size="12" text-anchor="middle" fill="#8b877e">×</text>
+  <g fill="#fdf1e7" stroke="#b3541e">
+    <rect x="198" y="80" width="34" height="34" rx="5"/><rect x="236" y="80" width="34" height="34" rx="5"/><rect x="274" y="80" width="34" height="34" rx="5"/><rect x="312" y="80" width="34" height="34" rx="5"/>
+    <rect x="160" y="118" width="34" height="34" rx="5"/><rect x="160" y="156" width="34" height="34" rx="5"/><rect x="160" y="194" width="34" height="34" rx="5"/><rect x="160" y="232" width="34" height="34" rx="5"/>
+  </g>
+  <g font-size="12" text-anchor="middle" fill="#b3541e">
+    <text x="215" y="103">1</text><text x="253" y="103">0</text><text x="291" y="103">2</text><text x="329" y="103">3</text>
+    <text x="177" y="141">2</text><text x="177" y="179">1</text><text x="177" y="217">3</text><text x="177" y="255">1</text>
+  </g>
+  <text x="148" y="185" font-size="10" text-anchor="end" fill="#b3541e">one column</text>
+  <text x="148" y="199" font-size="10" text-anchor="end" fill="#b3541e">of B — stored,</text>
+  <text x="148" y="213" font-size="10" text-anchor="end" fill="#b3541e">trained</text>
+  <g fill="#ffffff" stroke="#e4e0d8">
+    <rect x="198" y="118" width="34" height="34" rx="5"/><rect x="236" y="118" width="34" height="34" rx="5"/><rect x="274" y="118" width="34" height="34" rx="5"/><rect x="312" y="118" width="34" height="34" rx="5"/>
+    <rect x="198" y="156" width="34" height="34" rx="5"/><rect x="236" y="156" width="34" height="34" rx="5"/><rect x="274" y="156" width="34" height="34" rx="5"/><rect x="312" y="156" width="34" height="34" rx="5"/>
+    <rect x="198" y="194" width="34" height="34" rx="5"/><rect x="236" y="194" width="34" height="34" rx="5"/><rect x="274" y="194" width="34" height="34" rx="5"/><rect x="312" y="194" width="34" height="34" rx="5"/>
+    <rect x="198" y="232" width="34" height="34" rx="5"/><rect x="236" y="232" width="34" height="34" rx="5"/><rect x="274" y="232" width="34" height="34" rx="5"/><rect x="312" y="232" width="34" height="34" rx="5"/>
+  </g>
+  <g font-size="12" text-anchor="middle" fill="#1f1e1b">
+    <text x="215" y="141">2</text><text x="253" y="141">0</text><text x="291" y="141">4</text><text x="329" y="141">6</text>
+    <text x="215" y="179">1</text><text x="253" y="179">0</text><text x="291" y="179">2</text><text x="329" y="179">3</text>
+    <text x="215" y="217">3</text><text x="253" y="217">0</text><text x="291" y="217">6</text><text x="329" y="217">9</text>
+    <text x="215" y="255">1</text><text x="253" y="255">0</text><text x="291" y="255">2</text><text x="329" y="255">3</text>
+  </g>
+  <path d="M 352 118 L 360 118 L 360 266 L 352 266" fill="none" stroke="#cfcabf"/>
+  <text x="374" y="164" font-size="11" fill="#1f1e1b">this interior is “the table” —</text>
+  <text x="374" y="182" font-size="11" fill="#1f1e1b">one rank-1 slice of ΔW</text>
+  <text x="374" y="204" font-size="10" fill="#8b877e">computed on the fly, never stored</text>
+  <text x="24" y="300" font-size="11" fill="#8b877e">A and B live on the edges. The table is what the edges generate.</text>
+</svg>

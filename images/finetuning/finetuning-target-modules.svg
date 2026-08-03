@@ -1,0 +1,33 @@
+<svg width="720" height="285" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 720 285" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect x="0" y="0" width="720" height="285" fill="#ffffff"/>
+  <title>Which parts of a transformer block receive LoRA adapters</title>
+  <desc>The four attention projections Q, K, V and O and the three MLP projections up, gate and down all receive adapters in modern practice. The original paper adapted only Q and V. Normalization layers and embeddings receive none.</desc>
+  <text x="24" y="26" font-size="12" fill="#4d4a44">Adapters go on the matrix multiplies — nothing else</text>
+  <text x="24" y="110" font-size="11" fill="#4d4a44">Attention</text>
+  <g fill="#fdf1e7" stroke="#b3541e">
+    <rect x="140" y="84" width="76" height="44" rx="6"/><rect x="228" y="84" width="76" height="44" rx="6"/><rect x="316" y="84" width="76" height="44" rx="6"/><rect x="404" y="84" width="76" height="44" rx="6"/>
+  </g>
+  <g font-size="11" text-anchor="middle" fill="#b3541e">
+    <text x="178" y="111">Q proj</text><text x="266" y="111">K proj</text><text x="354" y="111">V proj</text><text x="442" y="111">O proj</text>
+  </g>
+  <g font-size="9" fill="#b3541e"><text x="206" y="97">★</text><text x="382" y="97">★</text></g>
+  <text x="24" y="180" font-size="11" fill="#4d4a44">MLP</text>
+  <g fill="#fdf1e7" stroke="#b3541e">
+    <rect x="140" y="154" width="76" height="44" rx="6"/><rect x="228" y="154" width="76" height="44" rx="6"/><rect x="316" y="154" width="76" height="44" rx="6"/>
+  </g>
+  <g font-size="11" text-anchor="middle" fill="#b3541e">
+    <text x="178" y="181">up</text><text x="266" y="181">gate</text><text x="354" y="181">down</text>
+  </g>
+  <text x="24" y="244" font-size="11" fill="#8b877e">Norms +</text>
+  <text x="24" y="257" font-size="11" fill="#8b877e">embeddings</text>
+  <rect x="140" y="224" width="252" height="44" rx="6" fill="#faf9f6" stroke="#cfcabf" stroke-dasharray="5 4"/>
+  <text x="266" y="251" font-size="11" text-anchor="middle" fill="#8b877e">left alone</text>
+  <g font-size="10" fill="#8b877e">
+    <text x="510" y="152">★ = the only two the 2021</text>
+    <text x="510" y="167">paper adapted</text>
+    <text x="510" y="192">Common default today:</text>
+    <text x="510" y="207">all seven</text>
+    <text x="510" y="240">Covering more layers tends to</text>
+    <text x="510" y="255">beat raising r on fewer layers</text>
+  </g>
+</svg>

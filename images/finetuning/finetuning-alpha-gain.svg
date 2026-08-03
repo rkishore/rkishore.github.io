@@ -1,0 +1,40 @@
+<svg width="720" height="275" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 720 275" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect x="0" y="0" width="720" height="275" fill="#ffffff"/>
+  <title>The alpha over r gain shown as three arithmetic examples with gain zero, one and two</title>
+  <desc>The frozen layer always outputs 5.0 and the adapter always outputs 0.3. With a gain of 0 the output is 5.0, unchanged. With gain 1 it is 5.3. With gain 2 it is 5.6.</desc>
+  <text x="24" y="28" font-size="12" fill="#4d4a44">The gain decides how much of the adapter lands</text>
+  <g font-size="10" fill="#8b877e" text-anchor="middle">
+    <text x="86" y="62">frozen W says</text><text x="198" y="62">gain (α/r)</text><text x="298" y="62">adapter says</text><text x="410" y="62">final output</text>
+  </g>
+  <g font-size="14" text-anchor="middle" fill="#1f1e1b">
+    <text x="140" y="99">+</text><text x="248" y="99">×</text><text x="352" y="99">=</text>
+    <text x="140" y="159">+</text><text x="248" y="159">×</text><text x="352" y="159">=</text>
+    <text x="140" y="219">+</text><text x="248" y="219">×</text><text x="352" y="219">=</text>
+  </g>
+  <g fill="#faf9f6" stroke="#cfcabf" stroke-dasharray="4 3">
+    <rect x="58" y="76" width="56" height="34" rx="6"/><rect x="58" y="136" width="56" height="34" rx="6"/><rect x="58" y="196" width="56" height="34" rx="6"/>
+  </g>
+  <g font-size="14" text-anchor="middle" fill="#4d4a44">
+    <text x="86" y="99">5.0</text><text x="86" y="159">5.0</text><text x="86" y="219">5.0</text>
+  </g>
+  <g fill="#fdf1e7" stroke="#b3541e">
+    <rect x="170" y="76" width="56" height="34" rx="6"/><rect x="170" y="136" width="56" height="34" rx="6"/><rect x="170" y="196" width="56" height="34" rx="6"/>
+    <rect x="270" y="76" width="56" height="34" rx="6"/><rect x="270" y="136" width="56" height="34" rx="6"/><rect x="270" y="196" width="56" height="34" rx="6"/>
+  </g>
+  <g font-size="14" text-anchor="middle" fill="#b3541e">
+    <text x="198" y="99">0</text><text x="198" y="159">1</text><text x="198" y="219">2</text>
+    <text x="298" y="99">0.3</text><text x="298" y="159">0.3</text><text x="298" y="219">0.3</text>
+  </g>
+  <g fill="#ffffff" stroke="#cfcabf">
+    <rect x="380" y="76" width="60" height="34" rx="6"/><rect x="380" y="136" width="60" height="34" rx="6"/><rect x="380" y="196" width="60" height="34" rx="6"/>
+  </g>
+  <g font-size="14" text-anchor="middle" fill="#1f1e1b">
+    <text x="410" y="99">5.0</text><text x="410" y="159">5.3</text><text x="410" y="219">5.6</text>
+  </g>
+  <g font-size="10" fill="#8b877e">
+    <text x="460" y="98">base model, fine-tune switched off</text>
+    <text x="460" y="158">the nudge the adapter learned</text>
+    <text x="460" y="218">the same nudge, twice as strong</text>
+  </g>
+  <text x="24" y="258" font-size="11" fill="#8b877e">Only the middle column changes. The adapter's own answer (0.3) is fixed once training ends.</text>
+</svg>
