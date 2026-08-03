@@ -13,7 +13,7 @@ I fine-tuned a perfectly capable 1.5B model ([Qwen2.5-1.5B-Instruct](https://hug
 
 There's a ladder, and the order is not negotiable:
 
-![The fine-tuning ladder as three ascending steps. Step one, try first: prompt engineering — cheap, instant, fully reversible, and it got the base model about 80 percent of the way there. Step two, then: RAG — adds a retrieval system, and it is what installs facts. Step three, last resort: fine-tuning — a GPU job that is costly, hard to reverse, and locks you to open-weight models; it changes form, not facts. A rising arrow shows cost and irreversibility increasing from prompt engineering up to fine-tuning, with the note that each step fixes a different problem.](/images/finetuning/finetuning-the-ladder.svg)
+![The fine-tuning ladder as three ascending steps. Step one, try first: prompt engineering — cheap, fully reversible, and it got the base model about 80 percent of the way there. Step two, then: RAG — adds a retrieval system, and it is what installs facts. Step three, last resort: fine-tuning — a GPU job that is costly, hard to reverse, and locks you to open-weight models; it changes form, not facts. A rising arrow shows cost and irreversibility increasing from prompt engineering up to fine-tuning, with the note that each step fixes a different problem.](/images/finetuning/finetuning-the-ladder.svg)
 
 **Prompt engineering → RAG → fine-tuning**, in that order, because each step costs more and is less reversible than the one below it — *and none of them fix the same problem.* That last clause is the part people skip. They reach for fine-tuning to fix something that lives two rungs down.
 
@@ -47,6 +47,6 @@ Weigh a fine-tune against three budgets, not one: **cost, latency, and accuracy*
 
 ## The one-liner that ties it together
 
-Distilled: **fine-tuning is a style transfer, not a fact transplant — so it's the third rung (prompt → RAG → fine-tune), and reaching for it to install knowledge is turning the wrong knob harder.** If prompting gets you 80% of the way, fine-tuning is buying the last 20% at 100× the cost and none of the reversibility.
+Distilled: **fine-tuning is a style transfer, not a fact transplant — so it's the third rung (prompt → RAG → fine-tune), and reaching for it to install knowledge is turning the wrong knob harder.** If prompting gets you 80% of the way, fine-tuning is buying the last 20% at roughly 100× the effort — and trading a one-line edit for a fork you maintain.
 
 **Coming next:** suppose you *do* decide to fine-tune. The entire outcome then rides on your dataset — and *not* on the size of it. In [Part 3](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html) I spend an hour auditing two datasets *before* training anything, and those numbers forecast the post-training eval scores almost exactly.
