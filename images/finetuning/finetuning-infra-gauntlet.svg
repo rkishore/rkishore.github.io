@@ -1,6 +1,6 @@
 <svg viewBox="0 0 780 400" width="780" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
   <title>The infrastructure gauntlet of a 1.5B QLoRA fine-tune: five traps, each with its fix and the trade the fix cost</title>
-  <desc>Five rows, each a trap then its fix then the trade it cost. One: out-of-memory on a T4 at batch 2 and 512 tokens, fixed by gradient checkpointing, which trades memory for about 2 times slower steps. Two: Colab free disconnects long sessions, losing a run at step 157 of 250; no clean fix, just restart. Three: a P100 breaks bitsandbytes 4-bit because NF4 kernels need compute capability 7.5 or higher and the P100 is 6.0, fixed by using the T4 instead — the better-sounding card doesn't work. Four: two T4s make it fail, not faster, because the trainer auto-wraps in DataParallel and crashes; fixed by hiding the second GPU with CUDA_VISIBLE_DEVICES set to 0. Five: what finally worked was Kaggle on a single T4, about 11 seconds per step, about 45 minutes, stable. A caption: every fix was a trade — memory for speed, speed for stability, a faster card for a compatible one.</desc>
+  <desc>Five rows, each a trap then its fix then the trade it cost, in the order they happened. One: out-of-memory on a T4 at batch 2 and 512 tokens, fixed by gradient checkpointing, which discards most activations and recomputes them on the backward pass, trading memory for about 2 times slower steps. Two: two T4s make it fail, not faster, because the trainer auto-wraps in DataParallel and crashes; resolved by dropping to a single GPU with CUDA_VISIBLE_DEVICES set to 0. Three: escaping to a P100 breaks bitsandbytes 4-bit because NF4 kernels need compute capability 7.5 or higher and the P100 is 6.0, so back to the T4 — the better-sounding card doesn't work. Four: Colab free disconnects long sessions, losing a run at step 157 of 250; no clean fix, just restart. Five: what finally worked was Kaggle on a single T4, about 11 seconds per step, about 45 minutes, stable. A caption: every fix was a trade — memory for speed, speed for stability, a faster card for a compatible one.</desc>
 
   <rect x="0" y="0" width="780" height="400" fill="#ffffff"/>
 
@@ -18,35 +18,35 @@
   <text x="330" y="58" class="hdr">FIX</text>
   <text x="590" y="58" class="hdr">THE TRADE</text>
 
-  <!-- row 1 -->
+  <!-- row 1: OOM -->
   <rect x="24" y="66" width="732" height="48" rx="9" fill="#fdf1e7" stroke="#b3541e"/>
   <text x="40" y="88" class="trap">OOM on a T4</text>
   <text x="40" y="105" class="mono">batch-2 / 512 tokens</text>
   <text x="330" y="88" class="fix">gradient_checkpointing=True</text>
-  <text x="330" y="105" class="mono">recompute activations</text>
+  <text x="330" y="105" class="mono">recompute activations, don't store</text>
   <text x="590" y="96" class="fix">memory &#8594; ~2&#215; slower</text>
 
-  <!-- row 2 -->
+  <!-- row 2: two GPUs -->
   <rect x="24" y="120" width="732" height="48" rx="9" fill="#faf9f6" stroke="#cfcabf"/>
-  <text x="40" y="142" class="trap">Colab free disconnects</text>
-  <text x="40" y="159" class="mono">lost a run at 157/250 steps</text>
-  <text x="330" y="150" class="fix">restart &#8212; no clean fix</text>
-  <text x="590" y="150" class="fix">idle timeouts don't care</text>
+  <text x="40" y="142" class="trap">Two GPUs made it FAIL</text>
+  <text x="40" y="159" class="mono">DataParallel: chunk expects &#8805; 1-dim tensor</text>
+  <text x="330" y="150" class="mono">CUDA_VISIBLE_DEVICES=0</text>
+  <text x="590" y="150" class="fix">drop to one GPU</text>
 
-  <!-- row 3 -->
+  <!-- row 3: P100 -->
   <rect x="24" y="174" width="732" height="48" rx="9" fill="#faf9f6" stroke="#cfcabf"/>
   <text x="40" y="196" class="trap">P100 breaks 4-bit</text>
   <text x="40" y="213" class="mono">named symbol not found in ops.cu</text>
-  <text x="330" y="196" class="fix">switch to the T4</text>
+  <text x="330" y="196" class="fix">back to the T4</text>
   <text x="330" y="213" class="mono">NF4 needs CC &#8805; 7.5; P100 is 6.0</text>
   <text x="590" y="204" class="fix">"better" card doesn't work</text>
 
-  <!-- row 4 -->
+  <!-- row 4: Colab -->
   <rect x="24" y="228" width="732" height="48" rx="9" fill="#faf9f6" stroke="#cfcabf"/>
-  <text x="40" y="250" class="trap">Two GPUs made it FAIL</text>
-  <text x="40" y="267" class="mono">DataParallel: chunk expects &#8805; 1-dim tensor</text>
-  <text x="330" y="258" class="mono">CUDA_VISIBLE_DEVICES=0</text>
-  <text x="590" y="258" class="fix">hide the second GPU</text>
+  <text x="40" y="250" class="trap">Colab free disconnects</text>
+  <text x="40" y="267" class="mono">lost a run at 157/250 steps</text>
+  <text x="330" y="258" class="fix">restart &#8212; no clean fix</text>
+  <text x="590" y="258" class="fix">idle timeouts don't care</text>
 
   <!-- row 5: success -->
   <rect x="24" y="282" width="732" height="48" rx="9" fill="#fdf1e7" stroke="#b3541e" stroke-width="1.8"/>
