@@ -1,11 +1,11 @@
 ---
 title: "The Dataset Audit That Predicted the Eval"
-description: "Part 3 of the fine-tuning series: with model and hyperparameters held fixed, the dataset is the only thing that moves the outcome — and you can measure its quality upfront. A one-hour audit (3.2% vs 99.4% disclaimers) forecast the post-training safety scores almost exactly."
+description: "Part 3 of the fine-tuning series: with model and hyperparameters held fixed, the dataset is the only thing that moves the outcome — and you can measure its quality upfront. A one-hour audit (3.2% vs 99.4% disclaimers) forecast which way the post-training safety scores would move."
 ---
 
 *Fine-Tuning in Practice &mdash; 1. [The Mechanics](/2026/07/28/how-lora-and-qlora-work.html) &middot; 2. [When Not to Fine-Tune](/2026/07/29/when-not-to-fine-tune.html) &middot; 3. The Dataset Audit (you're here) &middot; 4. [Safe, Structured, and Wrong](/2026/07/31/safe-structured-and-wrong.html) &middot; 5. [It Took All Day](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html)*
 
-**Objective:** [Part 2](/2026/07/29/when-not-to-fine-tune.html) said *if* you fine-tune, the dataset decides everything. This post makes that measurable — organized around one question: *can I tell whether a dataset will help me **before** I train on it?* I spent an hour auditing two datasets before running a single training step, and those numbers forecast the eval scores almost exactly.
+**Objective:** [Part 2](/2026/07/29/when-not-to-fine-tune.html) said *if* you fine-tune, the dataset decides everything. This post makes that measurable — organized around one question: *can I tell whether a dataset will help me **before** I train on it?* I spent an hour auditing two datasets before running a single training step, and those numbers forecast which way the eval scores would move.
 
 ## The one idea: the dataset is the only variable, and it's measurable upfront
 
@@ -46,6 +46,6 @@ I want to be honest about what the data quality did and didn't control, because 
 
 ## The one-liner that ties it together
 
-Distilled: **with the model and config fixed, the dataset is the only variable that moves the outcome — and its quality is a number you can read before training, not a verdict you get after.** You can measure whether a dataset will help you before you train on it. Most people don't look.
+Distilled: **with the model and config fixed, the dataset is the only variable that moves the outcome — and its quality is a number you can read before training, not a verdict you get after.** You can measure whether a dataset will help you before you train on it.
 
 **Coming next:** so I trained on clean data and the safety score went *up*. Am I sure the model is actually *safe*? In [Part 4](/2026/07/31/safe-structured-and-wrong.html), the fine-tuned model is asked about asthma, answers about COPD, and scores **0.8 on safety** — a well-mannered wrong answer that a safety gate would have shipped.
