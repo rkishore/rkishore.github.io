@@ -1,0 +1,43 @@
+<svg viewBox="0 0 760 340" width="760" height="340" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>One eval row: an answer about the wrong disease scores 0.2 accuracy, 0.2 helpfulness, but 0.8 safety — a well-mannered wrong answer passes a safety check</title>
+  <desc>A single evaluation row for a question about asthma answered about COPD, the wrong disease. Three independent LLM-as-judge axes: accuracy scores 0.2, helpfulness scores 0.2 — both correctly crater because the answer is about the wrong disease — but safety scores 0.8 because the answer hedged and disclaimed politely. A note points out that a safety gate alone would have shipped it. The takeaway: a single number, especially a safety number, lies; correctness has to be its own axis or a confidently-wrong-but-polite answer slips through.</desc>
+
+  <rect x="0" y="0" width="760" height="340" fill="#ffffff"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1f1e1b; }
+    .q    { font-size: 12.5px; font-weight: 700; fill: #1f1e1b; }
+    .mono { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #8b877e; }
+    .axis { font-size: 12px; font-weight: 700; }
+    .score{ font-size: 28px; font-weight: 700; }
+    .tag  { font-size: 11px; font-weight: 700; }
+    .cap  { font-size: 12px; fill: #4d4a44; }
+  </style>
+
+  <text x="24" y="34" class="h">Safe, structured, and wrong</text>
+
+  <!-- the question -->
+  <rect x="24" y="54" width="712" height="52" rx="10" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="42" y="78" class="q">Asked about asthma &#8212; answered about COPD (the wrong disease)</text>
+  <text x="42" y="97" class="mono">well-formatted &#183; politely hedged &#183; carried a disclaimer</text>
+
+  <!-- three axes -->
+  <rect x="24" y="126" width="228" height="120" rx="10" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="138" y="152" text-anchor="middle" class="axis" fill="#b3541e">accuracy</text>
+  <text x="138" y="196" text-anchor="middle" class="score" fill="#b3541e">0.2</text>
+  <text x="138" y="224" text-anchor="middle" class="tag" fill="#b3541e">correctly craters</text>
+
+  <rect x="266" y="126" width="228" height="120" rx="10" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="380" y="152" text-anchor="middle" class="axis" fill="#b3541e">helpfulness</text>
+  <text x="380" y="196" text-anchor="middle" class="score" fill="#b3541e">0.2</text>
+  <text x="380" y="224" text-anchor="middle" class="tag" fill="#b3541e">correctly craters</text>
+
+  <rect x="508" y="126" width="228" height="120" rx="10" fill="#faf9f6" stroke="#a5a096" stroke-width="1.8"/>
+  <text x="622" y="152" text-anchor="middle" class="axis" fill="#1f1e1b">safety</text>
+  <text x="622" y="196" text-anchor="middle" class="score" fill="#1f1e1b">0.8</text>
+  <text x="622" y="224" text-anchor="middle" class="tag" fill="#8b877e">stays high &#8212; it disclaimed</text>
+
+  <text x="24" y="282" class="cap">A well-mannered wrong answer <tspan font-weight="700" fill="#1f1e1b">passes a safety check.</tspan> A safety gate alone would have shipped it.</text>
+  <text x="24" y="304" class="cap">Measure safety &#8212; but never <tspan font-weight="700" fill="#1f1e1b">only</tspan> it. Correctness has to be its own axis.</text>
+  <text x="24" y="324" class="cap">Only one of the three evaluators noticed.</text>
+</svg>

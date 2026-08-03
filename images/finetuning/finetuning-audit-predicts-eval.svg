@@ -1,0 +1,59 @@
+<svg viewBox="0 0 780 400" width="780" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>A dataset property measured before training predicted the post-training safety score: 3.2 percent disclaimers led to a safety drop, 99.4 percent led to a safety rise</title>
+  <desc>Two rows, one per dataset, each showing a before-training audit number on the left predicting an after-training eval delta on the right, joined by an arrow. Top row, ChatDoctor with 112 thousand rows: 63 percent persona contamination and only 3.2 percent of answers carrying a safety disclaimer, which predicted a post-training safety change of minus 0.04, a regression. Bottom row, WikiDoc reformatted by a stronger model with 2.1 thousand rows: 0 percent persona and 99.4 percent disclaimers, which predicted a post-training safety change of plus 0.14, an improvement. The caption: a static property of the data, measured before a single training step, forecast how the model behaved after.</desc>
+
+  <rect x="0" y="0" width="780" height="400" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a5a096"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1f1e1b; }
+    .hdr  { font-size: 10px; font-weight: 700; fill: #8b877e; letter-spacing: 0.5px; }
+    .ds   { font-size: 13px; font-weight: 700; }
+    .sub  { font-size: 10.5px; fill: #4d4a44; }
+    .big  { font-size: 20px; font-weight: 700; }
+    .cap  { font-size: 12px; fill: #4d4a44; }
+    .good { fill: #b3541e; }
+  </style>
+
+  <text x="24" y="34" class="h">The audit predicted the eval</text>
+  <text x="150" y="66" class="hdr">MEASURED BEFORE TRAINING</text>
+  <text x="600" y="66" class="hdr">SEEN AFTER TRAINING</text>
+
+  <!-- row 1: ChatDoctor -->
+  <rect x="24" y="80" width="470" height="110" rx="10" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="42" y="106" class="ds" fill="#1f1e1b">ChatDoctor</text>
+  <text x="120" y="106" class="sub">112k rows &#183; raw scrape</text>
+  <text x="42" y="134" class="sub">persona contamination</text>
+  <text x="42" y="156" class="big" fill="#8b877e">63%</text>
+  <text x="250" y="134" class="sub">carry a safety disclaimer</text>
+  <text x="250" y="156" class="big" fill="#b3541e">3.2%</text>
+  <text x="42" y="180" class="sub">"Welcome to Chat Doctor" &#8212; and the model learned to say it too</text>
+
+  <rect x="560" y="105" width="196" height="60" rx="10" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="658" y="130" text-anchor="middle" class="sub">post-train safety</text>
+  <text x="658" y="153" text-anchor="middle" class="big" fill="#b3541e">&#8722;0.04</text>
+  <line x1="494" y1="135" x2="558" y2="135" stroke="#a5a096" stroke-width="1.8" marker-end="url(#arP)"/>
+
+  <!-- row 2: WikiDoc -->
+  <rect x="24" y="210" width="470" height="110" rx="10" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="42" y="236" class="ds" fill="#1f1e1b">WikiDoc</text>
+  <text x="104" y="236" class="sub">2.1k rows &#183; reformatted by a stronger model</text>
+  <text x="42" y="264" class="sub">persona contamination</text>
+  <text x="42" y="286" class="big" fill="#8b877e">0%</text>
+  <text x="250" y="264" class="sub">carry a safety disclaimer</text>
+  <text x="250" y="286" class="big" fill="#b3541e">99.4%</text>
+  <text x="42" y="310" class="sub">clean structure, consistent register</text>
+
+  <rect x="560" y="235" width="196" height="60" rx="10" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="658" y="260" text-anchor="middle" class="sub">post-train safety</text>
+  <text x="658" y="283" text-anchor="middle" class="big" fill="#b3541e">+0.14</text>
+  <line x1="494" y1="265" x2="558" y2="265" stroke="#a5a096" stroke-width="1.8" marker-end="url(#arP)"/>
+
+  <text x="24" y="352" class="cap">A static property of the data, measured before a single training step, forecast the model's behavior after.</text>
+  <text x="24" y="372" class="cap">Same 1.5B model, same LoRA config both times &#8212; <tspan font-weight="700" fill="#1f1e1b">the dataset was the only variable.</tspan></text>
+</svg>

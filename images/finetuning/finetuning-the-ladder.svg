@@ -1,0 +1,46 @@
+<svg viewBox="0 0 760 380" width="760" height="380" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The fine-tuning ladder: prompt engineering, then RAG, then fine-tuning — each step costs more and is less reversible</title>
+  <desc>Three ascending steps. The lowest and first step is prompt engineering: cheapest, instant, fully reversible, and it got the base model about 80 percent of the way. The middle step is RAG: adds a retrieval system, and it is what installs facts. The top and last step is fine-tuning: a GPU job that is costly, hard to reverse, and locks you to open-weight models; it changes form, not facts. An arrow along the steps shows cost and irreversibility rising from bottom-left to top-right. A caption reads: fine-tuning is the third thing you try, not the first.</desc>
+
+  <rect x="0" y="0" width="760" height="380" fill="#ffffff"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1f1e1b; }
+    .step { font-size: 14px; font-weight: 700; }
+    .ord  { font-size: 11px; font-weight: 700; fill: #8b877e; }
+    .sub  { font-size: 11px; fill: #4d4a44; }
+    .cap  { font-size: 12px; font-weight: 700; fill: #b3541e; }
+    .axis { font-size: 11px; font-weight: 700; fill: #8b877e; }
+  </style>
+
+  <text x="24" y="34" class="h">The ladder: prompt engineering &#8594; RAG &#8594; fine-tuning</text>
+
+  <!-- step 1 -->
+  <rect x="40" y="250" width="300" height="70" rx="10" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="58" y="272" class="ord">STEP 1 &#183; try first</text>
+  <text x="58" y="292" class="step" fill="#b3541e">Prompt engineering</text>
+  <text x="58" y="311" class="sub">cheap &#183; instant &#183; fully reversible &#8212; got the base model ~80% there</text>
+
+  <!-- step 2 -->
+  <rect x="230" y="150" width="300" height="70" rx="10" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="248" y="172" class="ord">STEP 2 &#183; then</text>
+  <text x="248" y="192" class="step" fill="#1f1e1b">RAG</text>
+  <text x="248" y="211" class="sub">adds a retrieval system &#8212; this is what installs <tspan font-weight="700" fill="#1f1e1b">facts</tspan></text>
+
+  <!-- step 3 -->
+  <rect x="420" y="50" width="300" height="70" rx="10" fill="#faf9f6" stroke="#a5a096"/>
+  <text x="438" y="72" class="ord">STEP 3 &#183; last resort</text>
+  <text x="438" y="92" class="step" fill="#1f1e1b">Fine-tuning</text>
+  <text x="438" y="111" class="sub">a GPU job &#183; hard to reverse &#183; locks you to open weights</text>
+
+  <!-- rising arrow -->
+  <defs>
+    <marker id="arUp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a5a096"/>
+    </marker>
+  </defs>
+  <path d="M 40 340 L 720 46" stroke="#a5a096" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#arUp)"/>
+  <text x="360" y="360" text-anchor="middle" class="axis">cost &amp; irreversibility rising &#8594;   &#183;   each step fixes a different problem</text>
+
+  <text x="438" y="138" class="cap">changes form, not facts</text>
+</svg>

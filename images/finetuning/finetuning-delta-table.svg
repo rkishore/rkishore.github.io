@@ -1,0 +1,52 @@
+<svg viewBox="0 0 760 320" width="760" height="320" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Post-training eval deltas: the noisy dataset regressed on all three axes, the clean dataset improved accuracy and safety but both lost helpfulness</title>
+  <desc>A table of base-to-fine-tuned score changes on three axes: accuracy, helpfulness, safety. The noisy ChatDoctor fine-tune moved accuracy minus 0.10, helpfulness minus 0.18, safety minus 0.04 — a regression on all three. The clean WikiDoc fine-tune moved accuracy plus 0.06, helpfulness minus 0.14, safety plus 0.14. The shared column is helpfulness: both fine-tunes lost it, because both trained on shorter examples, an artifact independent of data quality. Data quality controlled the accuracy and safety direction, not the length.</desc>
+
+  <rect x="0" y="0" width="760" height="320" fill="#ffffff"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1f1e1b; }
+    .col  { font-size: 12px; font-weight: 700; fill: #8b877e; }
+    .row  { font-size: 13px; font-weight: 700; fill: #1f1e1b; }
+    .neg  { font-size: 15px; font-weight: 700; fill: #b3541e; }
+    .pos  { font-size: 15px; font-weight: 700; fill: #4d4a44; }
+    .cap  { font-size: 12px; fill: #4d4a44; }
+    .note { font-size: 10.5px; fill: #8b877e; }
+  </style>
+
+  <text x="24" y="34" class="h">The full delta table (base &#8594; fine-tuned)</text>
+
+  <!-- column headers -->
+  <text x="300" y="78" text-anchor="middle" class="col">ACCURACY</text>
+  <text x="450" y="78" text-anchor="middle" class="col">HELPFULNESS</text>
+  <text x="620" y="78" text-anchor="middle" class="col">SAFETY</text>
+
+  <!-- row 1: noisy -->
+  <rect x="24" y="92" width="712" height="72" rx="10" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="42" y="126" class="row">ChatDoctor</text>
+  <text x="42" y="146" class="note">noisy &#183; 112k rows</text>
+  <text x="300" y="134" text-anchor="middle" class="neg">&#8722;0.10</text>
+  <text x="450" y="134" text-anchor="middle" class="neg">&#8722;0.18</text>
+  <text x="620" y="134" text-anchor="middle" class="neg">&#8722;0.04</text>
+  <text x="700" y="134" text-anchor="end" class="note"></text>
+  <text x="300" y="152" text-anchor="middle" class="note">worse</text>
+  <text x="450" y="152" text-anchor="middle" class="note">worse</text>
+  <text x="620" y="152" text-anchor="middle" class="note">worse</text>
+
+  <!-- row 2: clean -->
+  <rect x="24" y="172" width="712" height="72" rx="10" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="42" y="206" class="row">WikiDoc</text>
+  <text x="42" y="226" class="note">clean &#183; 2.1k rows</text>
+  <text x="300" y="214" text-anchor="middle" class="pos">+0.06</text>
+  <text x="450" y="214" text-anchor="middle" class="neg">&#8722;0.14</text>
+  <text x="620" y="214" text-anchor="middle" class="pos">+0.14</text>
+  <text x="300" y="232" text-anchor="middle" class="note">better</text>
+  <text x="450" y="232" text-anchor="middle" class="note">worse</text>
+  <text x="620" y="232" text-anchor="middle" class="note">better</text>
+
+  <!-- shared column highlight -->
+  <rect x="392" y="86" width="116" height="164" rx="8" fill="none" stroke="#a5a096" stroke-dasharray="5 4"/>
+
+  <text x="24" y="278" class="cap"><tspan font-weight="700" fill="#1f1e1b">Both lost helpfulness</tspan> (dashed) &#8212; an artifact of training on short examples, independent of quality.</text>
+  <text x="24" y="298" class="cap">Data quality controlled the <tspan font-weight="700" fill="#1f1e1b">accuracy and safety</tspan> direction, not the length. "Clean good, noisy bad" is too coarse.</text>
+</svg>

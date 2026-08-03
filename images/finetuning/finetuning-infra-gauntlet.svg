@@ -1,0 +1,60 @@
+<svg viewBox="0 0 780 400" width="780" height="400" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The infrastructure gauntlet of a 1.5B QLoRA fine-tune: five traps, each with its fix and the trade the fix cost</title>
+  <desc>Five rows, each a trap then its fix then the trade it cost. One: out-of-memory on a T4 at batch 2 and 512 tokens, fixed by gradient checkpointing, which trades memory for about 2 times slower steps. Two: Colab free disconnects long sessions, losing a run at step 157 of 250; no clean fix, just restart. Three: a P100 breaks bitsandbytes 4-bit because NF4 kernels need compute capability 7.5 or higher and the P100 is 6.0, fixed by using the T4 instead — the better-sounding card doesn't work. Four: two T4s make it fail, not faster, because the trainer auto-wraps in DataParallel and crashes; fixed by hiding the second GPU with CUDA_VISIBLE_DEVICES set to 0. Five: what finally worked was Kaggle on a single T4, about 11 seconds per step, about 45 minutes, stable. A caption: every fix was a trade — memory for speed, speed for stability, a faster card for a compatible one.</desc>
+
+  <rect x="0" y="0" width="780" height="400" fill="#ffffff"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1f1e1b; }
+    .hdr  { font-size: 10px; font-weight: 700; fill: #8b877e; letter-spacing: 0.5px; }
+    .trap { font-size: 11.5px; font-weight: 700; fill: #b3541e; }
+    .fix  { font-size: 11px; fill: #1f1e1b; }
+    .mono { font-size: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #4d4a44; }
+    .cap  { font-size: 12px; fill: #4d4a44; }
+  </style>
+
+  <text x="24" y="32" class="h">The gauntlet nobody screenshots</text>
+  <text x="40" y="58" class="hdr">TRAP</text>
+  <text x="330" y="58" class="hdr">FIX</text>
+  <text x="590" y="58" class="hdr">THE TRADE</text>
+
+  <!-- row 1 -->
+  <rect x="24" y="66" width="732" height="48" rx="9" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="40" y="88" class="trap">OOM on a T4</text>
+  <text x="40" y="105" class="mono">batch-2 / 512 tokens</text>
+  <text x="330" y="88" class="fix">gradient_checkpointing=True</text>
+  <text x="330" y="105" class="mono">recompute activations</text>
+  <text x="590" y="96" class="fix">memory &#8594; ~2&#215; slower</text>
+
+  <!-- row 2 -->
+  <rect x="24" y="120" width="732" height="48" rx="9" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="40" y="142" class="trap">Colab free disconnects</text>
+  <text x="40" y="159" class="mono">lost a run at 157/250 steps</text>
+  <text x="330" y="150" class="fix">restart &#8212; no clean fix</text>
+  <text x="590" y="150" class="fix">idle timeouts don't care</text>
+
+  <!-- row 3 -->
+  <rect x="24" y="174" width="732" height="48" rx="9" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="40" y="196" class="trap">P100 breaks 4-bit</text>
+  <text x="40" y="213" class="mono">named symbol not found in ops.cu</text>
+  <text x="330" y="196" class="fix">switch to the T4</text>
+  <text x="330" y="213" class="mono">NF4 needs CC &#8805; 7.5; P100 is 6.0</text>
+  <text x="590" y="204" class="fix">"better" card doesn't work</text>
+
+  <!-- row 4 -->
+  <rect x="24" y="228" width="732" height="48" rx="9" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="40" y="250" class="trap">Two GPUs made it FAIL</text>
+  <text x="40" y="267" class="mono">DataParallel: chunk expects &#8805; 1-dim tensor</text>
+  <text x="330" y="258" class="mono">CUDA_VISIBLE_DEVICES=0</text>
+  <text x="590" y="258" class="fix">hide the second GPU</text>
+
+  <!-- row 5: success -->
+  <rect x="24" y="282" width="732" height="48" rx="9" fill="#fdf1e7" stroke="#b3541e" stroke-width="1.8"/>
+  <text x="40" y="304" class="fix" font-weight="700" fill="#b3541e">What finally worked</text>
+  <text x="40" y="321" class="mono">Kaggle &#183; single T4</text>
+  <text x="330" y="313" class="fix">~11 s/step &#183; ~45 min &#183; stable</text>
+  <text x="590" y="313" class="mono">train 2.27&#8594;2.04, val ~2.16</text>
+
+  <text x="24" y="360" class="cap"><tspan font-weight="700" fill="#1f1e1b">Every fix was a trade:</tspan> memory for speed, speed for stability, a faster card for a compatible one.</text>
+  <text x="24" y="382" class="cap">"Runs on a free T4" is true &#8212; it's just not the same sentence as "runs on the free T4 you were assigned today."</text>
+</svg>

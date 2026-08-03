@@ -1,0 +1,35 @@
+<svg viewBox="0 0 760 340" width="760" height="340" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Fine-tuning collapsed a 1228-character base answer to 239 characters, cut off mid-sentence with the training persona leaking in</title>
+  <desc>Two horizontal bars compare answer length. The base model answer is 1228 characters, a long bar. The fine-tuned v1 answer is 239 characters, a short bar less than a fifth as long, cut off mid-sentence with the dataset persona leaking in. A caption notes this is the clearest single picture that fine-tuning hurt: it changed the form, chopping the answer and importing the training set's habits, without adding correctness.</desc>
+
+  <rect x="0" y="0" width="760" height="340" fill="#ffffff"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1f1e1b; }
+    .lbl  { font-size: 12.5px; font-weight: 700; }
+    .num  { font-size: 13px; font-weight: 700; }
+    .sub  { font-size: 11px; fill: #4d4a44; }
+    .mono { font-size: 10.5px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #8b877e; }
+    .cap  { font-size: 12px; fill: #4d4a44; }
+  </style>
+
+  <text x="24" y="34" class="h">What "fine-tuning hurt" looks like</text>
+
+  <!-- base bar -->
+  <text x="24" y="86" class="lbl" fill="#4d4a44">Base model</text>
+  <rect x="24" y="96" width="700" height="44" rx="8" fill="#faf9f6" stroke="#cfcabf"/>
+  <text x="40" y="123" class="num" fill="#1f1e1b">1,228 characters</text>
+  <text x="712" y="123" text-anchor="end" class="sub">complete, on-topic</text>
+
+  <!-- ft bar -->
+  <text x="24" y="182" class="lbl" fill="#b3541e">Fine-tuned (v1, noisy data)</text>
+  <rect x="24" y="192" width="136" height="44" rx="8" fill="#fdf1e7" stroke="#b3541e"/>
+  <text x="40" y="219" class="num" fill="#b3541e">239 chars</text>
+  <!-- ghost of the lost length -->
+  <rect x="160" y="192" width="564" height="44" rx="8" fill="none" stroke="#e4e0d8" stroke-dasharray="5 4"/>
+  <text x="442" y="214" text-anchor="middle" class="sub">cut off mid-sentence</text>
+  <text x="442" y="228" text-anchor="middle" class="mono">persona leaked: "Welcome to Chat Doctor..."</text>
+
+  <text x="24" y="284" class="cap">Less than a fifth as long &#8212; the model changed the <tspan font-weight="700" fill="#1f1e1b">form</tspan> (chopped the answer, imported the</text>
+  <text x="24" y="302" class="cap">training set's habits) without adding any correctness. Same shortening, no upside.</text>
+</svg>
