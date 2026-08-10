@@ -1,0 +1,126 @@
+<svg viewBox="0 0 840 548" width="840" height="548" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>callsense laid out against the six slots of an agentic system</title>
+  <desc>A control-plane band across the top: a fixed LangGraph pipeline, routed in code, with no loops and LLM retries capped at three. Below it, seven stages left to right: intake and PII redaction and report use no model, transcription uses a local speech model, summarize and QA score are the only two language-model calls, and the injection check is a checker. The QA stage also has its overall score recomputed in code. Invalid uploads branch down to an error terminal; a detected injection and a critical compliance flag both branch down to supervisor review. Three rails run underneath: state (one typed dict per call, the redacted transcript replacing the raw one, SQLite and a SHA-256 transcription cache, no checkpointer); the audit log, which records started, failed, flagged and completed events but writes nothing when both LLM retries run out; and eval, drawn dashed because only 169 tests with the model mocked exist and there is no golden set for the language-model output.</desc>
+
+  <rect x="0" y="0" width="840" height="548" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .body   { font-size: 11.5px; fill: #5F5E5A; }
+    .slot   { font-size: 12px; font-weight: 700; }
+  </style>
+
+  <text x="24" y="32" class="title">callsense, slot by slot</text>
+  <text x="24" y="51" class="sub">seven stages, three terminals, and the rails every stage writes to</text>
+
+  <!-- ===== 1 · CONTROL PLANE ===== -->
+  <rect x="16" y="64" width="808" height="44" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="32" y="91" class="slot" fill="#3C3489">1 · Control plane</text>
+  <text x="160" y="91" class="body">a fixed LangGraph pipeline · routing decided in code, not by a model · no loops · LLM retries capped at 3</text>
+
+  <!-- ===== 2 · WORKERS ===== -->
+  <text x="29" y="140" class="slot" fill="#1A1A18">2 · Workers</text>
+  <text x="122" y="140" class="small">five of seven stages never call a language model</text>
+
+  <!-- arrows between stages -->
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="127" y1="182" x2="139" y2="182"/><polygon points="143,182 137,178 137,186" stroke="none"/>
+    <line x1="241" y1="182" x2="253" y2="182"/><polygon points="257,182 251,178 251,186" stroke="none"/>
+    <line x1="355" y1="182" x2="367" y2="182"/><polygon points="371,182 365,178 365,186" stroke="none"/>
+    <line x1="469" y1="182" x2="481" y2="182"/><polygon points="485,182 479,178 479,186" stroke="none"/>
+    <line x1="583" y1="182" x2="595" y2="182"/><polygon points="599,182 593,178 593,186" stroke="none"/>
+    <line x1="697" y1="182" x2="709" y2="182"/><polygon points="713,182 707,178 707,186" stroke="none"/>
+  </g>
+
+  <!-- stages -->
+  <rect x="29" y="150" width="98" height="64" rx="9" fill="#FFFFFF" stroke="#B4B2A9"/>
+  <text x="78" y="177" text-anchor="middle" class="lbl" fill="#1A1A18">intake</text>
+  <text x="78" y="195" text-anchor="middle" class="small">bytes, size, PII</text>
+
+  <rect x="143" y="150" width="98" height="64" rx="9" fill="#E6F1FB" stroke="#85B7EB"/>
+  <text x="192" y="177" text-anchor="middle" class="lbl" fill="#1F4E79">transcribe</text>
+  <text x="192" y="195" text-anchor="middle" class="small">Whisper, local</text>
+
+  <rect x="257" y="150" width="98" height="64" rx="9" fill="#FAECE7" stroke="#F0997B" stroke-width="1.6"/>
+  <text x="306" y="177" text-anchor="middle" class="lbl" fill="#993C1D">injection</text>
+  <text x="306" y="195" text-anchor="middle" class="small">22 regexes</text>
+
+  <rect x="371" y="150" width="98" height="64" rx="9" fill="#FFFFFF" stroke="#B4B2A9"/>
+  <text x="420" y="177" text-anchor="middle" class="lbl" fill="#1A1A18">redact PII</text>
+  <text x="420" y="195" text-anchor="middle" class="small">regex, overwrites</text>
+
+  <rect x="485" y="150" width="98" height="64" rx="9" fill="#534AB7" stroke="#3C3489"/>
+  <text x="534" y="177" text-anchor="middle" class="lbl" fill="#FFFFFF">summarize</text>
+  <text x="534" y="195" text-anchor="middle" font-size="10.5" fill="#DCD9F7">LLM call 1</text>
+
+  <rect x="599" y="150" width="98" height="64" rx="9" fill="#534AB7" stroke="#3C3489"/>
+  <text x="648" y="172" text-anchor="middle" class="lbl" fill="#FFFFFF">QA score</text>
+  <text x="648" y="187" text-anchor="middle" font-size="10.5" fill="#DCD9F7">LLM call 2</text>
+  <path d="M599 198 L697 198 L697 205 Q697 214 688 214 L608 214 Q599 214 599 205 Z" fill="#F0997B"/>
+  <text x="648" y="209.5" text-anchor="middle" font-size="9.5" font-weight="600" fill="#FFFFFF">score set in code</text>
+
+  <rect x="713" y="150" width="98" height="64" rx="9" fill="#FFFFFF" stroke="#B4B2A9"/>
+  <text x="762" y="177" text-anchor="middle" class="lbl" fill="#1A1A18">report</text>
+  <text x="762" y="195" text-anchor="middle" class="small">→ completed</text>
+
+  <!-- branches down to terminals -->
+  <g stroke="#8A8880" stroke-width="1.4" fill="#8A8880">
+    <line x1="78" y1="214" x2="78" y2="256"/><polygon points="78,262 74,254 82,254" stroke="none"/>
+    <line x1="306" y1="214" x2="306" y2="256"/><polygon points="306,262 302,254 310,254" stroke="none"/>
+    <line x1="648" y1="214" x2="648" y2="256"/><polygon points="648,262 644,254 652,254" stroke="none"/>
+  </g>
+  <text x="84" y="242" class="small">invalid</text>
+  <text x="312" y="242" class="small">match</text>
+  <text x="654" y="242" class="small">critical flag</text>
+
+  <!-- terminals -->
+  <rect x="29" y="262" width="98" height="40" rx="9" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="78" y="286" text-anchor="middle" class="lbl" fill="#5F5E5A">error</text>
+  <rect x="257" y="262" width="440" height="40" rx="9" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="477" y="286" text-anchor="middle" class="lbl" fill="#993C1D">supervisor review: a person looks at this call</text>
+
+  <!-- legend -->
+  <g>
+    <rect x="29" y="320" width="14" height="12" rx="3" fill="#FFFFFF" stroke="#B4B2A9"/>
+    <text x="49" y="330" class="small">no model</text>
+    <rect x="117" y="320" width="14" height="12" rx="3" fill="#E6F1FB" stroke="#85B7EB"/>
+    <text x="137" y="330" class="small">speech model</text>
+    <rect x="227" y="320" width="14" height="12" rx="3" fill="#534AB7"/>
+    <text x="247" y="330" class="small">language model</text>
+    <rect x="345" y="320" width="14" height="12" rx="3" fill="#FAECE7" stroke="#F0997B"/>
+    <text x="365" y="330" class="slot" fill="#993C1D" font-size="10.5">3 · Checker</text>
+    <text x="431" y="330" class="small">deterministic gates before the model and before the report</text>
+  </g>
+
+  <!-- ===== 4 · STATE ===== -->
+  <rect x="16" y="346" width="808" height="50" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="32" y="366" class="slot" fill="#0F6E56">4 · State</text>
+  <text x="32" y="385" class="body">one typed dict per call · the redacted transcript replaces the raw one · SQLite + SHA-256 transcription cache · no checkpointer</text>
+
+  <!-- ===== 6 · AUDIT LOG ===== -->
+  <rect x="16" y="408" width="808" height="60" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="32" y="427" class="slot" fill="#1A1A18">6 · Audit log</text>
+  <text x="126" y="427" class="small">append-only: the logger has one verb</text>
+  <line x1="78" y1="440" x2="762" y2="440" stroke="#B4B2A9" stroke-width="1.2"/>
+  <g fill="#1A1A18">
+    <circle cx="78" cy="440" r="5"/>
+    <circle cx="306" cy="440" r="5"/>
+    <circle cx="477" cy="440" r="5"/>
+    <circle cx="762" cy="440" r="5"/>
+  </g>
+  <circle cx="591" cy="440" r="5" fill="#FFFFFF" stroke="#D85A30" stroke-width="1.6"/>
+  <text x="78" y="459" text-anchor="middle" class="small">STARTED · FAILED</text>
+  <text x="306" y="459" text-anchor="middle" class="small">FLAGGED</text>
+  <text x="477" y="459" text-anchor="middle" class="small">FLAGGED</text>
+  <text x="591" y="459" text-anchor="middle" font-size="10.5" font-weight="600" fill="#D85A30">LLM gives up: no record</text>
+  <text x="762" y="459" text-anchor="middle" class="small">COMPLETED</text>
+
+  <!-- ===== 5 · EVAL ===== -->
+  <rect x="16" y="480" width="808" height="50" rx="10" fill="#FFFFFF" stroke="#D85A30" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="32" y="500" class="slot" fill="#993C1D">5 · Eval</text>
+  <text x="96" y="500" class="small">not yet</text>
+  <text x="32" y="519" class="body">169 tests, all with the model mocked · Whisper measured in spikes · no golden set for what the LLM writes</text>
+</svg>

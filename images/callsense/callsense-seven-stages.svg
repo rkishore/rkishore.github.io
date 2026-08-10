@@ -1,0 +1,132 @@
+<svg viewBox="0 0 840 366" width="840" height="366" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>From the problem to seven stages</title>
+  <desc>A call recording with its caller ID and department enters seven stages, left to right: intake, transcribe, injection check, redact PII, summarize, QA score and report. Under each stage is the model it uses and the requirement from Part 1 it answers. Intake uses no model and checks the recording and its metadata. Transcribe uses a local speech model and produces output 1, the speaker-labelled transcript. Injection check uses no model and enforces constraint 1, that the input is untrusted, with a guard that fails closed. Redact PII uses no model and enforces constraint 2, that PII stops at the door with no raw copy surviving. Summarize is LLM call 1 and produces output 2, the structured summary. QA score is LLM call 2 and produces outputs 3 and 4, the five-dimension score and compliance flags, and also carries constraint 3, that the overall score is computed in code. Report uses no model and produces output 5, the status: completed, flagged for review or failed.</desc>
+
+  <rect x="0" y="0" width="840" height="366" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .hdr    { font-size: 10.5px; font-weight: 700; }
+    .model  { font-size: 10.5px; font-weight: 600; }
+  </style>
+
+  <text x="24" y="32" class="title">From the problem to seven stages</text>
+  <text x="24" y="51" class="sub">each stage exists because Part 1 asked for an output or imposed a constraint</text>
+
+  <!-- input -->
+  <rect x="29" y="64" width="250" height="28" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="41" y="82" class="small"><tspan font-weight="700" fill="#1A1A18">in:</tspan> a call recording + caller ID + department</text>
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="78" y1="92" x2="78" y2="108"/><polygon points="78,113 74,106 82,106" stroke="none"/>
+  </g>
+
+  <!-- arrows between stages -->
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="127" y1="140" x2="139" y2="140"/><polygon points="143,140 137,136 137,144" stroke="none"/>
+    <line x1="241" y1="140" x2="253" y2="140"/><polygon points="257,140 251,136 251,144" stroke="none"/>
+    <line x1="355" y1="140" x2="367" y2="140"/><polygon points="371,140 365,136 365,144" stroke="none"/>
+    <line x1="469" y1="140" x2="481" y2="140"/><polygon points="485,140 479,136 479,144" stroke="none"/>
+    <line x1="583" y1="140" x2="595" y2="140"/><polygon points="599,140 593,136 593,144" stroke="none"/>
+    <line x1="697" y1="140" x2="709" y2="140"/><polygon points="713,140 707,136 707,144" stroke="none"/>
+  </g>
+
+  <!-- stages -->
+  <g fill="#FFFFFF" stroke="#B4B2A9">
+    <rect x="29"  y="113" width="98" height="54" rx="9"/>
+    <rect x="143" y="113" width="98" height="54" rx="9"/>
+    <rect x="257" y="113" width="98" height="54" rx="9"/>
+    <rect x="371" y="113" width="98" height="54" rx="9"/>
+    <rect x="485" y="113" width="98" height="54" rx="9"/>
+    <rect x="599" y="113" width="98" height="54" rx="9"/>
+    <rect x="713" y="113" width="98" height="54" rx="9"/>
+  </g>
+  <g text-anchor="middle">
+    <text x="78"  y="136" class="lbl">intake</text>
+    <text x="78"  y="154" class="small">check the upload</text>
+    <text x="192" y="136" class="lbl">transcribe</text>
+    <text x="192" y="154" class="small">speech to text</text>
+    <text x="306" y="136" class="lbl">injection</text>
+    <text x="306" y="154" class="small">scan for attacks</text>
+    <text x="420" y="136" class="lbl">redact PII</text>
+    <text x="420" y="154" class="small">before any LLM</text>
+    <text x="534" y="136" class="lbl">summarize</text>
+    <text x="534" y="154" class="small">what happened</text>
+    <text x="648" y="136" class="lbl">QA score</text>
+    <text x="648" y="154" class="small">how it was handled</text>
+    <text x="762" y="136" class="lbl">report</text>
+    <text x="762" y="154" class="small">assemble + save</text>
+  </g>
+
+  <!-- model used by each stage -->
+  <g text-anchor="middle" class="model">
+    <text x="78"  y="186" fill="#8A8880">no model</text>
+    <text x="192" y="186" fill="#1F4E79">speech model</text>
+    <text x="306" y="186" fill="#8A8880">no model</text>
+    <text x="420" y="186" fill="#8A8880">no model</text>
+    <text x="534" y="186" fill="#534AB7">LLM call 1</text>
+    <text x="648" y="186" fill="#534AB7">LLM call 2</text>
+    <text x="762" y="186" fill="#8A8880">no model</text>
+  </g>
+
+  <!-- what each stage answers from Part 1 -->
+  <rect x="29"  y="198" width="98" height="62" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <rect x="143" y="198" width="98" height="62" rx="8" fill="#E6F1FB" stroke="#85B7EB"/>
+  <rect x="257" y="198" width="98" height="62" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <rect x="371" y="198" width="98" height="62" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <rect x="485" y="198" width="98" height="62" rx="8" fill="#E6F1FB" stroke="#85B7EB"/>
+  <rect x="599" y="198" width="98" height="62" rx="8" fill="#E6F1FB" stroke="#85B7EB"/>
+  <rect x="713" y="198" width="98" height="62" rx="8" fill="#E6F1FB" stroke="#85B7EB"/>
+  <rect x="599" y="266" width="98" height="50" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+
+  <g text-anchor="middle">
+    <text x="78"  y="214" class="hdr" fill="#5F5E5A">the input</text>
+    <text x="78"  y="230" class="small">checks the</text>
+    <text x="78"  y="243" class="small">recording and</text>
+    <text x="78"  y="256" class="small">its metadata</text>
+
+    <text x="192" y="214" class="hdr" fill="#1F4E79">output 1</text>
+    <text x="192" y="230" class="small">transcript, each</text>
+    <text x="192" y="243" class="small">line agent or</text>
+    <text x="192" y="256" class="small">customer</text>
+
+    <text x="306" y="214" class="hdr" fill="#993C1D">constraint 1</text>
+    <text x="306" y="230" class="small">input is</text>
+    <text x="306" y="243" class="small">untrusted: guard</text>
+    <text x="306" y="256" class="small">fails closed</text>
+
+    <text x="420" y="214" class="hdr" fill="#993C1D">constraint 2</text>
+    <text x="420" y="230" class="small">PII stops at the</text>
+    <text x="420" y="243" class="small">door: no raw</text>
+    <text x="420" y="256" class="small">copy survives</text>
+
+    <text x="534" y="214" class="hdr" fill="#1F4E79">output 2</text>
+    <text x="534" y="230" class="small">structured</text>
+    <text x="534" y="243" class="small">summary: reason,</text>
+    <text x="534" y="256" class="small">outcome, mood</text>
+
+    <text x="648" y="214" class="hdr" fill="#1F4E79">outputs 3 + 4</text>
+    <text x="648" y="230" class="small">five-dimension</text>
+    <text x="648" y="243" class="small">score and</text>
+    <text x="648" y="256" class="small">compliance flags</text>
+
+    <text x="648" y="282" class="hdr" fill="#993C1D">constraint 3</text>
+    <text x="648" y="298" class="small">overall score is</text>
+    <text x="648" y="311" class="small">computed in code</text>
+
+    <text x="762" y="214" class="hdr" fill="#1F4E79">output 5</text>
+    <text x="762" y="230" class="small">status:</text>
+    <text x="762" y="243" class="small">completed,</text>
+    <text x="762" y="256" class="small">flagged or failed</text>
+  </g>
+
+  <!-- legend -->
+  <g>
+    <rect x="29" y="336" width="14" height="12" rx="3" fill="#E6F1FB" stroke="#85B7EB"/>
+    <text x="49" y="346" class="small">one of the five outputs Part 1 asks for</text>
+    <rect x="263" y="336" width="14" height="12" rx="3" fill="#FAECE7" stroke="#F0997B"/>
+    <text x="283" y="346" class="small">one of the three constraints that make it more than one prompt</text>
+  </g>
+</svg>
