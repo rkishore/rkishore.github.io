@@ -4,7 +4,7 @@ title: "The Call Nobody Reviews"
 description: "Part 1 of the callsense series: the problem before the pipeline. A call centre reviews fewer than 1 in 20 calls by hand, its reviewers disagree, and they find problems days late. Scoring every call automatically sounds like one prompt, but three constraints make it a system."
 ---
 
-*callsense series &mdash; 1. The Problem (you're here) &middot; 2. Six Slots, One Pipeline (coming soon) &middot; 3. Measuring the Ear (coming soon) &middot; 4. When the Input Is the Prompt (coming soon) &middot; 5. Don't Let the Model Do the Math (coming soon) &middot; 6. From Clean Clone to Deployed (coming soon)*
+*callsense series &mdash; 1. The Problem (you're here) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. Measuring the Ear (coming soon) &middot; 4. When the Input Is the Prompt (coming soon) &middot; 5. Don't Let the Model Do the Math (coming soon) &middot; 6. From Clean Clone to Deployed (coming soon)*
 
 **Objective:** A short, picture-first statement of the problem behind callsense, organized around one question: *what does a quality-review system for 5,000 calls a day actually have to do, and why isn't it one prompt?*
 
@@ -50,4 +50,4 @@ Distilled: **reviewing every call is easy to ask a model for. Doing it safely me
 
 *This started as a capstone brief from an AI engineering course. The numbers above are the brief's scenario, paraphrased; the build and every measurement in later parts are my own.*
 
-**Coming next:** Part 2 lays the whole system out against six slots that every agentic system has to fill: control plane, workers, checker, state, eval and audit log. For each one, it shows what callsense chose, and the two slots where it's still thin.
+**Coming next:** Part 2 splits the job into seven stages, then lays them out against six slots I believe every well-designed agentic system should have: control plane, workers, checker, state, eval and audit log. For each one, it shows what callsense chose, and the two slots where it's still thin.
