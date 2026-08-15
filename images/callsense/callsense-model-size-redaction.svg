@@ -1,0 +1,53 @@
+<svg viewBox="0 0 840 306" width="840" height="306" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Model size and what the redactor can catch</title>
+  <desc>A grid of three speech model sizes against two test clips. For a dictated synthetic card number: tiny wrote 4.539-8712-3456-789-0 and the leading 4 followed by a dot escaped redaction; base wrote 4539-8712-3456-7890 and it was redacted; small was not measured. For the spoken phone number in sample_01: tiny wrote the digits and they were redacted as 801-XXX-XXXX; base wrote a letter-prefixed code, A-01-XXX-XXXX, which escaped; small wrote A01-XXX-XXXX, which also escaped. The caption reads: no single size redacts both.</desc>
+  <rect x="0" y="0" width="840" height="306" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .rowl   { font-size: 12px; font-weight: 600; fill: #1A1A18; font-family: "SFMono-Regular", Menlo, Consolas, monospace; }
+    .mono   { font-size: 12px; fill: #1A1A18; font-family: "SFMono-Regular", Menlo, Consolas, monospace; }
+    .bad    { font-size: 10.5px; font-weight: 700; fill: #993C1D; }
+    .good   { font-size: 10.5px; font-weight: 700; fill: #0F6E56; }
+    .none   { font-size: 10.5px; font-weight: 700; fill: #5F5E5A; }
+  </style>
+
+  <text x="24" y="32" class="title">Model size and what the redactor can catch</text>
+  <text x="24" y="51" class="sub">what the transcript says, per Whisper size, and whether redaction could act on it</text>
+
+  <!-- column headers -->
+  <text x="394" y="88" class="lbl" text-anchor="middle">dictated card (TTS)</text>
+  <text x="660" y="88" class="lbl" text-anchor="middle">spoken phone, sample_01</text>
+
+  <!-- row labels -->
+  <text x="244" y="130" class="rowl" text-anchor="end">tiny</text>
+  <text x="244" y="190" class="rowl" text-anchor="end">base</text>
+  <text x="244" y="250" class="rowl" text-anchor="end">small</text>
+
+  <!-- tiny -->
+  <rect x="260" y="100" width="268" height="48" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="274" y="120" class="mono">4.539-8712-3456-789-0</text>
+  <text x="274" y="138" class="bad">4. escapes</text>
+  <rect x="540" y="100" width="240" height="48" rx="8" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="554" y="120" class="mono">801-XXX-XXXX</text>
+  <text x="554" y="138" class="good">redacted</text>
+
+  <!-- base -->
+  <rect x="260" y="160" width="268" height="48" rx="8" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="274" y="180" class="mono">4539-8712-3456-7890</text>
+  <text x="274" y="198" class="good">redacted</text>
+  <rect x="540" y="160" width="240" height="48" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="554" y="180" class="mono">A-01-XXX-XXXX</text>
+  <text x="554" y="198" class="bad">escapes</text>
+
+  <!-- small -->
+  <rect x="260" y="220" width="268" height="48" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="274" y="248" class="none">not measured</text>
+  <rect x="540" y="220" width="240" height="48" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="554" y="240" class="mono">A01-XXX-XXXX</text>
+  <text x="554" y="258" class="bad">escapes</text>
+
+  <text x="520" y="293" class="lbl" text-anchor="middle">no single size redacts both</text>
+</svg>
