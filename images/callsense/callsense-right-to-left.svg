@@ -1,0 +1,36 @@
+<svg viewBox="0 0 840 260" width="840" height="260" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Why redaction replaces right to left</title>
+  <desc>The input is the string SSN 123-45-6789 and 987-65-4321 done, with two matched spans, characters 4 to 15 and 20 to 31. Replacing left to right produces SSN [REDACTED_SSN] a[REDACTED_SSN]321 done. The first edit grows the text by 3 characters, so the stored offset 20 now lands three characters early, and the last three digits of the second SSN, 321, are left behind in the clear. Replacing right to left produces SSN [REDACTED_SSN] and [REDACTED_SSN] done, because each edit only moves text to its right, so every offset still to be used is still correct.</desc>
+
+  <rect x="0" y="0" width="840" height="260" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .mono   { font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 13px; fill: #1A1A18; }
+  </style>
+
+  <text x="24" y="32" class="title">Why the redactor edits right to left</text>
+  <text x="24" y="51" class="sub">each placeholder is 14 characters and each SSN is 11, so every edit grows the text by 3</text>
+
+  <!-- row 1 -->
+  <text x="24" y="82" class="lbl">input</text>
+  <rect x="130" y="66" width="400" height="30" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="144" y="86" class="mono" xml:space="preserve">SSN 123-45-6789 and 987-65-4321 done</text>
+  <text x="548" y="86" class="small">spans (4,15) and (20,31)</text>
+
+  <!-- row 2 -->
+  <text x="24" y="136" class="lbl">left to right</text>
+  <rect x="130" y="120" width="400" height="30" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <rect x="407" y="125" width="28" height="20" rx="3" fill="#F0997B" fill-opacity="0.45" stroke="#D85A30" stroke-width="1.5"/>
+  <text x="144" y="140" class="mono" xml:space="preserve">SSN [REDACTED_SSN] a[REDACTED_SSN]321 done</text>
+  <text x="130" y="168" class="small" fill="#993C1D">first edit grows the text by 3, so the stored offset 20 now lands early: &quot;321&quot; is left behind</text>
+
+  <!-- row 3 -->
+  <text x="24" y="210" class="lbl">right to left</text>
+  <rect x="130" y="194" width="400" height="30" rx="8" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="144" y="214" class="mono" xml:space="preserve">SSN [REDACTED_SSN] and [REDACTED_SSN] done</text>
+  <text x="130" y="242" class="small" fill="#0F6E56">editing (20,31) first cannot move anything left of 20, so (4,15) is still exact when its turn comes</text>
+</svg>

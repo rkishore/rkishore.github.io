@@ -1,0 +1,78 @@
+<svg viewBox="0 0 840 330" width="840" height="330" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Two guards between a transcript and any language model</title>
+  <desc>A raw Whisper transcript passes through two guards before any language model reads it. The first guard, the injection check, runs 22 regexes over the raw text. If any pattern matches, the call branches down to supervisor review, neither language model is ever called, and the audit log records FLAGGED with the names of the patterns that matched. This guard stops the pipeline. If nothing matches, the second guard redacts PII, meaning SSNs, card numbers, emails and phone numbers, and replaces the transcription in state so no raw copy survives. This guard scrubs and continues. Only then do the two language model calls run, summarize first and QA score second, and they see only the redacted text.</desc>
+
+  <rect x="0" y="0" width="840" height="330" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .mono   { font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 10.5px; }
+  </style>
+
+  <text x="24" y="32" class="title">Two guards between a transcript and any model</text>
+  <text x="24" y="51" class="sub">the injection check stops the call; the redactor scrubs it and lets it continue</text>
+
+  <!-- arrows -->
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="134" y1="120" x2="150" y2="120"/><polygon points="156,120 148,116 148,124" stroke="none"/>
+    <line x1="338" y1="120" x2="354" y2="120"/><polygon points="360,120 352,116 352,124" stroke="none"/>
+    <line x1="542" y1="120" x2="558" y2="120"/><polygon points="564,120 556,116 556,124" stroke="none"/>
+    <line x1="676" y1="120" x2="692" y2="120"/><polygon points="698,120 690,116 690,124" stroke="none"/>
+  </g>
+  <g stroke="#D85A30" stroke-width="1.5" fill="#D85A30">
+    <line x1="248" y1="150" x2="248" y2="190"/><polygon points="248,196 244,188 252,188" stroke="none"/>
+  </g>
+
+  <!-- stage boxes -->
+  <rect x="24" y="90" width="110" height="60" rx="9" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <rect x="158" y="90" width="180" height="60" rx="9" fill="#FAECE7" stroke="#F0997B"/>
+  <rect x="362" y="90" width="180" height="60" rx="9" fill="#FAECE7" stroke="#F0997B"/>
+  <rect x="566" y="90" width="110" height="60" rx="9" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <rect x="700" y="90" width="116" height="60" rx="9" fill="#EEEDFE" stroke="#AFA9EC"/>
+
+  <g text-anchor="middle">
+    <text x="79" y="115" class="lbl">raw transcript</text>
+    <text x="79" y="133" class="small">(Whisper)</text>
+
+    <text x="248" y="112" class="lbl" fill="#993C1D">injection check</text>
+    <text x="248" y="129" class="small">22 regexes &#183; raw text</text>
+    <text x="248" y="142" class="small">fails closed</text>
+
+    <text x="452" y="112" class="lbl" fill="#993C1D">redact PII</text>
+    <text x="452" y="129" class="small">SSN &#183; card &#183; email &#183; phone</text>
+    <text x="452" y="142" class="small">full text + every segment</text>
+
+    <text x="621" y="115" class="lbl" fill="#534AB7">summarize</text>
+    <text x="621" y="133" class="small">(LLM 1)</text>
+
+    <text x="758" y="115" class="lbl" fill="#534AB7">QA score</text>
+    <text x="758" y="133" class="small">(LLM 2)</text>
+  </g>
+
+  <!-- branch: supervisor review -->
+  <rect x="144" y="198" width="208" height="62" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <g text-anchor="middle">
+    <text x="248" y="219" class="lbl" fill="#993C1D">match &#8594; supervisor review</text>
+    <text x="248" y="236" class="small">neither LLM is called</text>
+    <text x="248" y="250" class="small">audit: FLAGGED + pattern names</text>
+  </g>
+
+  <!-- redact note -->
+  <line x1="470" y1="150" x2="470" y2="166" stroke="#B4B2A9" stroke-width="1.5"/>
+  <rect x="362" y="166" width="216" height="52" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <g text-anchor="middle">
+    <text x="470" y="186" class="small">replaces <tspan class="mono">transcription</tspan> in state:</text>
+    <text x="470" y="203" class="small" font-weight="600" fill="#1A1A18">no raw copy survives</text>
+  </g>
+
+  <!-- posture bars -->
+  <rect x="158" y="282" width="180" height="26" rx="3" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="248" y="299" text-anchor="middle" class="lbl" fill="#993C1D">stop</text>
+  <rect x="362" y="282" width="180" height="26" rx="3" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="452" y="299" text-anchor="middle" class="lbl" fill="#993C1D">scrub and continue</text>
+  <rect x="566" y="282" width="250" height="26" rx="3" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="691" y="299" text-anchor="middle" class="lbl" fill="#534AB7">models see only what is left</text>
+</svg>
