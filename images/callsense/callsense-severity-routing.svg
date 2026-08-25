@@ -1,0 +1,64 @@
+<svg viewBox="0 0 840 300" width="840" height="300" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>One critical flag outranks the average</title>
+  <desc>The QA result goes to a single question: is any compliance flag critical? If yes, the call goes to supervisor review, its status is flagged for review, and the analysis is kept. If no, the call goes to the report and its status is completed. Along the bottom, the four severities the model is told about: critical means a customer or the business was materially exposed, high means a required control was skipped, medium means procedure was followed late or incompletely, and low means a technical deviation with no exposure. A note says that however well the call scored, one critical flag is enough.</desc>
+  <rect width="840" height="300" fill="#FFFFFF"/>
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .mono   { font-family: SFMono-Regular, Menlo, Consolas, monospace; font-size: 10.5px; }
+  </style>
+  <text x="24" y="32" class="title">One critical flag outranks the average</text>
+  <text x="24" y="51" class="sub">the route after QA scoring looks at severity, not at the score</text>
+
+  <rect x="24" y="108" width="104" height="44" rx="8" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="76" y="134" text-anchor="middle" class="lbl" style="fill:#534AB7">QA result</text>
+
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="128" y1="130" x2="136" y2="130"/><polygon points="142,130 134,126 134,134" stroke="none"/>
+    <line x1="326" y1="130" x2="350" y2="130"/>
+    <line x1="350" y1="130" x2="350" y2="78" fill="none"/>
+    <line x1="350" y1="78" x2="368" y2="78"/><polygon points="374,78 366,74 366,82" stroke="none"/>
+    <line x1="350" y1="130" x2="350" y2="182"/>
+    <line x1="350" y1="182" x2="368" y2="182"/><polygon points="374,182 366,178 366,186" stroke="none"/>
+  </g>
+
+  <polygon points="236,80 326,130 236,180 146,130" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="236" y="127" text-anchor="middle" class="lbl">any flag</text>
+  <text x="236" y="143" text-anchor="middle" class="lbl">critical?</text>
+
+  <text x="344" y="100" text-anchor="end" class="small" style="font-weight:700;fill:#993C1D">yes</text>
+  <text x="344" y="168" text-anchor="end" class="small" style="font-weight:700;fill:#0F6E56">no</text>
+
+  <rect x="376" y="46" width="250" height="64" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="501" y="70" text-anchor="middle" class="lbl" style="fill:#993C1D">supervisor review</text>
+  <text x="501" y="88" text-anchor="middle" class="mono" style="fill:#993C1D">FLAGGED_FOR_REVIEW</text>
+  <text x="501" y="102" text-anchor="middle" class="small" style="fill:#993C1D">analysis kept for the human</text>
+
+  <rect x="376" y="150" width="250" height="64" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="501" y="174" text-anchor="middle" class="lbl" style="fill:#0F6E56">report</text>
+  <text x="501" y="192" text-anchor="middle" class="mono" style="fill:#0F6E56">COMPLETED</text>
+
+  <text x="650" y="126" class="small">however well it scored,</text>
+  <text x="650" y="141" class="small">one critical flag</text>
+  <text x="650" y="156" class="small">is enough</text>
+
+  <text x="24" y="238" class="small" style="font-weight:700">severity, as the model is told</text>
+  <g>
+    <rect x="24"  y="246" width="192" height="40" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+    <rect x="224" y="246" width="192" height="40" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+    <rect x="424" y="246" width="192" height="40" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+    <rect x="624" y="246" width="192" height="40" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  </g>
+  <g class="small">
+    <text x="36" y="262" style="font-weight:700;fill:#993C1D">critical</text>
+    <text x="36" y="277" style="fill:#993C1D">materially exposed</text>
+    <text x="236" y="262" style="font-weight:700;fill:#1A1A18">high</text>
+    <text x="236" y="277">a required control skipped</text>
+    <text x="436" y="262" style="font-weight:700;fill:#1A1A18">medium</text>
+    <text x="436" y="277">followed late or incompletely</text>
+    <text x="636" y="262" style="font-weight:700;fill:#1A1A18">low</text>
+    <text x="636" y="277">technical, no exposure</text>
+  </g>
+</svg>

@@ -1,0 +1,59 @@
+<svg viewBox="0 0 840 340" width="840" height="340" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>The model proposes, code decides</title>
+  <desc>The model returns five dimension scores and its own overall score. Code keeps the five dimension scores and throws the overall score away. In a unit test, the scores are 1, 2, 3, 4 and 5, and the model's own overall figure is 1.0, which is discarded. Code multiplies each score by its weight, 0.15, 0.20, 0.30, 0.20 and 0.15, adds the results, and rounds to two places. The answer is 3.0. A strip along the bottom restates the demo: the model said 3.0, the code said 3.5, and the call ended flagged for review because of one critical compliance flag.</desc>
+  <rect width="840" height="340" fill="#FFFFFF"/>
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .body   { font-size: 11.5px; fill: #1A1A18; }
+    .mono   { font-family: SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; fill: #3C3489; }
+    .big    { font-size: 22px; font-weight: 700; fill: #993C1D; }
+  </style>
+  <text x="24" y="32" class="title">The model proposes, code decides</text>
+  <text x="24" y="51" class="sub">the five scores are kept; the model's own total is thrown away and recomputed</text>
+
+  <!-- LLM output -->
+  <rect x="24" y="68" width="250" height="188" rx="10" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="40" y="90" class="lbl" fill="#534AB7" style="fill:#534AB7">LLM output, in a unit test</text>
+  <g class="mono">
+    <text x="40" y="114">professionalism</text><text x="250" y="114" text-anchor="end" style="font-weight:700">1</text>
+    <text x="40" y="134">empathy</text><text x="250" y="134" text-anchor="end" style="font-weight:700">2</text>
+    <text x="40" y="154">problem_resolution</text><text x="250" y="154" text-anchor="end" style="font-weight:700">3</text>
+    <text x="40" y="174">compliance</text><text x="250" y="174" text-anchor="end" style="font-weight:700">4</text>
+    <text x="40" y="194">communication_clarity</text><text x="250" y="194" text-anchor="end" style="font-weight:700">5</text>
+  </g>
+  <line x1="40" y1="206" x2="258" y2="206" stroke="#AFA9EC"/>
+  <text x="40" y="226" class="mono" style="fill:#8A8880">overall_score: 1.0</text>
+  <line x1="40" y1="222" x2="168" y2="222" stroke="#993C1D" stroke-width="1.5"/>
+  <rect x="186" y="212" width="70" height="20" rx="3" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="221" y="226" text-anchor="middle" class="small" style="fill:#993C1D;font-weight:600">discarded</text>
+  <text x="40" y="246" class="small">the model's own figure</text>
+
+  <!-- arrow -->
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="274" y1="150" x2="318" y2="150"/><polygon points="324,150 316,146 316,154" stroke="none"/>
+    <line x1="602" y1="150" x2="640" y2="150"/><polygon points="646,150 638,146 638,154" stroke="none"/>
+  </g>
+
+  <!-- code box -->
+  <rect x="326" y="86" width="276" height="152" rx="10" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="464" y="110" text-anchor="middle" class="lbl" style="fill:#0F6E56">code: &#931; score &#215; weight</text>
+  <g text-anchor="middle" class="mono" style="fill:#0F6E56">
+    <text x="464" y="140">1&#215;0.15 + 2&#215;0.20 + 3&#215;0.30</text>
+    <text x="464" y="160">+ 4&#215;0.20 + 5&#215;0.15</text>
+    <text x="464" y="186">= 0.15 + 0.40 + 0.90</text>
+    <text x="464" y="204">+ 0.80 + 0.75</text>
+  </g>
+  <text x="464" y="226" text-anchor="middle" class="small" style="fill:#0F6E56">then round to 2 places</text>
+
+  <!-- result -->
+  <rect x="652" y="108" width="164" height="84" rx="10" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="734" y="148" text-anchor="middle" class="big">3.0</text>
+  <text x="734" y="172" text-anchor="middle" class="small">the overall score kept</text>
+
+  <!-- callout -->
+  <rect x="24" y="278" width="792" height="42" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="420" y="304" text-anchor="middle" class="body"><tspan font-weight="700">in the demo:</tspan> model said 3.0 &#8594; code says 3.5 &#8594; status <tspan font-family="SFMono-Regular, Menlo, Consolas, monospace">flagged_for_review</tspan> (one critical flag)</text>
+</svg>
