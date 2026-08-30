@@ -1,0 +1,72 @@
+<svg viewBox="0 0 840 392" width="840" height="392" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>One pipeline, four environments</title>
+  <desc>Four columns, left to right, show where callsense ran and what broke at each step. On the laptop, make run works. A clean clone broke because eight tests depended on my local .env file and the install assumed uv and a git repository; an autouse environment fixture and a Python search in the Makefile fixed it. The container column lists three failures the Dockerfile avoids, caught while building the image rather than on a host: binding 127.0.0.1, an app directory owned by root, and downloading Whisper weights on the first upload. Binding 0.0.0.0, running as UID 1000 and baking in the weights avoid them. On Hugging Face Spaces it hit Python 3.10, comments in packages.txt, ZeroGPU-only hardware and an exhausted free quota, and ends in a dashed box: blocked on cost, not on code.</desc>
+  <rect width="840" height="392" fill="#FFFFFF"/>
+  <style>
+    .title { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub   { font-size: 12px; fill: #5F5E5A; }
+    .lbl   { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small { font-size: 10.5px; fill: #5F5E5A; }
+    .body  { font-size: 11.5px; fill: #1A1A18; }
+    .hdr   { font-size: 10.5px; font-weight: 700; }
+  </style>
+  <text x="24" y="32" class="title">One pipeline, four environments</text>
+  <text x="24" y="51" class="sub">each step away from my laptop exposed something the step before could not show</text>
+  <rect x="24" y="68" width="174" height="270" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="36" y="90" class="lbl">laptop</text>
+  <text x="36" y="106" class="small">make run</text>
+  <text x="36" y="130" class="hdr" fill="#993C1D">NOTHING TO BREAK YET</text>
+  <text x="36" y="146" class="body">the only place it</text>
+  <text x="36" y="162" class="body">had been tried</text>
+  <rect x="36" y="306" width="150" height="20" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="111" y="320" class="hdr" fill="#0F6E56" text-anchor="middle">works</text>
+  <rect x="230" y="68" width="174" height="270" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="242" y="90" class="lbl">clean clone</text>
+  <text x="242" y="106" class="small">a stranger's checkout</text>
+  <text x="242" y="130" class="hdr" fill="#993C1D">BREAKS</text>
+  <text x="242" y="146" class="body">8 tests needed my</text>
+  <text x="242" y="162" class="body">local .env</text>
+  <text x="242" y="178" class="body">install assumed uv</text>
+  <text x="242" y="194" class="body">and a git repo</text>
+  <text x="242" y="220" class="hdr" fill="#0F6E56">FIX</text>
+  <text x="242" y="236" class="body">autouse env fixture</text>
+  <text x="242" y="252" class="body">Python 3.10+ search</text>
+  <rect x="242" y="306" width="150" height="20" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="317" y="320" class="hdr" fill="#0F6E56" text-anchor="middle">passes</text>
+  <rect x="436" y="68" width="174" height="270" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="448" y="90" class="lbl">container</text>
+  <text x="448" y="106" class="small">Docker, python:3.11-slim</text>
+  <text x="448" y="130" class="hdr" fill="#993C1D">AVOIDED</text>
+  <text x="448" y="146" class="body">binding 127.0.0.1</text>
+  <text x="448" y="162" class="body">/app owned by root</text>
+  <text x="448" y="178" class="body">first upload pulling</text>
+  <text x="448" y="194" class="body">the weights</text>
+  <text x="448" y="220" class="hdr" fill="#0F6E56">FIX</text>
+  <text x="448" y="236" class="body">bind 0.0.0.0</text>
+  <text x="448" y="252" class="body">run as UID 1000</text>
+  <text x="448" y="268" class="body">weights baked in</text>
+  <rect x="448" y="306" width="150" height="20" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="523" y="320" class="hdr" fill="#0F6E56" text-anchor="middle">serves in ~2 s</text>
+  <rect x="642" y="68" width="174" height="270" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="654" y="90" class="lbl">HF Spaces</text>
+  <text x="654" y="106" class="small">free Gradio SDK</text>
+  <text x="654" y="130" class="hdr" fill="#993C1D">BREAKS</text>
+  <text x="654" y="146" class="body">Python 3.10 only</text>
+  <text x="654" y="162" class="body">comments in</text>
+  <text x="654" y="178" class="body">packages.txt</text>
+  <text x="654" y="194" class="body">ZeroGPU-only setup</text>
+  <text x="654" y="210" class="body">free quota used up</text>
+  <text x="654" y="236" class="hdr" fill="#0F6E56">FIX</text>
+  <text x="654" y="252" class="body">3.10 backport</text>
+  <text x="654" y="268" class="body">no comments</text>
+  <text x="654" y="284" class="body">static-template trick</text>
+  <rect x="654" y="306" width="150" height="20" rx="3" fill="#FAECE7" stroke="#F0997B" stroke-dasharray="6 4"/>
+  <text x="729" y="320" class="hdr" fill="#993C1D" text-anchor="middle">blocked on cost</text>
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="200" y1="200" x2="223" y2="200"/><polygon points="228,200 222,196 222,204" stroke="none"/>
+    <line x1="406" y1="200" x2="429" y2="200"/><polygon points="434,200 428,196 428,204" stroke="none"/>
+    <line x1="610" y1="200" x2="633" y2="200" stroke-dasharray="6 4"/><polygon points="638,200 632,196 632,204" stroke="none"/>
+  </g>
+  <text x="24" y="364" class="small">The Space's fixes are all in the code. What stopped it was the free tier: PRO is $9/month.</text>
+  <text x="24" y="380" class="small">Container items never reached a host: each was caught while building the image and avoided in the Dockerfile.</text>
+</svg>
