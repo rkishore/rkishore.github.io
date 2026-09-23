@@ -1,0 +1,101 @@
+<svg viewBox="0 0 800 560" width="800" height="560" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Where the vectors diverge: before the tensor, in the tokenizer</title>
+  <desc>An embedding pipeline in four steps, left to right. Step 1, text: what the user typed. Step 2, the tokenizer: turns text into token ids by lowercasing, splitting, stripping accents and looking words up in a fixed vocabulary. Step 3, the model: turns ids into one vector per token; the ONNX model file was the same in every library measured. Step 4, pooling: averages those into one vector, the thing you store and search. Every divergence measured sat in steps 1 to 2, the tokenizer. Parity checks that compare tensors start at step 3, and steps 3 and 4 were cleared: each library's own token ids reproduce its vectors at cosine 1.000000. Below, the same sentence, "Café crème brûlée in São Paulo, naïve résumé", through two tokenizers. sentence-transformers produces "cafe cr ##eme br ##ule ##e in sao paulo , naive resume", cosine 1.000. ElBruno.LocalEmbeddings 1.6.1, and Semantic Kernel under invariant globalization, produce "[UNK] [UNK] [UNK] in [UNK] paulo , [UNK] [UNK]", cosine 0.333: six of the eight words become the unknown token and carry no meaning into the model. At the bottom: under invariant globalization, which Alpine and Ubuntu Chiseled .NET images require and the .NET 10 Native AOT templates turn on, accent stripping silently fails on precomposed text. Semantic Kernel, with the same code, scores 1.000 with ICU and 0.333 without it.</desc>
+
+  <rect x="0" y="0" width="800" height="560" fill="#FFFFFF"/>
+
+  <defs>
+    <marker id="ahGrey" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto-start-reverse">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#888780"/>
+    </marker>
+  </defs>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .pt   { font-size: 13px; font-weight: 700; }
+    .node { font-size: 14px; font-weight: 700; fill: #1A1A18; }
+    .sub  { font-size: 11px; fill: #5F5E5A; }
+    .mono { font-size: 11.5px; font-weight: 700; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .tag  { font-size: 11.5px; font-weight: 700; }
+    .big  { font-size: 20px; font-weight: 700; }
+  </style>
+
+  <text x="24" y="32" class="h">Where the vectors diverge: before the tensor</text>
+  <text x="24" y="52" class="cap">Same model file, same pooling. Every difference measured was in turning text into token ids.</text>
+
+  <!-- ===== Pipeline ===== -->
+  <!-- 1. Text -->
+  <rect x="24" y="76" width="158" height="104" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="103" y="100" text-anchor="middle" class="node">1. Text</text>
+  <text x="103" y="120" text-anchor="middle" class="sub">what the user typed</text>
+  <text x="103" y="150" text-anchor="middle" class="mono" fill="#993C1D">"Café crème…"</text>
+
+  <!-- 2. Tokenizer -->
+  <rect x="222" y="76" width="158" height="104" rx="12" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="301" y="100" text-anchor="middle" class="node">2. Tokenizer</text>
+  <text x="301" y="120" text-anchor="middle" class="sub">text → token ids</text>
+  <text x="301" y="142" text-anchor="middle" class="sub">lowercase, split words,</text>
+  <text x="301" y="157" text-anchor="middle" class="sub">strip accents, look up</text>
+  <text x="301" y="172" text-anchor="middle" class="sub">a fixed vocabulary</text>
+
+  <!-- 3. Model -->
+  <rect x="420" y="76" width="158" height="104" rx="12" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="499" y="100" text-anchor="middle" class="node">3. Model</text>
+  <text x="499" y="120" text-anchor="middle" class="sub">ids → a vector per token</text>
+  <text x="499" y="142" text-anchor="middle" class="sub">the ONNX file:</text>
+  <text x="499" y="157" text-anchor="middle" class="sub">the same in</text>
+  <text x="499" y="172" text-anchor="middle" class="sub">every library</text>
+
+  <!-- 4. Pooling -->
+  <rect x="618" y="76" width="158" height="104" rx="12" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="697" y="100" text-anchor="middle" class="node">4. Pooling</text>
+  <text x="697" y="120" text-anchor="middle" class="sub">average → one vector</text>
+  <text x="697" y="142" text-anchor="middle" class="sub">what you store</text>
+  <text x="697" y="157" text-anchor="middle" class="sub">and search</text>
+
+  <!-- arrows -->
+  <line x1="184" y1="128" x2="218" y2="128" stroke="#888780" stroke-width="2" marker-end="url(#ahGrey)"/>
+  <line x1="382" y1="128" x2="416" y2="128" stroke="#888780" stroke-width="2" marker-end="url(#ahGrey)"/>
+  <line x1="580" y1="128" x2="614" y2="128" stroke="#888780" stroke-width="2" marker-end="url(#ahGrey)"/>
+
+  <!-- tensor boundary -->
+  <line x1="400" y1="74" x2="400" y2="246" stroke="#444441" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="400" y="70" text-anchor="middle" class="tag" fill="#444441">the input tensor</text>
+
+  <!-- brackets -->
+  <path d="M28,196 L28,204 L376,204 L376,196" fill="none" stroke="#993C1D" stroke-width="2"/>
+  <text x="202" y="224" text-anchor="middle" class="tag" fill="#993C1D">every divergence measured was here</text>
+  <text x="202" y="240" text-anchor="middle" class="cap">3 libraries, plus Microsoft.ML.Tokenizers on its own</text>
+
+  <path d="M424,196 L424,204 L772,204 L772,196" fill="none" stroke="#0F6E56" stroke-width="2"/>
+  <text x="598" y="224" text-anchor="middle" class="tag" fill="#0F6E56">tensor-level parity checks start here</text>
+  <text x="598" y="240" text-anchor="middle" class="cap">cleared: each library's own ids reproduce its vectors exactly</text>
+
+  <!-- ===== Same sentence, two tokenizers ===== -->
+  <rect x="24" y="266" width="752" height="186" rx="14" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="292" class="pt" fill="#1A1A18">One sentence, two tokenizers</text>
+  <text x="44" y="310" class="cap">"Café crème brûlée in São Paulo, naïve résumé"</text>
+
+  <!-- correct row -->
+  <rect x="44" y="322" width="600" height="46" rx="9" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="58" y="340" class="tag" fill="#0F6E56">sentence-transformers (the reference)</text>
+  <text x="58" y="358" class="mono" fill="#0F6E56">cafe cr ##eme br ##ule ##e in sao paulo , naive resume</text>
+  <text x="710" y="344" text-anchor="middle" class="big" fill="#0F6E56">1.000</text>
+  <text x="710" y="360" text-anchor="middle" class="cap">cosine</text>
+
+  <!-- broken row -->
+  <rect x="44" y="378" width="600" height="46" rx="9" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="58" y="396" class="tag" fill="#993C1D">ElBruno 1.6.1; Semantic Kernel under invariant globalization</text>
+  <text x="58" y="414" class="mono" fill="#993C1D">[UNK] [UNK] [UNK] in [UNK] paulo , [UNK] [UNK]</text>
+  <text x="710" y="400" text-anchor="middle" class="big" fill="#993C1D">0.333</text>
+  <text x="710" y="416" text-anchor="middle" class="cap">cosine</text>
+
+  <text x="44" y="442" class="cap">[UNK] is the "unknown word" token: six of the eight words reach the model carrying no meaning.</text>
+
+  <!-- ===== Deployment image ===== -->
+  <rect x="24" y="468" width="752" height="72" rx="14" fill="#EEEDFE" stroke="#AFA9EC"/>
+  <text x="44" y="494" class="pt" fill="#3C3489">The deployment image can flip it</text>
+  <text x="44" y="513" class="cap">Invariant globalization (Alpine and Ubuntu Chiseled .NET images, .NET 10 Native AOT templates): accent stripping</text>
+  <text x="44" y="529" class="cap">silently fails on precomposed text. Semantic Kernel, same code: 1.000 with ICU, 0.333 without it.</text>
+</svg>
