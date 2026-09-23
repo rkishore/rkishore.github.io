@@ -17,7 +17,7 @@ A disclosure first: I wrote .NET embedding code of my own for learning purposes,
 An embedding pipeline has four steps, and only the last two involve the neural network:
 
 1. **Text:** what the user typed.
-2. **Tokenizer:** turns text into token ids by lowercasing, splitting off punctuation, stripping accents, and looking up each piece in a fixed vocabulary. (If WordPiece is new to you, I walked through it in [Building the Hybrid Retriever](/2026/07/16/building-the-hybrid-retriever.html).)
+2. **Tokenizer:** turns text into token ids by lowercasing, splitting off punctuation, stripping accents, and looking up each piece in a fixed vocabulary. (If subword tokenization is new to you, Hugging Face's [tokenizer summary](https://huggingface.co/docs/transformers/en/tokenizer_summary) covers WordPiece, the scheme BERT uses. I've seen what it costs retrieval before, when it [shattered a rare acronym](/2026/07/16/building-the-hybrid-retriever.html) into promiscuous fragments.)
 3. **Model:** turns those ids into one vector per token.
 4. **Pooling:** averages them into the single vector you store and search.
 
