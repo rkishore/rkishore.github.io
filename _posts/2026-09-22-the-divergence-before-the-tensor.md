@@ -6,24 +6,24 @@ date: 2026-09-22 20:30:00 -0400
 
 **Objective:** A measured look at embedding parity in .NET, organized around one question: *three .NET libraries run the same model as sentence-transformers, so why do their vectors still differ, and what does that cost retrieval?* Everything below comes from a public evidence repository, [rkishore/dotnet-embedding-parity](https://github.com/rkishore/dotnet-embedding-parity), and each result links to the file it comes from.
 
+***Disclosure***: I wrote .NET embedding code of my own for learning purposes (which I will write about separately), and that work led me here. This post covers only the three external libraries and the tokenizer package underneath one of them.
+
 Here is one sentence: **`Café crème brûlée in São Paulo, naïve résumé`**. Embed it with `sentence-transformers/all-MiniLM-L6-v2` in Python, then embed it with the model's ONNX export in .NET, and compare the two vectors. In [ElBruno.LocalEmbeddings](https://github.com/elbruno/elbruno.localembeddings) 1.6.1 the cosine is **0.333**. Same model, same weights, same pooling math, and a third of a match.
 
 [Semantic Kernel](https://github.com/microsoft/semantic-kernel) gets that same sentence exactly right: **1.000000**, on my machine. Build the identical code the way Microsoft's slimmed-down .NET container images require — they ship without ICU, the system's Unicode library — and it scores **0.333** too. Nothing throws and nothing warns. That one has a section of its own below.
-
-A disclosure first: I wrote .NET embedding code of my own for learning purposes, and that work led me here. I'll write about it separately. This post covers only the three external libraries and the tokenizer package underneath one of them.
 
 ## The one idea: the divergence lives before the tensor
 
 An embedding pipeline has four steps, and only the last two involve the neural network:
 
 1. **Text:** what the user typed.
-2. **Tokenizer:** turns text into token ids by lowercasing, splitting off punctuation, stripping accents, and looking up each piece in a fixed vocabulary. (If subword tokenization is new to you, Hugging Face's [tokenizer summary](https://huggingface.co/docs/transformers/en/tokenizer_summary) covers WordPiece, the scheme BERT uses. I've seen what it costs retrieval before, when it [shattered a rare acronym](/2026/07/16/building-the-hybrid-retriever.html) into promiscuous fragments.)
+2. **Tokenizer:** turns text into token ids by lowercasing, splitting off punctuation, stripping accents, and looking up each piece in a fixed vocabulary. (If subword tokenization is new to you, Hugging Face's [tokenizer summary](https://huggingface.co/docs/transformers/en/tokenizer_summary) covers WordPiece, the scheme BERT uses. It bit me once before: a rare acronym was [split into common pieces](/2026/07/16/building-the-hybrid-retriever.html), and the search results filled up with unrelated documents that happened to share them.)
 3. **Model:** turns those ids into one vector per token.
 4. **Pooling:** averages them into the single vector you store and search.
 
-![An embedding pipeline in four steps: text, tokenizer, model, pooling. A dashed line between the tokenizer and the model marks the input tensor. Every divergence measured sat to the left of it, in the tokenizer; tensor-level parity checks start to the right of it, and the model and pooling steps were cleared because each library's own token ids reproduce its vectors exactly. Below, the sentence "Café crème brûlée in São Paulo, naïve résumé" through two tokenizers: sentence-transformers gives "cafe cr ##eme br ##ule ##e in sao paulo , naive resume", cosine 1.000; ElBruno 1.6.1 and Semantic Kernel under invariant globalization give "[UNK] [UNK] [UNK] in [UNK] paulo , [UNK] [UNK]", cosine 0.333, because six of the eight words become the unknown token. At the bottom: invariant globalization, used by Alpine and Ubuntu Chiseled .NET images and turned on by the .NET 10 Native AOT templates, makes accent stripping silently fail on precomposed text; Semantic Kernel scores 1.000 with ICU and 0.333 without it.](/images/embedding-parity/parity-before-the-tensor.svg)
+![An embedding pipeline in four steps: text, tokenizer, model, pooling. A dashed line between the tokenizer and the model marks the input tensor. Every divergence measured sat in step 2, the tokenizer, and not in the text itself, which is the same input either way; tensor-level parity checks start to the right of the tensor line, and the model and pooling steps were cleared because each library's own token ids reproduce its vectors exactly. Below, the sentence "Café crème brûlée in São Paulo, naïve résumé" through two tokenizers: sentence-transformers gives "cafe cr ##eme br ##ule ##e in sao paulo , naive resume", cosine 1.000; ElBruno 1.6.1 and Semantic Kernel under invariant globalization give "[UNK] [UNK] [UNK] in [UNK] paulo , [UNK] [UNK]", cosine 0.333, because six of the eight words become the unknown token. At the bottom: invariant globalization, used by Alpine and Ubuntu Chiseled .NET images and turned on by the .NET 10 Native AOT templates, makes accent stripping silently fail on precomposed text; Semantic Kernel scores 1.000 with ICU and 0.333 without it.](/images/embedding-parity/parity-before-the-tensor.svg)
 
-When you port a model, the usual parity check is to feed the same ids to both runtimes and compare the outputs. That check starts at the input tensor, and it takes the token ids as given. **Every divergence I measured happens before that point**, so a tensor-level check can pass while the text-to-vector pipeline is still wrong.
+**Every divergence I measured happens before the input tensor**, so a tensor-level check can pass while the text-to-vector pipeline is still wrong.
 
 ## Three libraries, and all three diverge
 
