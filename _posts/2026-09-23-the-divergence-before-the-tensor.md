@@ -1,7 +1,7 @@
 ---
 title: "The Divergence Before the Tensor: Embedding Parity in .NET"
 description: "I ran three .NET embedding libraries against sentence-transformers on the same model. All three diverge in at least one configuration, and every divergence is in tokenization, not pooling. Unstripped accents cost French recall@10 14.5 points (0.409 → 0.264, −35.5% relative), and under invariant globalization accent stripping silently fails on precomposed text — so a parity check on your laptop says nothing about your container."
-date: 2026-09-22 20:30:00 -0400
+date: 2026-09-23 07:30:00 -0400
 ---
 
 **Objective:** A measured look at embedding parity in .NET, organized around one question: *three .NET libraries run the same model as sentence-transformers, so why do their vectors still differ, and what does that cost retrieval?* Everything below comes from a public evidence repository, [rkishore/dotnet-embedding-parity](https://github.com/rkishore/dotnet-embedding-parity), and each result links to the file it comes from.
