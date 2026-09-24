@@ -8,16 +8,14 @@ date: 2026-09-23 07:30:00 -0400
 
 ***Disclosure***: I wrote .NET embedding code of my own for learning purposes (which I will write about separately), and that work led me here. This post covers only the three external libraries and the tokenizer package underneath one of them.
 
-Here is one sentence: **`Café crème brûlée in São Paulo, naïve résumé`**. Embed it with `sentence-transformers/all-MiniLM-L6-v2` in Python, then embed it with the model's ONNX export in .NET, and compare the two vectors. In [ElBruno.LocalEmbeddings](https://github.com/elbruno/elbruno.localembeddings) 1.6.1 the cosine is **0.333**. Same model, same weights, same pooling math, and a third of a match.
-
-[Semantic Kernel](https://github.com/microsoft/semantic-kernel) gets that same sentence exactly right: **1.000000**, on my machine. Build the identical code the way Microsoft's slimmed-down .NET container images require — they ship without ICU, the system's Unicode library — and it scores **0.333** too. Nothing throws and nothing warns. That one has a section of its own below.
+Here is one sentence: **`Café crème brûlée in São Paulo, naïve résumé`**. Embed it with `sentence-transformers/all-MiniLM-L6-v2` in Python, then embed it with the model's ONNX export in .NET, and compare the two vectors. In [ElBruno.LocalEmbeddings](https://github.com/elbruno/elbruno.localembeddings) 1.6.1 the cosine is **0.333**. Same model, same weights, same pooling math, and a third of a match. While [Semantic Kernel](https://github.com/microsoft/semantic-kernel) gets that same sentence exactly right: **1.000000**, on my machine, building the identical code the way Microsoft's slimmed-down .NET container images require — they ship without ICU, the system's Unicode library — and it scores **0.333** too. Nothing throws and nothing warns. What's going on, and where is the difference coming from?
 
 ## The one idea: the divergence lives before the tensor
 
 An embedding pipeline has four steps, and only the last two involve the neural network:
 
 1. **Text:** what the user typed.
-2. **Tokenizer:** turns text into token ids by lowercasing, splitting off punctuation, stripping accents, and looking up each piece in a fixed vocabulary. (If subword tokenization is new to you, Hugging Face's [tokenizer summary](https://huggingface.co/docs/transformers/en/tokenizer_summary) covers WordPiece, the scheme BERT uses. It bit me once before: a rare acronym was [split into common pieces](/2026/07/16/building-the-hybrid-retriever.html), and the search results filled up with unrelated documents that happened to share them.)
+2. **Tokenizer:** turns text into token ids by lowercasing, splitting off punctuation, stripping accents, and looking up each piece in a fixed vocabulary. (If subword tokenization is new to you, Hugging Face's [tokenizer summary](https://huggingface.co/docs/transformers/en/tokenizer_summary) covers WordPiece, the scheme BERT uses.)
 3. **Model:** turns those ids into one vector per token.
 4. **Pooling:** averages them into the single vector you store and search.
 
@@ -27,7 +25,17 @@ An embedding pipeline has four steps, and only the last two involve the neural n
 
 ## Three libraries, and all three diverge
 
-I compared each library against a numpy reference on ten probe texts, using the model's own 256-token truncation. The reference is checked against sentence-transformers 6.0.1 running the PyTorch weights, with no ONNX involved. The minimum cosine is **0.99999996** ([`results/control-sentence-transformers.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/control-sentence-transformers.json)). SK and ElBruno loaded a model file byte-identical to the reference's by sha256; for LMSupply, which doesn't expose its model path, its download cache holds only that same file. The two SK rows are the same code built two ways: "ICU" is .NET's default, and "invariant" is the globalization-invariant mode those container images need, explained further down. Bold marks a defect ([`RESULTS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/RESULTS.md), [`results/summary.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/summary.md), [`results/invariant-globalization/summary.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/invariant-globalization/summary.md)):
+To judge a library you need something to judge it against, so I wrote the whole pipeline out in Python and numpy: tokenize, run the model, average, normalize. Each of the ten probe texts is cut at 256 tokens, the limit this model is configured for. The score in every table below is **cosine similarity** between two vectors, where 1.000000 means they point in exactly the same direction and anything lower means the .NET library and Python disagree about the same sentence.
+
+But a yardstick is only useful if it's straight. So I checked mine against sentence-transformers 6.0.1 itself — the standard Python implementation, running the original PyTorch weights, no ONNX anywhere. Across all ten texts the two never fall below a cosine of **0.99999996** ([`results/control-sentence-transformers.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/control-sentence-transformers.json)). When a library diverges below, the yardstick isn't what's wrong.
+
+One more thing had to be ruled out first: a library loading a *different* copy of the model would explain every difference on its own. For SK and ElBruno I hashed the file each one actually loaded, and both matched the reference's sha256 exactly. LMSupply doesn't expose the path it loads from, so I checked its download cache instead, and it holds that same file and nothing else.
+
+With those key aspects out of the way, let's take a closer look at the table of results. 
+
+Quick primer to aid understanding the results: A BERT tokenizer does two jobs in order. First it tidies the text: lowercase it, split punctuation off the words, strip accents. Then it looks up what's left in a fixed vocabulary of about 30,000 pieces. Two pieces of notation show up below: `[UNK]` is the "unknown word" token, used when nothing in the vocabulary matches, and `##` marks a fragment stuck onto the piece before it.
+
+The two SK rows are the same code built two ways: "ICU" is .NET's default, and "invariant" is the globalization-invariant mode those container images need, explained further down. Bold marks a defect ([`RESULTS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/RESULTS.md), [`results/summary.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/summary.md), [`results/invariant-globalization/summary.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/invariant-globalization/summary.md)):
 
 | | short ASCII | case + punctuation | realistic passage | accents | newline / tab | CJK + emoji |
 |---|--:|--:|--:|--:|--:|--:|
@@ -37,13 +45,13 @@ I compared each library against a numpy reference on ten probe texts, using the 
 | LMSupply.Embedder 0.70.0 | 1.000000 | 1.000000 | 1.000000 | 1.000000 | 1.000000 | 1.000000 |
 | ElBruno.LocalEmbeddings 1.6.1 | 1.000000 | 1.000000 | 1.000000 | **0.333027** | **0.936251** | 0.996960 |
 
-Each row has a different cause:
+The divergence in each row has a different cause:
 
-- **LMSupply 0.68.0 skipped BERT's basic tokenization entirely.** It had no lowercasing, no punctuation splitting and no accent stripping, so `The QUICK … didn't … dog?!` became `[UNK] [UNK] … didn ##' ##t … dog ##? ##!`. A plain 109-token English paragraph scored 0.42. The maintainer confirmed the report and published **0.70.0 about ten hours after it was filed**, and it's exact on every text up to 256 tokens.
-- **ElBruno 1.6.1 has two defects**, both inherited from `Microsoft.ML.Tokenizers`. Accented words become `[UNK]` because `RemoveNonSpacingMarks` defaults to `false`. That's an option default, and upstream design review suggests it's intentional. Separately, a word after a bare `\n` or `\t` gets glued onto the previous one: `one\nline` becomes `one ##line`.
-- **Semantic Kernel is exact under .NET's default globalization** and loses accents under the invariant mode. More on that below, because it's the part that surprised me most.
+- **LMSupply 0.68.0 did the second job without the first.** No lowercasing, no punctuation splitting, no accent stripping — so anything beyond plain lowercase words came apart. `The QUICK … didn't … dog?!` turned into `[UNK] [UNK] … didn ##' ##t … dog ##? ##!`: the capitalized words simply weren't in the vocabulary, which only holds lowercase forms. An ordinary English paragraph, no accents or exotic characters anywhere, scored 0.42. I reported it, the maintainer confirmed it, and **0.70.0 came out about ten hours later**, exact on every text up to 256 tokens.
+- **ElBruno 1.6.1 has two defects, and both come from the `Microsoft.ML.Tokenizers` package it is built on.** One: that package strips accents only when you set its `RemoveNonSpacingMarks` option, the option is off by default, and ElBruno never turns it on. This model's vocabulary holds `cafe` and not `café`, so every accented word falls through to `[UNK]`. An upstream design review suggests the default itself is deliberate, which makes this a question of which setting a library should choose rather than a bug in the package. Two: a line break or tab with no space beside it is deleted rather than treated as a space, welding two words together — `one\nline` becomes `one ##line`.
+- **Semantic Kernel is exact with ICU present** — 1.000000 on every probe. Take ICU away and the accents break. That's the next section, and it's the part that surprised me the most.
 
-**Pooling is correct in all three, and I established that by measurement, not by reading code.** For ElBruno and LMSupply, I captured each library's own token ids and re-embedded them through the reference pooling, which reproduces the library's vectors at **1.000000** ([`reference/verify_tokens.py`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/reference/verify_tokens.py), [`results/token-diff-elbruno.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/token-diff-elbruno.json), [`results/token-diff-lmsupply.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/token-diff-lmsupply.json)). SK is exact under ICU. Its invariant-mode vectors are reproduced at ≥ 0.99999 by the reference tokenizer with accent stripping turned off ([`results/attribution.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/attribution.json)). One more thing, which isn't a defect: all three truncate at 512 tokens rather than the model's configured 256. It's a policy difference, and the table leaves it out.
+**Note that Pooling is correct in all three, and I established that by measurement, not by reading code.** For ElBruno and LMSupply, I captured each library's own token ids and re-embedded them through the reference pooling, which reproduces the library's vectors at **1.000000** ([`reference/verify_tokens.py`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/reference/verify_tokens.py), [`results/token-diff-elbruno.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/token-diff-elbruno.json), [`results/token-diff-lmsupply.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/token-diff-lmsupply.json)). SK is exact under ICU. Its invariant-mode vectors are reproduced at ≥ 0.99999 by the reference tokenizer with accent stripping turned off ([`results/attribution.json`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/attribution.json)). One more thing, which isn't a defect: all three truncate at 512 tokens rather than the model's configured 256. It's a policy difference, and the table leaves it out.
 
 I wrote down predictions before any probe ran ([`PREDICTIONS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/PREDICTIONS.md)). They were recorded in a private repository, so their date is stated, not demonstrated by git history. Of 19 predictions, 13 were met, 1 was half refuted, 4 were refuted, and 1 was left open. **Every refutation came from tokenization.** I had read the pooling code, and it was fine. The tokenizer defaults are where I guessed wrong.
 
@@ -70,28 +78,54 @@ The absolute and relative numbers need to be read together, because **the baseli
 
 This is the finding I didn't go looking for.
 
-.NET has a mode called **invariant globalization**. The app runs without ICU, the Unicode and culture library, and gets a smaller footprint in return. Under that mode, `String.Normalize(NormalizationForm.FormD)` returns its input unchanged. That's [documented behaviour](https://github.com/dotnet/runtime/blob/6f4751a142ca0e879d60cb4091356bb9d346143e/docs/design/features/globalization-invariant-mode.md#string-normalization), not a bug. But BERT-style accent stripping works by decomposing `é` into `e` plus a combining accent (Form D) and then dropping the accent. If decomposition does nothing, there's no accent to drop, `é` stays `é`, and the word misses the vocabulary and becomes `[UNK]`. Nothing throws, and nothing warns.
+Start with how a computer stores `é`. There are two ways. It can be one single character, or it can be a plain `e` followed by a separate accent mark — two characters that display as one. Both look identical on screen, and the first can be turned into the second. That conversion is called **decomposition**.
 
-I measured this directly in `Microsoft.ML.Tokenizers` 2.0.0's `BertTokenizer` on its own, with no library around it. I compared token ids against Hugging Face and scored cosine after embedding ([`results/mltokenizers/accent-summary.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/mltokenizers/accent-summary.md)). The probe process recorded `"\u00e9".Normalize(FormD).Length` as **2 under ICU and 1 under invariant mode**.
+Accent stripping is built on it. Decompose the word, throw away the accent marks that fall out, and `café` becomes `cafe` — the form the vocabulary actually holds.
 
-| probe | ICU, default | ICU, `RemoveNonSpacingMarks` | invariant, default | invariant, `RemoveNonSpacingMarks` |
-|---|--:|--:|--:|--:|
-| accents, precomposed | **0.333027** | 1.000000 | **0.333027** | **0.333027** |
-| accents, decomposed | **0.333027** | 1.000000 | **0.333027** | 1.000000 |
-| a French sentence | **0.545866** | 1.000000 | **0.545866** | **0.545866** |
+Now the .NET part. **Invariant globalization** is a mode that runs an app without ICU, the system library carrying Unicode and language data, in exchange for a smaller install. Without ICU, .NET cannot decompose anything, so `String.Normalize(NormalizationForm.FormD)` hands back whatever you gave it. That is [documented behaviour](https://github.com/dotnet/runtime/blob/6f4751a142ca0e879d60cb4091356bb9d346143e/docs/design/features/globalization-invariant-mode.md#string-normalization), not a bug. But it leaves accent stripping with nothing to strip: `é` stays `é`, the word isn't in the vocabulary, and out comes `[UNK]`. No exception, no warning, no log line.
 
-Read the last column. **Under invariant globalization, `RemoveNonSpacingMarks = true` produces exactly the ids of the option being off**, on every precomposed probe. It still works on text that arrives already decomposed, presumably because the mark test doesn't need ICU; only the decomposition does. So whether accent stripping works depends on two things the code doesn't control: the deployment image and the input's normalization form. I reported it as [dotnet/machinelearning#7728](https://github.com/dotnet/machinelearning/issues/7728), and every one of the seven predictions for this probe (MT1–MT7 in [`PREDICTIONS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/PREDICTIONS.md)) was committed before the probe was run. Six were met. One was refuted in part, because two of my own predictions contradicted each other ([`RESULTS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/RESULTS.md)).
+I measured that on `Microsoft.ML.Tokenizers` 2.0.0's `BertTokenizer` by itself, with no embedding library wrapped around it, comparing its token ids against Hugging Face's tokenizer and scoring the cosine after embedding both ([`results/mltokenizers/accent-summary.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/results/mltokenizers/accent-summary.md)). The probe printed the giveaway as it ran: decomposing `é` yields **2 characters under ICU and 1 under invariant mode**.
 
-Semantic Kernel shows the same 0.333027 under invariant mode. That's consistent with the same mechanism, but I didn't read or instrument SK's tokenizer, so I'm claiming only the measurement: SK's invariant-mode vectors are reproduced by tokenizing without accent stripping.
+One thing to be clear about first, because it is the same switch as before. Accent stripping is off unless you ask for it, and the switch that asks — `RemoveNonSpacingMarks` — belongs to `Microsoft.ML.Tokenizers`, not to any of the three libraries. ElBruno's accent defect is simply that it leaves the switch alone. Here I turn it **on**, which is the correct setting for this model, and change nothing else but whether ICU is present.
+
+| probe, accent stripping **on** | with ICU | without ICU |
+|---|--:|--:|
+| accents, stored as one character | 1.000000 | **0.333027** |
+| accents, stored as letter + mark | 1.000000 | 1.000000 |
+| a French sentence | 1.000000 | **0.545866** |
+
+Correct with ICU, broken without it — except for text that already arrives as a letter plus a separate mark, which survives because its marks are sitting right there to be thrown away. Nothing but the decomposition step appears to need ICU.
+
+Now hold ICU steady and flip the switch instead:
+
+| probe, **with ICU** | stripping off | stripping on |
+|---|--:|--:|
+| accents, stored as one character | **0.333027** | 1.000000 |
+| accents, stored as letter + mark | **0.333027** | 1.000000 |
+| a French sentence | **0.545866** | 1.000000 |
+
+That is the switch working. Now put the two tables next to each other:
+
+- **With ICU, the switch matters.** Off gives 0.333027, on gives 1.000000.
+- **Without ICU, the switch changes nothing.** Turn it on and the accented sentence still scores 0.333027, the French one still 0.545866 — the very numbers you get with it off.
+- **Text that arrives as a letter plus a mark is the exception.** Its marks need no decomposing, so with the switch on it comes out right with or without ICU.
+
+So getting this right takes both: the switch on **and** ICU present. Miss either one and accented words become `[UNK]`, silently.
+
+That is the whole bug. You asked for accent stripping, the accents survived anyway, and nothing threw or logged. Two things decide whether it works, and your code states neither of them: the image you deploy into, and the form the text arrives in.
+
+I reported this as [dotnet/machinelearning#7728](https://github.com/dotnet/machinelearning/issues/7728). All seven predictions for this probe (MT1–MT7 in [`PREDICTIONS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/PREDICTIONS.md)) were committed before it ran: six were met, and one was partly refuted because two of my own predictions contradicted each other ([`RESULTS.md`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/RESULTS.md)).
+
+Semantic Kernel lands on that same 0.333027 without ICU, which fits the same explanation. I never opened SK's tokenizer code, though, so I'll claim only what I measured: running the text through a tokenizer that skips accent stripping reproduces SK's no-ICU vectors.
 
 Invariant globalization is common where .NET is deployed:
 
 - **Container images.** Microsoft's Alpine and Ubuntu Chiseled .NET images don't include ICU and "only work with apps that are configured for globalization-invariant mode". Their `extra` variants add it ([`dotnet-docker` image variants](https://github.com/dotnet/dotnet-docker/blob/7a1cdd5dd426ae782d7304ab8af476855790186a/documentation/image-variants.md)).
 - **Native AOT templates.** `dotnet new console --aot`, `dotnet new worker --aot` and `dotnet new webapiaot` in .NET 10 all set `<InvariantGlobalization>true</InvariantGlobalization>` ([console](https://github.com/dotnet/sdk/blob/fd7d9df34dec5bf71ff2ad9869335644a33b9925/template_feed/Microsoft.DotNet.Common.ProjectTemplates.10.0/content/ConsoleApplication-CSharp/Company.ConsoleApplication1.csproj), [worker](https://github.com/dotnet/aspnetcore/blob/0ef4bbfa3291b306a21e5001cb0491277bdd35bc/src/ProjectTemplates/Web.ProjectTemplates/Worker-CSharp.csproj.in), [webapiaot](https://github.com/dotnet/aspnetcore/blob/0ef4bbfa3291b306a21e5001cb0491277bdd35bc/src/ProjectTemplates/Web.ProjectTemplates/WebApiAot-CSharp.csproj.in)).
 
-So the same code can be exact on a developer's machine and wrong in the image that ships. Which leads to the line I'd put on a sticky note: **an oracle runs in the test environment, not the deployment image.** A parity test that passes on your laptop, under ICU, tells you nothing about a Chiseled container.
+So the same code is exact on a developer's machine and wrong in the image that ships. Which leads to the line I'd put on a sticky note: **an oracle runs in the test environment, not the deployment image.** The reference you check yourself against — the oracle — lives where your tests run. Your code doesn't. A parity test that passes on your laptop, where ICU is present, says nothing about a Chiseled container where it isn't.
 
-The cheapest defence is one line at startup. The repository's [`invariant/Program.cs`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/invariant/Program.cs) demonstrates it (abridged):
+You can't fix ICU's absence from inside the app, but you can refuse to pretend. The cheapest defence is one check at startup: decompose an `é` and see whether you get two characters back. The repository's [`invariant/Program.cs`](https://github.com/rkishore/dotnet-embedding-parity/blob/main/invariant/Program.cs) demonstrates it (abridged):
 
 ```csharp
 // Refuse to start rather than embed wrongly in silence.
