@@ -1,0 +1,85 @@
+<svg viewBox="0 0 800 610" width="800" height="610" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>A batch costs as much as its longest member</title>
+  <desc>Three panels. Top: with batching off, each request runs on its own at its own length: a 7-token query, a 120-token passage and a 300-token passage. Middle: with batching on, all three share one rectangular tensor, so every member is padded to the longest one. The query gets 293 tokens of padding and the shorter passage 180, and both now cost a 300-token pass. Because one inference already used all four cores, the batch wins nothing back. Bottom: measured throughput at 100 concurrent requests on all-MiniLM-L6-v2, five runs per bar, on a 4-vCPU Azure VM. Mixed traffic: 278 requests per second with batching off, 110 with batching on, a 61 percent loss. Pure passages: 163 with batching off, 114 with batching on, a 30 percent loss. With batching on, mixed traffic performs like pure passages.</desc>
+
+  <rect x="0" y="0" width="800" height="610" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .ph   { font-size: 13.5px; font-weight: 700; fill: #1A1A18; }
+    .lbl  { font-size: 12.5px; fill: #1A1A18; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .ok   { font-size: 12px; font-weight: 700; fill: #0F6E56; }
+    .bad  { font-size: 12px; font-weight: 700; fill: #993C1D; }
+    .num  { font-size: 12px; font-weight: 700; fill: #1A1A18; }
+  </style>
+
+  <text x="24" y="32" class="h">A batch costs as much as its longest member</text>
+  <text x="24" y="52" class="cap">The model expects one rectangular tensor, so every request in a batch is padded to the longest one.</text>
+
+  <!-- scale: 300 tokens = 440 px, origin x=230 -->
+
+  <!-- ===== Panel A: batching off ===== -->
+  <rect x="24" y="70" width="752" height="154" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="96" class="ph">Batching off: each request runs alone, at its own length</text>
+
+  <text x="44" y="131" class="lbl">query, 7 tokens</text>
+  <rect x="230" y="118" width="10" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="250" y="132" class="ok">cheap</text>
+
+  <text x="44" y="163" class="lbl">passage, 120 tokens</text>
+  <rect x="230" y="150" width="176" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="416" y="164" class="cap">120 tokens</text>
+
+  <text x="44" y="195" class="lbl">passage, 300 tokens</text>
+  <rect x="230" y="182" width="440" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="680" y="196" class="cap">300 tokens</text>
+
+  <!-- ===== Panel B: batching on ===== -->
+  <rect x="24" y="236" width="752" height="178" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="262" class="ph">Batching on: all three share one tensor, padded to the longest member</text>
+
+  <text x="44" y="297" class="lbl">query, 7 tokens</text>
+  <rect x="230" y="284" width="10" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <rect x="240" y="284" width="430" height="18" rx="2" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="455" y="297" text-anchor="middle" class="bad">293 tokens of padding</text>
+  <text x="680" y="298" class="bad">costs 300</text>
+
+  <text x="44" y="329" class="lbl">passage, 120 tokens</text>
+  <rect x="230" y="316" width="176" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <rect x="406" y="316" width="264" height="18" rx="2" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="538" y="329" text-anchor="middle" class="bad">180 tokens of padding</text>
+  <text x="680" y="330" class="bad">costs 300</text>
+
+  <text x="44" y="361" class="lbl">passage, 300 tokens</text>
+  <rect x="230" y="348" width="440" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="680" y="362" class="cap">300 tokens</text>
+
+  <text x="44" y="389" class="cap">Every shorter member pays for the longest one. Passages vary in length too, so pure passage traffic pays as well.</text>
+  <text x="44" y="405" class="cap">One inference already used all 4 cores, so the batch wins nothing back.</text>
+
+  <!-- ===== Panel C: measured ===== -->
+  <rect x="24" y="426" width="752" height="170" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="452" class="ph">Measured: requests per second at 100 concurrent requests</text>
+  <text x="44" y="470" class="cap">all-MiniLM-L6-v2, 4-vCPU Azure VM, 5 runs of 30 s per bar. Longer is better.</text>
+
+  <!-- scale: 1.4667 px per req/s, origin x=230 -->
+  <text x="44" y="497" class="lbl">mixed, batching off</text>
+  <rect x="230" y="484" width="408" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="646" y="498" class="num">278</text>
+
+  <text x="44" y="525" class="lbl">mixed, batching on</text>
+  <rect x="230" y="512" width="161" height="18" rx="2" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="399" y="526" class="num">110</text>
+  <text x="433" y="526" class="bad">−61%</text>
+
+  <text x="44" y="553" class="lbl">passage, batching off</text>
+  <rect x="230" y="540" width="239" height="18" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="477" y="554" class="num">163</text>
+
+  <text x="44" y="581" class="lbl">passage, batching on</text>
+  <rect x="230" y="568" width="167" height="18" rx="2" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="405" y="582" class="num">114</text>
+  <text x="439" y="582" class="bad">−30%</text>
+  <text x="483" y="582" class="cap">batched mixed runs like all passages</text>
+</svg>

@@ -1,0 +1,88 @@
+<svg viewBox="0 0 800 290" width="800" height="290" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>A batch has to be a rectangular grid of numbers (a tensor)</title>
+  <desc>Three texts of different lengths are put into one batch. The query "cheap flights to paris" is 4 tokens, the query "is it raining" is 3 tokens, and the passage "the museum is open every day except monday and closes at six" is 12 tokens. The model expects its input as one rectangular grid of numbers, a tensor, so the longest text sets the width at 12 columns, and the two short queries are filled out with padding: 8 padding cells for the first query and 9 for the second. The grid has 36 cells; 19 are real tokens and 17, or 47 percent, are padding. The model computes over every cell and the padding results are thrown away. Special start and end tokens are left out for simplicity.</desc>
+
+  <rect x="0" y="0" width="800" height="290" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .lbl  { font-size: 12.5px; font-weight: 700; fill: #1A1A18; }
+    .sub  { font-size: 11px; fill: #5F5E5A; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .tok  { font-size: 10px; fill: #0F6E56; font-weight: 600; }
+    .pad  { font-size: 11px; fill: #993C1D; }
+    .sum  { font-size: 12.5px; fill: #1A1A18; }
+    .ok   { font-weight: 700; fill: #0F6E56; }
+    .bad  { font-weight: 700; fill: #993C1D; }
+  </style>
+
+  <text x="24" y="32" class="h">A batch has to be a rectangular grid of numbers (a tensor)</text>
+  <text x="24" y="52" class="cap">The model expects one row per text, all the same length. The longest text sets the width; the rest are padded.</text>
+
+  <!-- width bracket over the 12 columns: x 200 to 752 -->
+  <path d="M200,84 L200,78 L752,78 L752,84" fill="none" stroke="#888780"/>
+  <text x="476" y="72" text-anchor="middle" class="sub">12 columns: set by the longest text</text>
+
+  <!-- Row 1: 4 tokens + 8 pad -->
+  <text x="24" y="108" class="lbl">query</text>
+  <text x="24" y="122" class="sub">4 tokens</text>
+  <g>
+    <rect x="200" y="92" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="222" y="111" text-anchor="middle" class="tok">cheap</text>
+    <rect x="246" y="92" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="268" y="111" text-anchor="middle" class="tok">flights</text>
+    <rect x="292" y="92" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="314" y="111" text-anchor="middle" class="tok">to</text>
+    <rect x="338" y="92" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="360" y="111" text-anchor="middle" class="tok">paris</text>
+    <rect x="384" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="406" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="430" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="452" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="476" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="498" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="522" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="544" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="568" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="590" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="614" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="636" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="660" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="682" y="111" text-anchor="middle" class="pad">pad</text>
+    <rect x="706" y="92" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="728" y="111" text-anchor="middle" class="pad">pad</text>
+  </g>
+
+  <!-- Row 2: 3 tokens + 9 pad -->
+  <text x="24" y="144" class="lbl">query</text>
+  <text x="24" y="158" class="sub">3 tokens</text>
+  <g>
+    <rect x="200" y="128" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="222" y="147" text-anchor="middle" class="tok">is</text>
+    <rect x="246" y="128" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="268" y="147" text-anchor="middle" class="tok">it</text>
+    <rect x="292" y="128" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="314" y="147" text-anchor="middle" class="tok">raining</text>
+    <rect x="338" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="360" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="384" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="406" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="430" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="452" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="476" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="498" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="522" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="544" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="568" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="590" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="614" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="636" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="660" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="682" y="147" text-anchor="middle" class="pad">pad</text>
+    <rect x="706" y="128" width="44" height="30" rx="3" fill="#FAECE7" stroke="#F0997B"/><text x="728" y="147" text-anchor="middle" class="pad">pad</text>
+  </g>
+
+  <!-- Row 3: 12 tokens -->
+  <text x="24" y="180" class="lbl">passage</text>
+  <text x="24" y="194" class="sub">12 tokens</text>
+  <g>
+    <rect x="200" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="222" y="183" text-anchor="middle" class="tok">the</text>
+    <rect x="246" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="268" y="183" text-anchor="middle" class="tok">museum</text>
+    <rect x="292" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="314" y="183" text-anchor="middle" class="tok">is</text>
+    <rect x="338" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="360" y="183" text-anchor="middle" class="tok">open</text>
+    <rect x="384" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="406" y="183" text-anchor="middle" class="tok">every</text>
+    <rect x="430" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="452" y="183" text-anchor="middle" class="tok">day</text>
+    <rect x="476" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="498" y="183" text-anchor="middle" class="tok">except</text>
+    <rect x="522" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="544" y="183" text-anchor="middle" class="tok">monday</text>
+    <rect x="568" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="590" y="183" text-anchor="middle" class="tok">and</text>
+    <rect x="614" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="636" y="183" text-anchor="middle" class="tok">closes</text>
+    <rect x="660" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="682" y="183" text-anchor="middle" class="tok">at</text>
+    <rect x="706" y="164" width="44" height="30" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/><text x="728" y="183" text-anchor="middle" class="tok">six</text>
+  </g>
+
+  <!-- Legend and tally -->
+  <rect x="200" y="214" width="14" height="14" rx="2" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="220" y="225" class="sum"><tspan class="ok">19 real tokens</tspan></text>
+  <rect x="340" y="214" width="14" height="14" rx="2" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="360" y="225" class="sum"><tspan class="bad">17 padding cells</tspan> — 47% of the grid</text>
+
+  <text x="200" y="252" class="cap">The model computes over all 36 cells, then throws the padding results away.</text>
+  <text x="200" y="270" class="cap">Simplified: roughly one token per word, and the model's special start and end tokens are left out.</text>
+</svg>

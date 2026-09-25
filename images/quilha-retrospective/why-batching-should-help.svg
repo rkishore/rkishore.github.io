@@ -1,0 +1,57 @@
+<svg viewBox="0 0 800 310" width="800" height="310" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Why batching should help, and when it can't</title>
+  <desc>Two cases side by side, each showing four CPU cores. Left, if one inference leaves cores idle: one request on its own keeps one of the four cores busy and three idle; batching four requests into one inference gives it enough work to keep all four cores busy, so batching wins. Right, if one inference already fills the cores: one request on its own keeps all four cores busy; a batch of four is four times the work on the same four busy cores, so there is nothing for batching to fill and no gain.</desc>
+
+  <rect x="0" y="0" width="800" height="310" fill="#FFFFFF"/>
+
+  <style>
+    .h    { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .ph   { font-size: 13.5px; font-weight: 700; fill: #1A1A18; }
+    .lbl  { font-size: 12px; fill: #1A1A18; }
+    .cap  { font-size: 11.5px; fill: #5F5E5A; }
+    .busy { font-size: 11px; font-weight: 700; fill: #0F6E56; }
+    .idle { font-size: 11px; fill: #888780; }
+    .ok   { font-size: 12.5px; font-weight: 700; fill: #0F6E56; }
+    .bad  { font-size: 12.5px; font-weight: 700; fill: #993C1D; }
+  </style>
+
+  <text x="24" y="32" class="h">Why batching should help, and when it can't</text>
+  <text x="24" y="52" class="cap">Batching pays only if one inference leaves part of the machine idle. Four CPU cores, two possible cases.</text>
+
+  <!-- ===== Left panel: idle cores ===== -->
+  <rect x="24" y="70" width="368" height="224" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="44" y="96" class="ph">If one inference leaves cores idle</text>
+
+  <text x="44" y="126" class="lbl">One request, one inference</text>
+  <rect x="44"  y="136" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="78"  y="158" text-anchor="middle" class="busy">busy</text>
+  <rect x="124" y="136" width="68" height="36" rx="4" fill="#FFFFFF" stroke="#B4B2A9" stroke-dasharray="4 3"/><text x="158" y="158" text-anchor="middle" class="idle">idle</text>
+  <rect x="204" y="136" width="68" height="36" rx="4" fill="#FFFFFF" stroke="#B4B2A9" stroke-dasharray="4 3"/><text x="238" y="158" text-anchor="middle" class="idle">idle</text>
+  <rect x="284" y="136" width="68" height="36" rx="4" fill="#FFFFFF" stroke="#B4B2A9" stroke-dasharray="4 3"/><text x="318" y="158" text-anchor="middle" class="idle">idle</text>
+
+  <text x="44" y="200" class="lbl">Four requests batched into one inference</text>
+  <rect x="44"  y="210" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="78"  y="232" text-anchor="middle" class="busy">busy</text>
+  <rect x="124" y="210" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="158" y="232" text-anchor="middle" class="busy">busy</text>
+  <rect x="204" y="210" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="238" y="232" text-anchor="middle" class="busy">busy</text>
+  <rect x="284" y="210" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="318" y="232" text-anchor="middle" class="busy">busy</text>
+
+  <text x="44" y="276" class="ok">The batch fills the idle cores: batching wins</text>
+
+  <!-- ===== Right panel: cores already full ===== -->
+  <rect x="408" y="70" width="368" height="224" rx="12" fill="#FBFBF9" stroke="#E4E2DA"/>
+  <text x="428" y="96" class="ph">If one inference already fills the cores</text>
+
+  <text x="428" y="126" class="lbl">One request, one inference</text>
+  <rect x="428" y="136" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="462" y="158" text-anchor="middle" class="busy">busy</text>
+  <rect x="508" y="136" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="542" y="158" text-anchor="middle" class="busy">busy</text>
+  <rect x="588" y="136" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="622" y="158" text-anchor="middle" class="busy">busy</text>
+  <rect x="668" y="136" width="68" height="36" rx="4" fill="#E1F5EE" stroke="#5DCAA5"/><text x="702" y="158" text-anchor="middle" class="busy">busy</text>
+
+  <text x="428" y="200" class="lbl">Four requests batched into one inference</text>
+  <rect x="428" y="210" width="68" height="36" rx="4" fill="#FAECE7" stroke="#F0997B"/><text x="462" y="232" text-anchor="middle" class="bad" style="font-size:11px">4× work</text>
+  <rect x="508" y="210" width="68" height="36" rx="4" fill="#FAECE7" stroke="#F0997B"/><text x="542" y="232" text-anchor="middle" class="bad" style="font-size:11px">4× work</text>
+  <rect x="588" y="210" width="68" height="36" rx="4" fill="#FAECE7" stroke="#F0997B"/><text x="622" y="232" text-anchor="middle" class="bad" style="font-size:11px">4× work</text>
+  <rect x="668" y="210" width="68" height="36" rx="4" fill="#FAECE7" stroke="#F0997B"/><text x="702" y="232" text-anchor="middle" class="bad" style="font-size:11px">4× work</text>
+
+  <text x="428" y="276" class="bad">No idle cores to fill: batching gains nothing</text>
+
+</svg>
