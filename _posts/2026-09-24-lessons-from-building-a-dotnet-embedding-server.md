@@ -14,7 +14,7 @@ Quilha started from one question: **by how much is a .NET-native model call, mad
 - **A .NET sidecar kept part of that lead:** 1.24–1.41× on short text, and well under half the memory of four Python workers, though about the same as one.
 - **Dynamic batching didn't pay on CPU:** a key feature I'd hoped to benefit from, it was 61% slower on mixed traffic, because every request pays for the longest one in its batch, and one inference already keeps the cores busy.
 - **Dropping fixed padding was worth about 7×**, the biggest win of the project.
-- **I concluded Quilha at this point**, because the advantages belong to .NET, not to Quilha. Libraries such as [Microsoft's Semantic Kernel ONNX connector](https://github.com/microsoft/semantic-kernel) already make in-process model calls, and the separate-server case is taken by Hugging Face's [Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference) (TEI).
+- **I concluded Quilha at this point**, because the advantages belong to .NET, not to Quilha. Libraries such as [Microsoft's Semantic Kernel ONNX connector](https://github.com/microsoft/semantic-kernel) already make in-process model calls, and the separate-server case is covered by Hugging Face's [Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference) (TEI).
 
 ## Motivation
 
@@ -176,11 +176,11 @@ That doesn't rescue batching in the server, for two reasons:
 - **The engine test used one sentence, repeated**, so nothing needed padding. Real traffic mixes lengths, and every short request gets padded back up into the regime where batching adds nothing, as the `mixed` row showed.
 - **The wait got relatively worse.** Quilha's default wait window was 20 ms. Against a 1.33 ms inference, that's **15 times the work it's waiting to speed up**.
 
-### Lesson 5: the advantages belong to the category, not the product
+### Lesson 5: the advantages belong to the category, not Quilha
 
 **Every in-process advantage comes with any .NET library that runs an ONNX model inside the app**: no second process, no network hop, one copy of the weights. Semantic Kernel's connector gets them too; I didn't benchmark it, but nothing in the mechanism is specific to Quilha. On the server side, TEI serves many model families and ships GPU images, while Quilha had one verified model, and "it's written in .NET" isn't a reason to pick a server you only call over HTTP.
 
-So the gap I'd found was real for .NET as a platform, and already closed for a new product. **An empty niche is evidence too**: here, that what .NET teams need is a library, not another server. What Quilha produced was the measurements in this post and the parity work.
+So the gap was real for .NET as a platform, and already closed for a new contribution: **what .NET teams need is a library, not another server.** What Quilha produced was the measurements in this post and the parity work.
 
 ### What this doesn't show
 
