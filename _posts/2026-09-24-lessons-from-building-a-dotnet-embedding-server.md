@@ -1,22 +1,26 @@
 ---
 title: "Lessons from building a .NET Embedding Server"
-description: "A retrospective on Quilha, a .NET ONNX embedding server built to test whether a .NET-native model call beats a Python sidecar. Called in-process, it did: 1.5–1.7× the throughput on short text, level on long, and 1.4–6.2× less memory per cell. Dynamic batching lost 61% on mixed CPU traffic, while dropping fixed padding was worth about 7×."
+description: "A retrospective on Quilha, a .NET ONNX embedding server built to measure how much a .NET-native model call beats a Python sidecar. Called in-process: 1.5–1.7× the throughput on short text, level on long, and 1.4–6.2× less memory per cell. Dynamic batching lost 61% on mixed CPU traffic, while dropping fixed padding was worth about 7×."
 date: 2026-09-24 21:00:00 -0400
 ---
 
 **Objective:** A retrospective on Quilha, a .NET server that turns text into embeddings: what I set out to measure, and what the measurements taught. Quilha was a learning experiment, and it's now concluded. This is the post I promised in [the parity post](/2026/09/23/the-divergence-before-the-tensor.html), which covered the correctness side of the same work; that post's probes and results are public at [rkishore/dotnet-embedding-parity](https://github.com/rkishore/dotnet-embedding-parity).
 
-Quilha started from one hypothesis: **a .NET-native model call, made either in-process or through a .NET sidecar, is cheaper to run than the usual Python sidecar.**
+Quilha started from one question: **by how much is a .NET-native model call, made either in-process or through a .NET sidecar, cheaper to run than the usual Python sidecar?**
+
+**TL;DR**
+
+- **In-process .NET beat a Python sidecar:** 1.5–1.7× the throughput on short text, level on long, 1.4–2.0× less memory per cell than a single-worker Python sidecar and 4.5–6.2× less than a four-worker one, and up to 2.6× better tail latency under load.
+- **A .NET sidecar kept part of that lead:** 1.24–1.41× on short text, and well under half the memory of four Python workers, though about the same as one.
+- **Dynamic batching didn't pay on CPU:** a key feature I'd hoped to benefit from, it was 61% slower on mixed traffic, because every request pays for the longest one in its batch, and one inference already keeps the cores busy.
+- **Dropping fixed padding was worth about 7×**, the biggest win of the project.
+- **I concluded Quilha at this point**, because the advantages belong to .NET, not to Quilha. Libraries such as [Microsoft's Semantic Kernel ONNX connector](https://github.com/microsoft/semantic-kernel) already make in-process model calls, and the separate-server case is taken by Hugging Face's [Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference) (TEI).
 
 ## Motivation
 
 Microsoft's .NET AI tooling had matured quickly: [`Microsoft.Extensions.AI`](https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai) (MEAI) gave a common abstraction over providers, [Foundry Local](https://learn.microsoft.com/en-us/azure/foundry-local/what-is-foundry-local) ran ONNX models on-device, and [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) handled orchestration. The serving layer in the middle looked missing. Foundry Local is built for one user on one machine, and [its documentation](https://learn.microsoft.com/en-us/azure/foundry-local/what-is-foundry-local#can-foundry-local-run-on-a-server) points multi-user serving to a dedicated server framework. MEAI gives you interfaces, not an engine.
 
-I built an **embedding** server on **ONNX** models for practical reasons. Embedding models are small (the one here is about 90 MB), so they load in seconds, run on a CPU, and let me change one thing and re-measure the same afternoon. ONNX Runtime ships the same core in its .NET and Python packages, so comparing the two isolates the serving layer from the kernels underneath. And the questions a small model raises, about batching, padding, concurrency and where a serving framework helps at all, are the same ones you'd ask of bigger models, even where the answers differ.
-
-**The hypothesis held, most clearly in-process.** Measured side by side from the same caller, in-process .NET served short text **1.5–1.7×** faster than the better Python sidecar and matched it on long text. Per cell, it used **1.4–2.0×** less memory than a single-worker Python sidecar and **4.5–6.2×** less than a four-worker one, and under load its tail latency was up to **2.6×** better. A .NET sidecar kept part of that lead: **1.24–1.41×** on short text over HTTP, and well under half the memory of four Python workers, though about the same as one. Two results pointed the other way. **Dynamic batching**, a key feature I'd hoped to benefit from, was **61% slower** than no batching on realistic mixed traffic, and the biggest win of the project, about **7×**, came from something simpler: dropping fixed padding.
-
-I concluded Quilha at this point, because the advantages belong to .NET, not to Quilha. Libraries such as **[Microsoft's Semantic Kernel ONNX connector](https://github.com/microsoft/semantic-kernel)** already make in-process model calls, and the separate-server case is taken by **Hugging Face's [Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference)** (TEI). 
+To answer that question, I built a .NET-native **embedding** inference server on **ONNX** models. I chose embeddings and ONNX for practical reasons. Embedding models are small (the one here is about 90 MB), so they load in seconds, run on a CPU, and let me change one thing and re-measure the same afternoon. ONNX Runtime ships the same core in its .NET and Python packages, so comparing the two isolates the serving layer from the kernels underneath. And the questions a small model raises, about batching, padding, concurrency and where a serving framework helps at all, are the same ones you'd ask of bigger models, even where the answers differ.
 
 ## Background: four ideas you need first
 
