@@ -63,7 +63,7 @@ The load generator ran on the same machine and used about 2.5–3% of it. There 
 
 Four practices ran through all of it:
 
-- **Predictions were written down before each run**, and the ones that failed were kept and scored.
+- **Predictions were written down before each run**, and failed ones were kept and scored.
 - **Arms were interleaved A-B-B-A**, so slow drift in the machine can't masquerade as a difference. Ordering alone had shifted an earlier comparison by 0.6–10.2%.
 - **An output check came before any timing.** The same texts went to every server, and their embeddings had to agree to a cosine similarity of at least 0.9999.
 - **A drift check** compared the start of each sweep with the end. My first version fired by chance about one sweep in seven; I recorded that failure and redesigned it.
@@ -76,7 +76,7 @@ Four practices ran through all of it:
 
 The choice a .NET team weighs is where the model runs: **in-process**, inside the app with no network, or in a **[sidecar](https://learn.microsoft.com/en-us/azure/architecture/patterns/sidecar)**, a separate server on the same machine that the app calls over HTTP. So one .NET caller program ran on the machine and changed only what each call did:
 
-- **`inproc`:** call the model directly, through .NET's standard [`IEmbeddingGenerator`](https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai) interface.
+- **`inproc`:** call the model directly through .NET's [`IEmbeddingGenerator`](https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai) interface.
 - **`quilha-http`:** call Quilha over HTTP, the same .NET engine behind a network hop.
 - **Two Python sidecars**, because a Python team faces a real choice. `python-baseline` is one [uvicorn](https://www.uvicorn.org/) worker with ONNX Runtime free to use all four cores. `python-prod` is four workers with one core's worth of ONNX Runtime threads each, the usual way around Python's [global interpreter lock](https://docs.python.org/3/glossary.html#term-global-interpreter-lock).
 
@@ -123,7 +123,7 @@ The in-process lead has two parts, and each was measured.
 | `mixed` | 1.06× | 1.01× | 1.02× | 1.01× |
 | `passage`: long | 1.00× | 1.01× | 1.02× | 1.03× |
 
-Quilha was never slower. On short inputs, at 100 concurrent requests, it held 925 req/s against 656 and 601. On long inputs, all three servers pin at **150–156 req/s from 10 concurrent requests onward**: ONNX Runtime saturates the CPU, and the calling language stops mattering. **When inference is cheap, the framework's overhead is the bottleneck, and .NET's was smaller.** That 1.24–1.41× is close to the 1.3–1.4× worked out from the in-process experiment above, so the two experiments tell the same story. They used different load generators and concurrency levels, though, so their ratios shouldn't be multiplied together.
+Quilha was never slower. On short inputs, at 100 concurrent requests, it held 925 req/s against 656 and 601. On long inputs, all three servers pin at **150–156 req/s from 10 concurrent requests onward**: ONNX Runtime saturates the CPU, and the calling language stops mattering. **When inference is cheap, the framework's overhead is the bottleneck, and .NET's was smaller.** That 1.24–1.41× is close to the 1.3–1.4× worked out from the in-process experiment above, so the two experiments tell the same story. They used different load generators and concurrency levels, so their ratios shouldn't be multiplied.
 
 One cost: **where throughput ties, Quilha's sidecar had the worse tail.** At 100 concurrent requests its p95 was 886 ms on `passage` against single-worker Python's 753 ms (18% worse), and 547 against 487 ms on `mixed` (12% worse). Throughput tied, so average latency did too (Little's law again); the worse p95 means Quilha's latencies were more spread out, most likely because it ran every in-flight request at once on four cores while Python's thread pool queued them, though I didn't test that. On `query`, where it won throughput, it also won the tail, 142 ms against 194.
 
@@ -131,7 +131,7 @@ These numbers come after fixing five flaws in the comparison, four of which had 
 
 ### Lesson 3: dynamic batching doesn't pay on CPU
 
-A key aspect I was exploring, and hoping to benefit from, was **dynamic batching**: collect requests as they arrive, run them through the model together, and hand each caller its answer. I built it with a queue, a configurable batch size and wait window, and graceful shutdown.
+A key aspect I was exploring, and hoping to benefit from, was **dynamic batching**: collect requests as they arrive, run them through the model together, and return each caller's answer. I built it with a queue, a tunable batch size and wait window, and graceful shutdown.
 
 Quilha with batching on (dispatching immediately with no wait window, the most favourable setting) against batching off, over HTTP. L6, five 30-second runs per cell, zero errors, shown at 100 concurrent requests:
 
@@ -156,7 +156,7 @@ On long and mixed traffic, batching made the server slower. Two costs explain wh
 
 **No trend.** Per-item cost moves around by up to 15% but doesn't fall as the batch grows 32 times bigger, at either model size. This is ONNX Runtime on a CPU, not the server code. Batching exists to fill idle hardware: a small inference leaves most of a GPU unused, but on a CPU, ONNX Runtime already spreads one 128-token inference across all four cores, leaving nothing for a batch to fill.
 
-It's slightly worse than that. On L6, separate inferences side by side topped out at about 148 items/s, against about 125 for batched: several independent inferences share busy cores better than one large one. So long traffic pays cost 1 and a little of cost 2; I didn't measure the split.
+It's slightly worse than that. On L6, separate inferences side by side topped out at about 148 items/s, against about 125 batched: several independent inferences share busy cores better than one large one. So long traffic pays cost 1 and a little of cost 2; I didn't measure the split.
 
 Uniform short traffic gained a little, **+4.6% to +13.7%** on `query` across concurrency levels. I turned batching off by default. **The GPU case is untested.**
 
@@ -186,13 +186,13 @@ So the gap was real for .NET as a platform, and already closed for a new contrib
 
 - **One machine shape**: four vCPUs, x86-64, CPU only. Saturation may behave differently on 32 cores.
 - **One full model sweep**: L6. L12 appears only on three in-process cells and in the engine-level batching test.
-- **No GPU**, where batching should win because a small inference really does leave the chip idle.
+- **No GPU**, where batching should win, since a small inference leaves the chip idle.
 - **No Triton or vLLM.** [vLLM](https://github.com/vllm-project/vllm) is built for large generative models. [Triton Inference Server](https://github.com/triton-inference-server/server) is the strong baseline I didn't run: its ONNX backend takes tensors, not text, so it would need a Python tokenizer in front, bringing back the dependency under test.
 - **Python's own batching wasn't re-measured** after its padding was fixed. The mechanism predicts it hurts there too, but that's a prediction.
 
 ## Conclusion
 
-**A .NET-native model call is cheaper than a Python sidecar.** In-process, it served short text 1.5–1.7× faster and used 1.4–6.2× less memory per cell, depending on how Python is deployed; as a sidecar, it kept a 1.24–1.41× short-text lead and well under half the memory of multi-worker Python. Beyond that, **how much work the model does per request decides everything**: whether the framework matters (only while inference is cheap), whether in-process is faster (clearly on short text, not on long), and whether batching helps (only when inputs are short and alike). Measure what the model is doing before building anything around it.
+**A .NET-native model call is cheaper than a Python sidecar.** In-process, it served short text 1.5–1.7× faster and used 1.4–6.2× less memory per cell, depending on how Python is deployed; as a sidecar, it kept a 1.24–1.41× short-text lead and well under half the memory of multi-worker Python. Beyond that, **how much work the model does per request decides everything**: whether the framework matters (only while inference is cheap), whether in-process is faster (clearly on short text, not on long), and whether batching helps (only when inputs are short and alike). Measure what the model is doing before building around it.
 
 The correctness half of this work, with public probes, predictions and results, is at [github.com/rkishore/dotnet-embedding-parity](https://github.com/rkishore/dotnet-embedding-parity).
 
