@@ -1,0 +1,85 @@
+<svg viewBox="0 0 840 372" width="840" height="372" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>scan_text as of October 30: regex first, then redact, then ask Jev</title>
+  <desc>A text of up to 20,000 characters enters scan_text and meets 22 regexes first. If any regex matches, the verdict is block and Jev is not asked, which costs nothing and sends no attacker text to a third party. If none match, the text is redacted of PII and the redacted text is sent to Jev, pinned to jev-1.13.0 and asked the q2 question, which returns a score called jev_p. A score of 0.8 or more gives block, 0.5 to 0.8 gives review, and below 0.5 gives pass. A dashed branch shows that a Jev error or timeout gives review, failing closed. A dashed branch from redaction shows that with no API key Jev is skipped and the verdict is pass, so the tool runs on regexes only. A footer says the pipeline in workflow.py still runs the regexes alone.</desc>
+
+  <rect x="0" y="0" width="840" height="372" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .body   { font-size: 11.5px; fill: #1A1A18; }
+  </style>
+
+  <text x="24" y="32" class="title">scan_text as of October 30: the guard, then a second opinion</text>
+  <text x="24" y="51" class="sub">regex first, then redact, then ask Jev; a Jev failure never passes</text>
+
+  <!-- arrows -->
+  <g stroke="#5F5E5A" stroke-width="1.5" fill="#5F5E5A">
+    <line x1="154" y1="130" x2="176" y2="130"/><polygon points="184,130 176,126 176,134" stroke="none"/>
+    <line x1="352" y1="130" x2="384" y2="130"/><polygon points="392,130 384,126 384,134" stroke="none"/>
+    <line x1="492" y1="130" x2="512" y2="130"/><polygon points="520,130 512,126 512,134" stroke="none"/>
+    <line x1="268" y1="174" x2="268" y2="212"/><polygon points="268,220 264,212 272,212" stroke="none"/>
+    <polyline points="680,130 693,130 693,98 700,98" fill="none"/><polygon points="708,98 700,94 700,102" stroke="none"/>
+    <line x1="693" y1="130" x2="700" y2="130"/><polygon points="708,130 700,126 700,134" stroke="none"/>
+    <polyline points="693,130 693,162 700,162" fill="none"/><polygon points="708,162 700,158 700,166" stroke="none"/>
+  </g>
+  <!-- dashed failure branch -->
+  <g stroke="#D85A30" stroke-width="1.5" fill="#D85A30">
+    <line x1="600" y1="160" x2="600" y2="212" stroke-dasharray="6 4"/><polygon points="600,220 596,212 604,212" stroke="none"/>
+  </g>
+
+  <!-- input -->
+  <rect x="24" y="106" width="130" height="48" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="89" y="127" text-anchor="middle" class="lbl">text</text>
+  <text x="89" y="143" text-anchor="middle" class="small">up to 20,000 chars</text>
+
+  <!-- regex diamond -->
+  <polygon points="268,86 352,130 268,174 184,130" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="268" y="127" text-anchor="middle" class="lbl" style="fill:#993C1D">22 regexes</text>
+  <text x="268" y="143" text-anchor="middle" class="lbl" style="fill:#993C1D">match?</text>
+  <text x="372" y="122" text-anchor="middle" class="small">no</text>
+  <text x="278" y="196" class="small">yes</text>
+
+  <!-- redact -->
+  <rect x="392" y="106" width="100" height="48" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="442" y="127" text-anchor="middle" class="lbl" style="fill:#993C1D">redact PII</text>
+  <text x="442" y="143" text-anchor="middle" class="small">placeholders</text>
+
+  <!-- Jev -->
+  <rect x="520" y="100" width="160" height="60" rx="10" fill="#DCD9F7" stroke="#AFA9EC"/>
+  <text x="600" y="123" text-anchor="middle" class="lbl" style="fill:#3C3489">Jev, q2 (jev-1.13.0)</text>
+  <text x="600" y="142" text-anchor="middle" class="small" style="fill:#534AB7">returns jev_p, 0 to 1</text>
+
+  <!-- outcome pills -->
+  <rect x="708" y="84" width="116" height="28" rx="3" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="766" y="102" text-anchor="middle" class="lbl" style="fill:#993C1D">&#8805; 0.8 block</text>
+  <rect x="708" y="116" width="116" height="28" rx="3" fill="#FAECE7" stroke="#D85A30"/>
+  <text x="766" y="134" text-anchor="middle" class="lbl" style="fill:#D85A30">0.5&#8211;0.8 review</text>
+  <rect x="708" y="148" width="116" height="28" rx="3" fill="#E1F5EE" stroke="#5DCAA5"/>
+  <text x="766" y="166" text-anchor="middle" class="lbl" style="fill:#0F6E56">&lt; 0.5 pass</text>
+  <text x="766" y="196" text-anchor="middle" class="small">thresholds provisional</text>
+
+  <!-- block box -->
+  <rect x="148" y="220" width="240" height="48" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="268" y="241" text-anchor="middle" class="lbl" style="fill:#993C1D">block, Jev not asked</text>
+  <text x="268" y="257" text-anchor="middle" class="small">free; nothing sent to a third party</text>
+
+  <!-- fail closed box -->
+  <rect x="500" y="220" width="200" height="48" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-dasharray="6 4"/>
+  <text x="600" y="241" text-anchor="middle" class="lbl" style="fill:#993C1D">error or timeout: review</text>
+  <text x="600" y="257" text-anchor="middle" class="small">fail closed; 5 s, one retry</text>
+
+  <!-- no key branch: Jev skipped, verdict pass -->
+  <g stroke="#8A8880" stroke-width="1.5" fill="#8A8880">
+    <line x1="442" y1="154" x2="442" y2="212" stroke-dasharray="6 4"/><polygon points="442,220 438,212 446,212" stroke="none"/>
+  </g>
+  <rect x="400" y="220" width="84" height="48" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-dasharray="6 4"/>
+  <text x="442" y="241" text-anchor="middle" class="lbl">no API key</text>
+  <text x="442" y="257" text-anchor="middle" class="small">skip Jev: pass</text>
+
+  <!-- footer -->
+  <rect x="24" y="304" width="792" height="40" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="420" y="329" text-anchor="middle" class="body">The pipeline (<tspan font-weight="600">src/graph/workflow.py</tspan>) is unchanged: it still runs the 22 regexes alone, with no Jev.</text>
+</svg>
