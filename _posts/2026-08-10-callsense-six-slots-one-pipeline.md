@@ -4,7 +4,7 @@ title: "Six Slots, One Pipeline"
 description: "Part 2 of the callsense series: the system design, split into seven stages and then laid out against six slots I believe every well-designed agentic system should have. Control plane, workers, checker, state, eval and audit log. What callsense chose for each, and the two slots where it's still thin."
 ---
 
-*callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. Six Slots, One Pipeline (you're here) &middot; 3. Measuring the Ear (coming soon) &middot; 4. When the Input Is the Prompt (coming soon) &middot; 5. Don't Let the Model Do the Math (coming soon) &middot; 6. From Clean Clone to Deployed (coming soon)*
+*callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. Six Slots, One Pipeline (you're here) &middot; 3. [Measuring the Ear](/2026/08/15/callsense-measuring-the-ear.html) &middot; 4. [When the Input Is the Prompt](/2026/08/20/callsense-when-the-input-is-the-prompt.html) &middot; 5. [Don't Let the Model Do the Math](/2026/08/25/callsense-dont-let-the-model-do-the-math.html) &middot; 6. [From Clean Clone to Deployed](/2026/08/30/callsense-from-clean-clone-to-deployed.html) &middot; 7. [The Guard as a Tool](/2026/10/30/callsense-the-guard-as-a-tool.html) &middot; 8. [Measuring the Guard](/2026/11/04/callsense-measuring-the-guard.html)*
 
 **Objective:** [Part 1](/2026/08/05/callsense-the-call-nobody-reviews.html) set out the problem: score every call, without letting a caller write to the prompt, without sending PII to a model, and without trusting a model to add up. This part is the design, organized around one question: *what does each part of an agentic system have to decide, and what did callsense decide for each?*
 
@@ -108,7 +108,7 @@ None of that answers the eval slot's question: *what number must hold before a p
 
 **Verdict:** the gap. The next step is a small human-scored golden set, built before any further prompt work.
 
-*Update, November 2026: injection detection now has an eval of its own. A version of the guard that adds an injection classifier to the regexes catches 87.5% of 263 public injections, and wrongly flags 0.35% of 2,025 real call-centre calls; a later part of this series covers how that was measured. The pipeline itself still runs the regexes alone, and output quality is still unmeasured: there is no golden set yet, so this verdict stands.*
+*Update, November 2026: injection detection now has an eval of its own. A version of the guard that adds an injection classifier to the regexes catches 87.5% of 263 public injections, and wrongly flags 0.35% of 2,025 real call-centre calls; [Part 8](/2026/11/04/callsense-measuring-the-guard.html) covers how that was measured. The pipeline itself still runs the regexes alone, and output quality is still unmeasured: there is no golden set yet, so this verdict stands.*
 
 ## 6. Audit log: one verb, and one hole
 
