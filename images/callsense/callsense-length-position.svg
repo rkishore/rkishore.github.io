@@ -1,0 +1,54 @@
+<svg viewBox="0 0 840 332" width="840" height="332" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Long calls hide subtle injections</title>
+  <desc>Two bar charts of recall for subtle injections put into real calls, over 216 scans, with the axis starting at zero. By call length, recall is 98.6 percent at 500 words, 93.1 percent at 1,999 words and 81.9 percent at 10,069 words. By position of the injected line, recall is 91.7 percent at the start, 83.3 percent in the middle and 98.6 percent at the end. The lowest bar in each chart is shaded coral. A callout notes the worst single score, 0.05, in the middle of the 10,069-word call.</desc>
+
+  <rect x="0" y="0" width="840" height="332" fill="#FFFFFF"/>
+
+  <style>
+    .title  { font-size: 17px; font-weight: 700; fill: #1A1A18; }
+    .sub    { font-size: 12px; fill: #5F5E5A; }
+    .lbl    { font-size: 12px; font-weight: 600; fill: #1A1A18; }
+    .small  { font-size: 10.5px; fill: #5F5E5A; }
+    .body   { font-size: 11.5px; fill: #1A1A18; }
+  </style>
+
+  <text x="24" y="32" class="title">Long calls hide subtle lines, most of all in the middle</text>
+  <text x="24" y="51" class="sub">subtle injections in real calls, recall over 216 scans</text>
+
+  <text x="70" y="76" class="lbl">by call length</text>
+  <text x="486" y="76" class="lbl">by position of the injected line</text>
+
+  <!-- gridlines: 0% at y=240, 100% at y=100 -->
+  <g stroke="#D3D1C7" stroke-width="1">
+    <line x1="70" y1="100" x2="400" y2="100"/><line x1="70" y1="170" x2="400" y2="170"/><line x1="70" y1="240" x2="400" y2="240"/>
+    <line x1="486" y1="100" x2="816" y2="100"/><line x1="486" y1="170" x2="816" y2="170"/><line x1="486" y1="240" x2="816" y2="240"/>
+  </g>
+  <g class="small" text-anchor="end">
+    <text x="62" y="104">100%</text><text x="62" y="174">50%</text><text x="62" y="244">0%</text>
+    <text x="478" y="104">100%</text><text x="478" y="174">50%</text><text x="478" y="244">0%</text>
+  </g>
+
+  <!-- chart 1 -->
+  <rect x="100" y="102" width="70" height="138" fill="#85B7EB"/>
+  <rect x="205" y="110" width="70" height="130" fill="#85B7EB"/>
+  <rect x="310" y="125" width="70" height="115" fill="#D85A30"/>
+  <g class="lbl" text-anchor="middle">
+    <text x="135" y="96">98.6%</text><text x="240" y="104">93.1%</text><text x="345" y="119">81.9%</text>
+    <text x="135" y="258">500 words</text><text x="240" y="258">1,999 words</text><text x="345" y="258">10,069 words</text>
+  </g>
+
+  <!-- chart 2 -->
+  <rect x="516" y="112" width="70" height="128" fill="#85B7EB"/>
+  <rect x="621" y="123" width="70" height="117" fill="#D85A30"/>
+  <rect x="726" y="102" width="70" height="138" fill="#85B7EB"/>
+  <g class="lbl" text-anchor="middle">
+    <text x="551" y="106">91.7%</text><text x="656" y="117">83.3%</text><text x="761" y="96">98.6%</text>
+    <text x="551" y="258">start</text><text x="656" y="258">middle</text><text x="761" y="258">end</text>
+  </g>
+  <text x="240" y="274" class="small" text-anchor="middle">72 scans per bar</text>
+  <text x="656" y="274" class="small" text-anchor="middle">72 scans per bar</text>
+
+  <!-- callout -->
+  <rect x="24" y="288" width="792" height="30" rx="8" fill="#FAECE7" stroke="#F0997B"/>
+  <text x="420" y="307" class="body" text-anchor="middle"><tspan font-weight="700" fill="#993C1D">worst single score: 0.05,</tspan> in the middle of the 10,069-word call</text>
+</svg>
