@@ -3,6 +3,8 @@ title: "Scoring the Middle: Why One Correctness Number Can't Find Your Bug"
 description: "Part 2 of the Observe, Evaluate, Guard, Optimize series: the agent scored 0.93 faithfulness and 0.77 correctness on the same 15 questions, and that 16-point gap is a diagnosis. Five eval layers, MRR with its misses named, DeepEval metric directions (one of them inverted), and why temperature=0 still needs three repetitions."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Observe, Evaluate, Guard, Optimize series &mdash; 1. [Observability](/2026/07/21/a-trace-is-the-new-stack-trace.html) &middot; 2. Evaluation (you're here) &middot; 3. [Guardrails](/2026/07/23/prompts-suggest-guardrails-enforce.html) &middot; 4. [Cost](/2026/07/24/the-output-cost-floor.html)*
 
 **Objective:** Part 2 of the series, organized around one question: *[Part 1](/2026/07/21/a-trace-is-the-new-stack-trace.html) let me **see** each component &mdash; how do I turn "this looks wrong" into a **number**, and why does one number never tell me **where** it went wrong?*

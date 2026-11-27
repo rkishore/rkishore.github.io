@@ -2,6 +2,8 @@
 description: "A short, picture-first explanation of why MCP turns integration from multiplication into addition, and where MCP sits in the protocol stack."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 # Why MCP? N+M, not N&times;M
 
 *MCP series — 1. Why MCP? (you're here) · 2. [Key MCP Primitives](/2026/06/30/beyond-tools-mcp-resources-and-prompts.html) · 3. [MCP Transports](/2026/07/07/mcp-transports-sse-vs-streamable-http.html)*

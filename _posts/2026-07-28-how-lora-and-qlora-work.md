@@ -3,6 +3,8 @@ title: "LoRA & QLoRA: How Parameter-Efficient Fine-Tuning Actually Works"
 description: "Part 1 of a five-part fine-tuning series: the mechanics of LoRA and QLoRA from the two matrices up — what rank really means, why low-rank isn't sparse, the α/r gain footgun, BF16 vs NF4, why 'frozen' doesn't mean 'uninvolved', and why merging is optional. Built up through eight figures."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Fine-Tuning in Practice &mdash; 1. The Mechanics (you're here) &middot; 2. [When Not to Fine-Tune](/2026/07/29/when-not-to-fine-tune.html) &middot; 3. [The Dataset Audit](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html) &middot; 4. [Safe, Structured, and Wrong](/2026/07/31/safe-structured-and-wrong.html) &middot; 5. [It Took All Day](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html)*
 
 **Objective:** The mechanics half of the series &mdash; organized around one question: *when you fine-tune a big model with LoRA (or QLoRA), what is actually happening to the weights, and why does adjusting **0.4%** of them work at all?* Everything after this post is a *lived* fine-tune with real numbers; this post is the machine those numbers come out of. The rest of the series is the [decision to fine-tune at all](/2026/07/29/when-not-to-fine-tune.html), the [data](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html), the [evaluation](/2026/07/31/safe-structured-and-wrong.html), and the [operational gauntlet](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html).

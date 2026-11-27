@@ -4,6 +4,8 @@ title: "From Clean Clone to Deployed"
 description: "Part 6 of the callsense series: what it took to make callsense run somewhere other than my laptop. A clean clone that failed tests the developer's machine passed, a container built so it would actually serve, a Hugging Face Space that hit five blockers, and the deployment notes written so a second attempt starts where this one stopped."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. [Measuring the Ear](/2026/08/15/callsense-measuring-the-ear.html) &middot; 4. [When the Input Is the Prompt](/2026/08/20/callsense-when-the-input-is-the-prompt.html) &middot; 5. [Don't Let the Model Do the Math](/2026/08/25/callsense-dont-let-the-model-do-the-math.html) &middot; 6. From Clean Clone to Deployed (you're here) &middot; 7. [The Guard as a Tool](/2026/10/30/callsense-the-guard-as-a-tool.html) &middot; 8. [Measuring the Guard](/2026/11/04/callsense-measuring-the-guard.html)*
 
 **Objective:** Parts 3&ndash;5 were about what the pipeline does. This part is about where it runs. callsense came out of a capstone brief from an AI engineering course, and a reviewer would run it from a fresh copy, not from my laptop. My laptop was the only place I had ever run it. So I tried a clean clone, then a container, then a public host. Each step exposed something the step before could not show, and the public deployment stopped on cost, not on code. This part is organized around one question: *what does "it works" have to mean before someone else can run it?*

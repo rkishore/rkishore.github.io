@@ -4,6 +4,8 @@ description: "I ran three .NET embedding libraries against sentence-transformers
 date: 2026-09-23 07:30:00 -0400
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 **Objective:** A measured look at embedding parity in .NET, organized around one question: *three .NET libraries run the same model as sentence-transformers, so why do their vectors still differ, and what does that cost retrieval?* Everything below comes from a public evidence repository, [rkishore/dotnet-embedding-parity](https://github.com/rkishore/dotnet-embedding-parity), and each result links to the file it comes from.
 
 ***Disclosure***: I built a [.NET embedding server of my own, Quilha, as a learning experiment](/2026/09/25/lessons-from-building-a-dotnet-embedding-server.html), and that work led me here. This post covers only the three external libraries and the tokenizer package underneath one of them.

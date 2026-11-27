@@ -3,6 +3,8 @@ title: "MCP Transports: stdio, SSE & Streamable HTTP"
 description: "How MCP messages actually travel: stdio for local servers, the legacy HTTP+SSE transport, and the Streamable HTTP transport that replaced it — and why the switch happened."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *MCP series — 1. [Why MCP?](/2026/06/28/why-mcp-scales-as-n-plus-m.html) · 2. [Key MCP Primitives](/2026/06/30/beyond-tools-mcp-resources-and-prompts.html) · 3. MCP Transports (you're here)*
 
 **Objective:** A plain-language tour of how [Model Context Protocol (MCP)](https://modelcontextprotocol.io) messages actually move between client and server &mdash; the local **stdio** transport, the legacy **HTTP + SSE** transport, and the **Streamable HTTP** transport that replaced it &mdash; and a clear picture of why that last swap happened.

@@ -4,6 +4,8 @@ title: "Measuring the Guard"
 description: "Part 8, the last of the callsense series: how I measured the injection guard. 69 in-domain cases, four public datasets and over 2,000 real calls. Recall 87.5% on public injections, 0.35% false positives on real calls, the regex demoted to a fallback, and what still isn't measured."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. [Measuring the Ear](/2026/08/15/callsense-measuring-the-ear.html) &middot; 4. [When the Input Is the Prompt](/2026/08/20/callsense-when-the-input-is-the-prompt.html) &middot; 5. [Don't Let the Model Do the Math](/2026/08/25/callsense-dont-let-the-model-do-the-math.html) &middot; 6. [From Clean Clone to Deployed](/2026/08/30/callsense-from-clean-clone-to-deployed.html) &middot; 7. [The Guard as a Tool](/2026/10/30/callsense-the-guard-as-a-tool.html) &middot; 8. Measuring the Guard (you're here)*
 
 **Objective:** [Part 2](/2026/08/10/callsense-six-slots-one-pipeline.html) left the eval slot empty, and Part 4 called the injection detector unmeasured. This part fills part of that slot, organized around one question: *how do you measure a guard whose failures are rare, and what do you change when the numbers come in?*

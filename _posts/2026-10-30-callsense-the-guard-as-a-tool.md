@@ -4,6 +4,8 @@ title: "The Guard as a Tool"
 description: "Part 7 of the callsense series: in October I exposed callsense's input guards as an MCP tool, scan_text, and added a second injection check called Jev that judges what a text tries to do rather than which words it uses. What was scoped, what shipped, why stdio, and the two-question spike that chose Jev's wording."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. [Measuring the Ear](/2026/08/15/callsense-measuring-the-ear.html) &middot; 4. [When the Input Is the Prompt](/2026/08/20/callsense-when-the-input-is-the-prompt.html) &middot; 5. [Don't Let the Model Do the Math](/2026/08/25/callsense-dont-let-the-model-do-the-math.html) &middot; 6. [From Clean Clone to Deployed](/2026/08/30/callsense-from-clean-clone-to-deployed.html) &middot; 7. The Guard as a Tool (you're here) &middot; 8. [Measuring the Guard](/2026/11/04/callsense-measuring-the-guard.html)*
 
 **Objective:** [Part 4](/2026/08/20/callsense-when-the-input-is-the-prompt.html) ended with a guard whose posture was right and whose detector was unmeasured. Two months later, this part is the step before measuring it, organized around one question: *how do you make a pipeline's guard usable on its own, and what do you add when regexes only see words?*

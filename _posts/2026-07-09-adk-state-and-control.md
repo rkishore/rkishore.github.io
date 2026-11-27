@@ -3,6 +3,8 @@ title: "State & Control: Reaching Into What the ADK Runtime Handed You"
 description: "Part 2 of the ADK series: the four state scopes that are ADK's memory model, the output_key clobber that bites parallel branches, and callbacks as deterministic policy the model can't prompt its way past."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *ADK series — 1. [Your First ADK Agent](/2026/07/08/your-first-google-adk-agent.html) · 2. State & Control (you're here) · 3. [Agents Over the Wire](/2026/07/11/agents-over-the-wire.html) · 4. [Two Substrates](/2026/07/12/two-substrates.html)*
 
 **Objective:** A field guide to the machinery the [ADK](https://google.github.io/adk-docs/) runtime built for you in [Part 1](/2026/07/08/your-first-google-adk-agent.html) &mdash; organized around one question: *now that the framework runs the loop, how do I see and shape what flows through it?*

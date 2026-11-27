@@ -3,6 +3,8 @@ title: "Safe, Structured, and Wrong"
 description: "Part 4 of the fine-tuning series: my fine-tuned medical model was asked about asthma and answered about COPD — 0.2 accuracy, 0.2 helpfulness, and 0.8 safety. A safety gate would have shipped it. One number, especially a safety number, will lie to you."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Fine-Tuning in Practice &mdash; 1. [The Mechanics](/2026/07/28/how-lora-and-qlora-work.html) &middot; 2. [When Not to Fine-Tune](/2026/07/29/when-not-to-fine-tune.html) &middot; 3. [The Dataset Audit](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html) &middot; 4. Safe, Structured, and Wrong (you're here) &middot; 5. [It Took All Day](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html)*
 
 **Objective:** [Part 3](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html) got the safety score to go *up*. This post asks whether that score can be trusted — organized around one question: *if a single evaluation number says "safe," is it?* The answer, from one particular row of my eval, is a flat no.

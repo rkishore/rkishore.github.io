@@ -4,6 +4,8 @@ title: "Don't Let the Model Do the Math"
 description: "Part 5 of the callsense series: how a call gets scored. The model judges five dimensions; code applies the weights and throws the model's own total away. In the demo it said 3.0 and the code said 3.5. Then one critical compliance flag sends the call to a person, whatever the average."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. [Measuring the Ear](/2026/08/15/callsense-measuring-the-ear.html) &middot; 4. [When the Input Is the Prompt](/2026/08/20/callsense-when-the-input-is-the-prompt.html) &middot; 5. Don't Let the Model Do the Math (you're here) &middot; 6. [From Clean Clone to Deployed](/2026/08/30/callsense-from-clean-clone-to-deployed.html) &middot; 7. [The Guard as a Tool](/2026/10/30/callsense-the-guard-as-a-tool.html) &middot; 8. [Measuring the Guard](/2026/11/04/callsense-measuring-the-guard.html)*
 
 **Objective:** [Part 1](/2026/08/05/callsense-the-call-nobody-reviews.html) promised a score that doesn't depend on how a model felt that run. This part is how callsense splits the work between model and code, organized around one question: *which parts of a quality score need judgement, and which must be arithmetic you can check?*

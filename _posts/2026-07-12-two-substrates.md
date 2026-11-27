@@ -3,6 +3,8 @@ title: "Same Negotiation, Two Substrates: In-Process vs. the Wire"
 description: "The ADK series capstone: I built the same buyer↔seller negotiation twice — once in one process, once across the network as A2A services — and held them side by side. What changed, what didn't, and how to choose."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *ADK series — 1. [Your First ADK Agent](/2026/07/08/your-first-google-adk-agent.html) · 2. [State & Control](/2026/07/09/adk-state-and-control.html) · 3. [Agents Over the Wire](/2026/07/11/agents-over-the-wire.html) · 4. Two Substrates (you're here)*
 
 **Objective:** The capstone of the ADK series &mdash; organized around one question: *I built the same buyer↔seller negotiation twice, once in one process and once across the network. What actually changed, and what does that teach me about where to draw agent boundaries?*

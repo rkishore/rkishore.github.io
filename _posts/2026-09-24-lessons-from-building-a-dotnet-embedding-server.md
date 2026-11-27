@@ -4,6 +4,8 @@ description: "A retrospective on Quilha, a .NET ONNX embedding server built to m
 date: 2026-09-24 21:00:00 -0400
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 **Objective:** A retrospective on Quilha, a .NET server that turns text into embeddings: what I set out to measure, and what the measurements taught. Quilha was a learning experiment, and it's now concluded. This is the post I promised in [the parity post](/2026/09/23/the-divergence-before-the-tensor.html), which covered the correctness side of the same work; that post's probes and results are public at [rkishore/dotnet-embedding-parity](https://github.com/rkishore/dotnet-embedding-parity).
 
 Quilha started from one question: **by how much is a .NET-native model call, made either in-process or through a .NET sidecar, cheaper to run than the usual Python sidecar?**

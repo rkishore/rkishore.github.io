@@ -4,6 +4,8 @@ title: "Measuring the Ear"
 description: "Part 3 of the callsense series: everything downstream reads Whisper's transcript, so I measured it before trusting it. Why the confidence threshold moved from 0.6 to 0.3 and back, why timing gaps can't tell speakers apart, and how the size of the speech model decides what PII redaction can catch."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. Measuring the Ear (you're here) &middot; 4. [When the Input Is the Prompt](/2026/08/20/callsense-when-the-input-is-the-prompt.html) &middot; 5. [Don't Let the Model Do the Math](/2026/08/25/callsense-dont-let-the-model-do-the-math.html) &middot; 6. [From Clean Clone to Deployed](/2026/08/30/callsense-from-clean-clone-to-deployed.html) &middot; 7. [The Guard as a Tool](/2026/10/30/callsense-the-guard-as-a-tool.html) &middot; 8. [Measuring the Guard](/2026/11/04/callsense-measuring-the-guard.html)*
 
 **Objective:** [Part 2](/2026/08/10/callsense-six-slots-one-pipeline.html) drew seven stages and noted that five never call a language model. One of those five feeds everything after it: transcription. The injection check, the PII redactor and both LLM calls only ever see what Whisper wrote down. This part is the measurements behind that stage, organized around one question: *how far can a speech model's transcript be trusted, and how do you find out before building on it?*
