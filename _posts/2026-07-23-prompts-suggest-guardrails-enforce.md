@@ -3,6 +3,8 @@ title: "Prompts Suggest, Guardrails Enforce"
 description: "Part 3 of the Observe, Evaluate, Guard, Optimize series: a benign question leaked PII from my own trusted backend, which is why guarding one side is never enough. The four-strategy funnel, why input guards fail open and output guards fail closed, and a regex guard that ran clean and blocked nothing."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Observe, Evaluate, Guard, Optimize series &mdash; 1. [Observability](/2026/07/21/a-trace-is-the-new-stack-trace.html) &middot; 2. [Evaluation](/2026/07/22/scoring-the-middle.html) &middot; 3. Guardrails (you're here) &middot; 4. [Cost](/2026/07/24/the-output-cost-floor.html)*
 
 **Objective:** Part 3 of the series, organized around one question: *[Parts 1&ndash;2](/2026/07/22/scoring-the-middle.html) let me see and score the system &mdash; both **observational**. What does it take to actually **stop** a bad response, and why isn't guarding the input enough?*

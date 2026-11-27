@@ -3,6 +3,8 @@ title: "When Not to Fine-Tune"
 description: "Part 2 of the fine-tuning series: I fine-tuned a capable 1.5B model on 112k real medical Q&A pairs and it got worse on every axis. Fine-tuning is the third thing you try — the ladder is prompt engineering, then RAG, then fine-tuning — because it changes form, not facts."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Fine-Tuning in Practice &mdash; 1. [The Mechanics](/2026/07/28/how-lora-and-qlora-work.html) &middot; 2. When Not to Fine-Tune (you're here) &middot; 3. [The Dataset Audit](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html) &middot; 4. [Safe, Structured, and Wrong](/2026/07/31/safe-structured-and-wrong.html) &middot; 5. [It Took All Day](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html)*
 
 **Objective:** [Part 1](/2026/07/28/how-lora-and-qlora-work.html) explained the *machine*. This post is about the decision to switch it on &mdash; organized around one question: *I had a capable model and a real dataset; should I have fine-tuned at all?* The honest answer, from my own runs, is usually **no** &mdash; and understanding *why* is the most useful thing fine-tuning taught me.

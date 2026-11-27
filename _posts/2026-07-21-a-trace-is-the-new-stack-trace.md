@@ -4,6 +4,8 @@ title: "A Trace Is the New Stack Trace: Debugging Silent Agent Failures"
 description: "Part 1 of a four-part series on shipping LLM systems you can trust: logs are flat, traces are trees, and that structural difference is the only thing that lets you blame a step instead of a request. The failure taxonomy, the single highest-value field in the UI, and four engineered traps from a real multi-agent run."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Observe, Evaluate, Guard, Optimize series &mdash; 1. Observability (you're here) &middot; 2. [Evaluation](/2026/07/22/scoring-the-middle.html) &middot; 3. [Guardrails](/2026/07/23/prompts-suggest-guardrails-enforce.html) &middot; 4. [Cost](/2026/07/24/the-output-cost-floor.html)*
 
 **Objective:** The opening of a four-part series on what "production" actually means for an LLM system, organized around one question: *a multi-agent system gave a confident, fluent, wrong answer and nothing errored &mdash; so how do you find out **which step** produced it?*

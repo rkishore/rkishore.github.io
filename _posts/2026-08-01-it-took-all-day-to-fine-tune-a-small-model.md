@@ -3,6 +3,8 @@ title: "The 20-Minute Fine-Tune That Took All Day"
 description: "Part 5 and the close of the fine-tuning series: 'QLoRA fine-tunes a model on a free GPU in 20 minutes' is true in principle and took me a full day. OOM on a T4, a lost run at 157/250 steps, a P100 that breaks 4-bit, and two GPUs that made it fail instead of faster."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Fine-Tuning in Practice &mdash; 1. [The Mechanics](/2026/07/28/how-lora-and-qlora-work.html) &middot; 2. [When Not to Fine-Tune](/2026/07/29/when-not-to-fine-tune.html) &middot; 3. [The Dataset Audit](/2026/07/30/the-dataset-audit-that-predicted-the-eval.html) &middot; 4. [Safe, Structured, and Wrong](/2026/07/31/safe-structured-and-wrong.html) &middot; 5. It Took All Day (you're here)*
 
 **Objective:** The close of the series — organized around one question: *the tutorials say "QLoRA fine-tunes a model on a free GPU in 20 minutes," so why did it take me a full day?* The gap between those two sentences is the whole post. Knowing the failure modes in advance turns out to be worth more than knowing the config.

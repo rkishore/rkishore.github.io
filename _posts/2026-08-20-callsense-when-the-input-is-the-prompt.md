@@ -4,6 +4,8 @@ title: "When the Input Is the Prompt"
 description: "Part 4 of the callsense series: the two guards between a transcript and any language model. An injection check built from 22 regexes that fails closed, and PII redaction that replaces the transcript rather than copying it. Why each is shaped the way it is, and what regexes can't see."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *callsense series &mdash; 1. [The Problem](/2026/08/05/callsense-the-call-nobody-reviews.html) &middot; 2. [Six Slots, One Pipeline](/2026/08/10/callsense-six-slots-one-pipeline.html) &middot; 3. [Measuring the Ear](/2026/08/15/callsense-measuring-the-ear.html) &middot; 4. When the Input Is the Prompt (you're here) &middot; 5. [Don't Let the Model Do the Math](/2026/08/25/callsense-dont-let-the-model-do-the-math.html) &middot; 6. [From Clean Clone to Deployed](/2026/08/30/callsense-from-clean-clone-to-deployed.html) &middot; 7. [The Guard as a Tool](/2026/10/30/callsense-the-guard-as-a-tool.html) &middot; 8. [Measuring the Guard](/2026/11/04/callsense-measuring-the-guard.html)*
 
 **Objective:** [Part 1](/2026/08/05/callsense-the-call-nobody-reviews.html) named two constraints that stop callsense from being one prompt: the input is untrusted, and PII stops at the door. This part is how the August build enforces both, organized around one question: *when anyone on a call can write to your prompt, what has to happen before a model reads a word of it?*

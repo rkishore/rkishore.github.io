@@ -3,6 +3,8 @@ title: "The Output Cost Floor: Why Halving the Context Didn't Halve the Bill"
 description: "Part 4 and the close of the Observe, Evaluate, Guard, Optimize series: I cut prompt tokens by 52.9% and the bill fell 48.5%. The gap between those two numbers is the whole economics of an LLM system — output bills 4-5x input, so it's a floor your input savings can't cross."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Observe, Evaluate, Guard, Optimize series &mdash; 1. [Observability](/2026/07/21/a-trace-is-the-new-stack-trace.html) &middot; 2. [Evaluation](/2026/07/22/scoring-the-middle.html) &middot; 3. [Guardrails](/2026/07/23/prompts-suggest-guardrails-enforce.html) &middot; 4. Cost (you're here)*
 
 **Objective:** The close of the series, organized around one question: *I halved the context I feed the model and the bill didn't halve &mdash; **why**, and what does that tell me about which lever to pull next?*

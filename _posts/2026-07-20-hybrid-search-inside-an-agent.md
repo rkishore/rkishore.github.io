@@ -3,6 +3,8 @@ title: "Hybrid Search Inside an Agent: One Retriever, Two Frameworks"
 description: "Part 3 of the hybrid search series: I hand the Part 2 retriever to an agent that decides when to search, when to refine, and when to answer — and build the exact same thing in both LangChain and Google ADK. Agentic RAG is a pattern, not a framework feature."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Hybrid Search series &mdash; 1. [Why Hybrid](/2026/07/14/why-hybrid-search.html) &middot; 2. [Building the Retriever](/2026/07/16/building-the-hybrid-retriever.html) &middot; 3. Hybrid Search Inside an Agent (you're here)*
 
 **Objective:** The capstone of the series &mdash; organized around one question: *[Part 2](/2026/07/16/building-the-hybrid-retriever.html) built a retriever you call once; what changes when you hand it to an **agent** that decides when to search, whether to refine, and when it has enough to answer &mdash; and does the framework even matter, given I built the exact same thing in [LangChain](https://www.langchain.com) and [Google ADK](https://google.github.io/adk-docs/)?*

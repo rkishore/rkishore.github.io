@@ -3,6 +3,8 @@ title: "The Dataset Audit That Predicted the Eval"
 description: "Part 3 of the fine-tuning series: with model and hyperparameters held fixed, the dataset is the only thing that moves the outcome — and you can measure its quality upfront. A one-hour audit (3.2% vs 99.4% disclaimers) forecast which way the post-training safety scores would move."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *Fine-Tuning in Practice &mdash; 1. [The Mechanics](/2026/07/28/how-lora-and-qlora-work.html) &middot; 2. [When Not to Fine-Tune](/2026/07/29/when-not-to-fine-tune.html) &middot; 3. The Dataset Audit (you're here) &middot; 4. [Safe, Structured, and Wrong](/2026/07/31/safe-structured-and-wrong.html) &middot; 5. [It Took All Day](/2026/08/01/it-took-all-day-to-fine-tune-a-small-model.html)*
 
 **Objective:** [Part 2](/2026/07/29/when-not-to-fine-tune.html) said *if* you fine-tune, the dataset decides everything. This post makes that measurable — organized around one question: *can I tell whether a dataset will help me **before** I train on it?* I spent an hour auditing two datasets before running a single training step, and those numbers forecast which way the eval scores would move.

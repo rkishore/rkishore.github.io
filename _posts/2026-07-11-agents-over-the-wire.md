@@ -3,6 +3,8 @@ title: "Agents Over the Wire: An A2A Field Guide"
 description: "Part 3 of the ADK series: when agents stop sharing one in-process state bag and become separate services — A2A discovery via Agent Cards, the task lifecycle, contextId threading, and Parts vs Artifacts."
 ---
 
+{% include info.html text="This content was written with assistance from Claude AI." %}
+
 *ADK series — 1. [Your First ADK Agent](/2026/07/08/your-first-google-adk-agent.html) · 2. [State & Control](/2026/07/09/adk-state-and-control.html) · 3. Agents Over the Wire (you're here) · 4. [Two Substrates](/2026/07/12/two-substrates.html)*
 
 **Objective:** A field guide to [A2A](https://a2a-protocol.org/) &mdash; the protocol for agents that *don't* share memory &mdash; organized around one question: *[Part 2's](/2026/07/09/adk-state-and-control.html) agents all shared one in-process `state` bag; what happens when they don't, and have to find and talk to each other over the network?*
